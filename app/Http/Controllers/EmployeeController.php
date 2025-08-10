@@ -18,28 +18,36 @@ class EmployeeController extends Controller
     {
         $users = User::all(); // Ambil semua user
         $positions = ['Manager', 'Staff', 'Intern']; // Contoh posisi, bisa dari tabel juga
-        $baseSalaries = [5000000, 3000000, 1500000]; // Contoh gaji dasar
 
-        return view('employees.create', compact('users', 'positions', 'baseSalaries'));
+        return view('employees.create', compact('users', 'positions',));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'position' => 'required|string|max:255',
-            'base_salary' => 'required|numeric|min:0',
-        ]);
+    
+public function store(Request $request)
+{
+    $request->validate([
+        'user_id'     => 'required|exists:users,id',
+        'nik'         => 'required|string|max:20|unique:employees,nik',
+        'position'    => 'required|string|max:255',
+        'base_salary' => 'required|numeric|min:0',
+        'photo'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        Employee::create([
-            'user_id' => $request->user_id,
-            'position' => $request->position,
-            'base_salary' => $request->base_salary,
-        ]);
-
-        return redirect()->route('employees.index')->with('success', 'Employee berhasil ditambahkan');
+    $photoPath = null;
+    if ($request->hasFile('photo')) {
+        $photoPath = $request->file('photo')->store('photos', 'public');
     }
 
+    Employee::create([
+        'user_id'     => $request->user_id,
+        'nik'         => $request->nik,
+        'position'    => $request->position,
+        'base_salary' => $request->base_salary,
+        'photo'       => $photoPath,
+    ]);
+
+    return redirect()->route('employees.index')->with('success', 'Karyawan berhasil ditambahkan');
+}
 
     public function show(Employee $employee)
     {
@@ -51,19 +59,27 @@ class EmployeeController extends Controller
         return view('employees.edit', compact('employee'));
     }
 
-    public function update(Request $request, Employee $employee)
-    {
-        $validated = $request->validate([
-            'name'       => 'required|string|max:255',
-            'email'      => 'required|email|unique:employees,email,' . $employee->id,
-            'phone'      => 'nullable|string|max:20',
-            'position'   => 'nullable|string|max:100',
-        ]);
+public function update(Request $request, Employee $employee)
+{
+    $request->validate([
+        'nik'         => 'required|string|max:20|unique:employees,nik,' . $employee->id,
+        'position'    => 'required|string|max:255',
+        'base_salary' => 'required|numeric|min:0',
+        'photo'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        $employee->update($validated);
-
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+    if ($request->hasFile('photo')) {
+        $photoPath = $request->file('photo')->store('photos', 'public');
+        $employee->photo = $photoPath;
     }
+
+    $employee->nik = $request->nik;
+    $employee->position = $request->position;
+    $employee->base_salary = $request->base_salary;
+    $employee->save();
+
+    return redirect()->route('employees.index')->with('success', 'Karyawan berhasil diperbarui');
+}
 
     public function destroy(Employee $employee)
     {

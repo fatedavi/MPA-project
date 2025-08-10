@@ -17,7 +17,7 @@ return new class extends Migration
     $table->string('nik', 20)->unique(); // Tambah kolom NIK
     $table->string('position');
     $table->decimal('base_salary', 12, 2)->default(0);
-    $table->string('profile_photo')->nullable(); // Tambah kolom foto profil
+    $table->string('photo')->nullable(); // Tambah kolom foto profil
     $table->timestamps();
 });
 

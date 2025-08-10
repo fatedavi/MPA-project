@@ -43,8 +43,12 @@
                                 <td class="border border-gray-300 px-4 py-2">{{ $employee->position }}</td>
                                 <td class="border border-gray-300 px-4 py-2">Rp {{ number_format($employee->base_salary, 0, ',', '.') }}</td>
                                 <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('employees.show', $employee) }}" 
+                                    class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
+                                        Detail
+                                    </a>
                                     <a href="{{ route('employees.edit', $employee) }}" 
-                                       class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
+                                    class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
                                         Edit
                                     </a>
                                     <form action="{{ route('employees.destroy', $employee) }}" method="POST" class="inline">
@@ -57,6 +61,7 @@
                                         </button>
                                     </form>
                                 </td>
+
                             </tr>
                         @empty
                             <tr>
