@@ -1,7 +1,28 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,6 +36,72 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Admin Routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    
+    // Client Routes
+    Route::get('/clients', [ClientController::class, 'index'])->name('client.index');
+    Route::get('/clients/create', [ClientController::class, 'create'])->name('client.create');
+    Route::post('/clients', [ClientController::class, 'store'])->name('client.store');
+    Route::get('/clients/{id}', [ClientController::class, 'show'])->name('client.show');
+    Route::get('/clients/{id}/edit', [ClientController::class, 'edit'])->name('client.edit');
+    Route::put('/clients/{id}', [ClientController::class, 'update'])->name('client.update');
+    Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
+    
+    // Project Routes
+    Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
+    Route::get('/projects/create', [ProjectController::class, 'create'])->name('project.create');
+    Route::post('/projects', [ProjectController::class, 'store'])->name('project.store');
+    Route::get('/projects/{id}', [ProjectController::class, 'show'])->name('project.show');
+    Route::get('/projects/{id}/edit', [ProjectController::class, 'edit'])->name('project.edit');
+    Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('project.update');
+    Route::delete('/projects/{id}', [ProjectController::class, 'destroy'])->name('project.destroy');
+    
+    // Invoice Routes
+    Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoice.index');
+    Route::get('/invoices/mpa', [InvoiceController::class, 'mpa'])->name('invoice.mpa');
+    Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoice.create');
+    Route::post('/invoices', [InvoiceController::class, 'store'])->name('invoice.store');
+    Route::get('/invoices/{id}', [InvoiceController::class, 'show'])->name('invoice.show');
+    Route::get('/invoices/{id}/edit', [InvoiceController::class, 'edit'])->name('invoice.edit');
+    Route::put('/invoices/{id}', [InvoiceController::class, 'update'])->name('invoice.update');
+    Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
+    
+    // User Management Routes
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    
+    // Task Management Routes
+    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+    Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    
+    // Calendar Routes
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::get('/calendar/create', [CalendarController::class, 'create'])->name('calendar.create');
+    Route::post('/calendar', [CalendarController::class, 'store'])->name('calendar.store');
+    Route::get('/calendar/{id}/edit', [CalendarController::class, 'edit'])->name('calendar.edit');
+    Route::put('/calendar/{id}', [CalendarController::class, 'update'])->name('calendar.update');
+    Route::delete('/calendar/{id}', [CalendarController::class, 'destroy'])->name('calendar.destroy');
+    
+    // Reports Routes
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    
+    // Settings Routes
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
 
 require __DIR__.'/auth.php';

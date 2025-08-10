@@ -20,6 +20,42 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    
+                    <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
+                        {{ __('Admin') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('client.index')" :active="request()->routeIs('client.index')">
+                        {{ __('Clients') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('project.index')" :active="request()->routeIs('project.index')">
+                        {{ __('Projects') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('invoice.mpa')" :active="request()->routeIs('invoice.mpa')">
+                        {{ __('Invoices') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                        {{ __('Users') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.index')">
+                        {{ __('Tasks') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
+                        {{ __('Calendar') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
+                        {{ __('Reports') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.index')">
+                        {{ __('Settings') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -81,6 +117,42 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
+                {{ __('Admin') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('client.index')" :active="request()->routeIs('client.index')">
+                {{ __('Clients') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('project.index')" :active="request()->routeIs('project.index')">
+                {{ __('Projects') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('invoice.mpa')" :active="request()->routeIs('invoice.mpa')">
+                {{ __('Invoices') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                {{ __('Users') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.index')">
+                {{ __('Tasks') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
+                {{ __('Calendar') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
+                {{ __('Reports') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.index')">
+                {{ __('Settings') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -101,7 +173,7 @@
                     @csrf
 
                     <x-responsive-nav-link href="{{ route('logout') }}"
-                                   @click.prevent="$root.submit();">
+                                 @click.prevent="$root.submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
