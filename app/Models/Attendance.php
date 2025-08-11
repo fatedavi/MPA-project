@@ -15,6 +15,7 @@ class Attendance extends Model
         'check_in',
         'check_out',
         'status', // Present, Absent, Late, etc.
+        'bonus'
     ];
 
     public function user()
