@@ -33,53 +33,60 @@ class AttendanceController extends Controller
 }
 
 
-    public function proses(Request $request)
-    {
-        $employee = auth()->user()->employee;
+public function proses(Request $request)
+{
+    $employee = auth()->user()->employee;
 
-        if (!$employee) {
-            return redirect()->back()->withErrors('Employee record not found.');
-        }
+    if (!$employee) {
+        return redirect()->back()->withErrors('Employee record not found.');
+    }
 
-        $now = Carbon::now();
-        $today = $now->toDateString();
+    $now = Carbon::now(); // waktu sekarang
+    $today = $now->toDateString();
 
-        $absen = Attendance::where('employee_id', $employee->id)
-            ->where('date', $today)
-            ->first();
+    $absen = Attendance::where('employee_id', $employee->id)
+        ->where('date', $today)
+        ->first();
 
-        // Jika belum check-in → Check In
-        if (!$absen) {
-            $bonus = 0;
+    if (!$absen) {
+        $cutoffTime = Carbon::createFromTime(8, 5, 0); // 08:05:00
+
+        // Debug
+        // dd('now: '.$now->format('H:i:s'), 'cutoff: '.$cutoffTime->format('H:i:s'), $now->lessThanOrEqualTo($cutoffTime));
+
+        $bonus = 0;
+        $status = 'Late';
+
+        if ($now->lessThanOrEqualTo($cutoffTime)) {
+            $bonus = 10000;
             $status = 'Present';
-
-            if ($now->greaterThan(Carbon::createFromTime(8, 15, 0))) {
-                $status = 'Late';
-            } else {
-                $bonus = 10000;
-            }
-
-            Attendance::create([
-                'employee_id' => $employee->id,
-                'date'        => $today,
-                'check_in'    => $now->format('H:i:s'),
-                'status'      => $status,
-                'bonus'       => $bonus,
-            ]);
-
-            return redirect()->route('attendances.index')->with('success', 'Check in recorded successfully.');
         }
 
-        // Jika sudah check-in tapi belum check-out → Check Out
-        if (!$absen->check_out) {
+        Attendance::create([
+            'employee_id' => $employee->id,
+            'date' => $today,
+            'check_in' => $now->format('H:i:s'),
+            'status' => $status,
+            'bonus' => $bonus,
+        ]);
+
+        return redirect()->route('attendances.index')->with('success', 'Check in recorded successfully.');
+    }
+
+    if (!$absen->check_out) {
+        $checkoutTime = Carbon::createFromTime(17, 0, 0); // 17:00:00
+        if ($now->greaterThanOrEqualTo($checkoutTime)) {
             $absen->update([
                 'check_out' => $now->format('H:i:s')
             ]);
-
             return redirect()->route('attendances.index')->with('success', 'Check out recorded successfully.');
         }
-
-        // Kalau sudah check-in dan check-out → tidak bisa absen lagi
-        return redirect()->route('attendances.index')->with('error', 'You have completed attendance for today.');
+        return redirect()->route('attendances.index')->with('error', 'Check out only allowed after 17:00.');
     }
+
+    return redirect()->route('attendances.index')->with('error', 'You have completed attendance for today.');
+}
+
+
+
 }
