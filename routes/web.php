@@ -144,7 +144,7 @@ Route::get('/attendances', [AttendanceController::class, 'index'])->name('attend
 Route::post('/attendances/proses', [AttendanceController::class, 'proses'])->name('attendance.proses');
 Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
 
-Route::middleware(['auth', RoleMiddleware::class . ':admin,superadmin'])->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group(function () {
     Route::resource('employees', EmployeeController::class);
 });
 
@@ -154,4 +154,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengajuan-cuti', [CutiController::class, 'index'])->name('cuti.index');
     Route::post('/pengajuan-cuti', [CutiController::class, 'store'])->name('cuti.store');
     Route::get('/pengajuan-cuti/create', [CutiController::class, 'create'])->name('cuti.create');
+});
+
+// routes/web.php
+Route::middleware(['auth'])->group(function () {
+    Route::get('/daftarcuti-admin', [CutiController::class, 'adminIndex'])->name('cuti.admin.index');
+    Route::patch('/cuti/{id}/approve', [CutiController::class, 'approve'])->name('cuti.approve');
+    Route::patch('/cuti/{id}/reject', [CutiController::class, 'reject'])->name('cuti.reject');
 });
