@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,10 +11,18 @@ class Employee extends Model
 
     protected $fillable = [
         'user_id',
+        'name',
+        'phone',
+        'emergency_phone',
+        'address',
         'nik',
+        'ktp',
+        'kk',
+        'ijazah',
+        'cv',
         'position',
         'base_salary',
-        'photo',
+        'email',
     ];
 
     public function user()
