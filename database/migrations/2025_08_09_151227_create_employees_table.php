@@ -11,18 +11,35 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('employees', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('user_id')->constrained()->onDelete('cascade');
-    $table->string('nik', 20)->unique(); // Tambah kolom NIK
-    $table->string('position');
-    $table->decimal('base_salary', 12, 2)->default(0);
-    $table->string('photo')->nullable(); // Tambah kolom foto profil
-    $table->timestamps();
-});
+        Schema::create('employees', function (Blueprint $table) {
+            $table->id();
 
+            // Relasi ke tabel users
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            // Data pribadi
+            $table->string('name');
+            $table->string('phone', 20)->nullable();
+            $table->string('emergency_phone', 20)->nullable();
+            $table->text('address')->nullable();
+            $table->string('nik', 20)->unique();
+
+            // Dokumen
+            $table->string('ktp')->nullable();
+            $table->string('kk')->nullable();
+            $table->string('ijazah')->nullable();
+            $table->string('cv')->nullable();
+
+            // Data pekerjaan
+            $table->decimal('base_salary', 12, 2)->default(0);
+            $table->string('position');
+
+            // Data kontak/login
+            $table->string('email')->unique();
+
+            $table->timestamps();
+        });
     }
-
 
     /**
      * Reverse the migrations.
