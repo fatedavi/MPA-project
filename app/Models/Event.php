@@ -10,14 +10,24 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
+        'name',
         'description',
+        'reward',
         'date',
-        'location',
+        'status',
+    ];
+
+    protected $casts = [
+        'date' => 'datetime',
     ];
 
     public function attendances()
     {
         return $this->hasMany(EventAttendance::class);
+    }
+
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class, 'event_attendances');
     }
 }
