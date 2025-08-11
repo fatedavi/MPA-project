@@ -26,6 +26,13 @@ class CutiController extends Controller
         return view('cuti.index', compact('cuti'));
     }
 
+    public function adminIndex()
+    {
+        $cuti = Cuti::orderBy('created_at', 'desc')->get();
+
+        return view('daftarcuti.index', compact('cuti'));
+    }
+
     public function create()
     {
         return view('cuti.create');
@@ -59,5 +66,31 @@ class CutiController extends Controller
         ]);
 
         return redirect()->route('cuti.index')->with('success', 'Pengajuan cuti berhasil diajukan.');
+    }
+
+    public function approve($id)
+    {
+        $cuti = Cuti::findOrFail($id);
+
+        if ($cuti->status !== 'requested') {
+            return redirect()->back()->withErrors('Pengajuan cuti sudah diproses.');
+        }
+
+        $cuti->update(['status' => 'approve']);
+
+        return redirect()->back()->with('success', 'Pengajuan cuti disetujui.');
+    }
+
+    public function reject($id)
+    {
+        $cuti = Cuti::findOrFail($id);
+
+        if ($cuti->status !== 'requested') {
+            return redirect()->back()->withErrors('Pengajuan cuti sudah diproses.');
+        }
+
+        $cuti->update(['status' => 'rejected']);
+
+        return redirect()->back()->with('success', 'Pengajuan cuti ditolak.');
     }
 }
