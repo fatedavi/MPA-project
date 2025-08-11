@@ -142,7 +142,11 @@ Route::middleware(['auth'])->group(function () {
 // web.php
 Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
 Route::post('/attendances/proses', [AttendanceController::class, 'proses'])->name('attendance.proses');
-Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
+Route::get('/salary/save', [SalaryController::class, 'saveSalaries'])->name('salary.save');
+Route::resource('salary', SalaryController::class)->only(['index']);
+Route::get('/salary/history', [SalaryController::class, 'history'])->name('salary.history');
+
+
 
 Route::middleware(['auth', RoleMiddleware::class . ':admin,superadmin'])->group(function () {
     Route::resource('employees', EmployeeController::class);
