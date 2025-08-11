@@ -18,6 +18,7 @@ return new class extends Migration
         $table->time('check_in')->nullable();
         $table->time('check_out')->nullable();
         $table->decimal('bonus', 12, 2)->default(0);
+        $table->enum('status', ['Present', 'Absent', 'Late'])->default('Present');
         $table->timestamps();
     });
 }

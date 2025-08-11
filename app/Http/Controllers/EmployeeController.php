@@ -26,7 +26,7 @@ class EmployeeController extends Controller
 public function store(Request $request)
 {
     $request->validate([
-        'user_id'     => 'required|exists:users,id',
+        'employee_id' => 'required|exists:users,id',
         'nik'         => 'required|string|max:20|unique:employees,nik',
         'position'    => 'required|string|max:255',
         'base_salary' => 'required|numeric|min:0',
@@ -39,7 +39,7 @@ public function store(Request $request)
     }
 
     Employee::create([
-        'user_id'     => $request->user_id,
+        'employee_id' => $request->employee_id,
         'nik'         => $request->nik,
         'position'    => $request->position,
         'base_salary' => $request->base_salary,
