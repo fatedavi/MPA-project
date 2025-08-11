@@ -17,6 +17,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventAttendanceController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\SalaryController;
+use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\CutiController;
 
 /*
@@ -126,10 +127,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::middleware(['auth'])->group(function () {
-    Route::resource('employees', EmployeeController::class);
+
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
     Route::post('/events', [EventController::class, 'store'])->name('events.store');
+    Route::patch('/events/{event}/status', [EventController::class, 'updateStatus'])->name('events.updateStatus');
+
     Route::patch('/events/{event}/status', [EventController::class, 'updateStatus'])->name('events.updateStatus');
 });
 Route::middleware(['auth'])->group(function () {
@@ -141,6 +144,9 @@ Route::get('/attendances', [AttendanceController::class, 'index'])->name('attend
 Route::post('/attendances/proses', [AttendanceController::class, 'proses'])->name('attendance.proses');
 Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
 
+Route::middleware(['auth', RoleMiddleware::class . ':admin,superadmin'])->group(function () {
+    Route::resource('employees', EmployeeController::class);
+});
 
 require __DIR__ . '/auth.php';
 
