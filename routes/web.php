@@ -15,6 +15,8 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventAttendanceController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\SalaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,5 +129,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('events', EventController::class);
     Route::resource('event-attendances', EventAttendanceController::class);
 });
+Route::middleware(['auth'])->group(function () {
+    Route::resource('attendances', AttendanceController::class)
+        ->only(['index', 'create', 'store', 'edit', 'update']);
+});
+// web.php
+Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
+Route::post('/attendances/proses', [AttendanceController::class, 'proses'])->name('attendance.proses');
+Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
+
 
 require __DIR__.'/auth.php';

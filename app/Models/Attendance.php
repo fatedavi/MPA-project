@@ -10,7 +10,7 @@ class Attendance extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'employee_id',
         'date',
         'check_in',
         'check_out',
@@ -21,4 +21,5 @@ class Attendance extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
 }
