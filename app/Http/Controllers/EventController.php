@@ -4,63 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
+    // Tampilkan daftar event
     public function index()
     {
-        $events = Event::all();
+        // Urut berdasarkan tanggal terbaru dulu
+        $events = Event::orderBy('date', 'desc')->get();
         return view('events.index', compact('events'));
     }
 
+    // Tampilkan form tambah event
     public function create()
     {
         return view('events.create');
     }
 
+    // Simpan data event baru
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title'       => 'required|string|max:255',
+        $request->validate([
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'start_time'  => 'required|date',
-            'end_time'    => 'required|date|after_or_equal:start_time',
-            'location'    => 'nullable|string|max:255',
+            'reward' => 'required|numeric|min:0',
+            'date' => 'required|date',
         ]);
 
-        Event::create($validated);
-
-        return redirect()->route('events.index')->with('success', 'Event created successfully.');
-    }
-
-    public function show(Event $event)
-    {
-        return view('events.show', compact('event'));
-    }
-
-    public function edit(Event $event)
-    {
-        return view('events.edit', compact('event'));
-    }
-
-    public function update(Request $request, Event $event)
-    {
-        $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'start_time'  => 'required|date',
-            'end_time'    => 'required|date|after_or_equal:start_time',
-            'location'    => 'nullable|string|max:255',
+        Event::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'reward' => $request->reward,
+            'date' => Carbon::parse($request->date),
+            'status' => 'comingsoon',
         ]);
 
-        $event->update($validated);
-
-        return redirect()->route('events.index')->with('success', 'Event updated successfully.');
+        return redirect()->route('events.index')->with('success', 'Event berhasil dibuat.');
     }
 
-    public function destroy(Event $event)
+    // Update status event (approve atau reject)
+    public function updateStatus(Request $request, Event $event)
     {
-        $event->delete();
-        return redirect()->route('events.index')->with('success', 'Event deleted successfully.');
+        $request->validate([
+            'status' => 'required|in:approve,reject',
+        ]);
+
+        $event->status = $request->status;
+        $event->save();
+
+        return redirect()->route('events.index')->with('success', 'Status event berhasil diperbarui.');
     }
 }

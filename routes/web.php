@@ -126,8 +126,11 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::resource('employees', EmployeeController::class);
-    Route::resource('events', EventController::class);
-    Route::resource('event-attendances', EventAttendanceController::class);
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
+    Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+    Route::post('/events', [EventController::class, 'store'])->name('events.store');
+    Route::patch('/events/{event}/status', [EventController::class, 'updateStatus'])->name('events.updateStatus');
+
 });
 Route::middleware(['auth'])->group(function () {
     Route::resource('attendances', AttendanceController::class)
