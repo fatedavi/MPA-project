@@ -13,6 +13,8 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->foreignId('event_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            $table->unique(['employee_id', 'event_id']); // Cegah duplikat
         });
     }
 

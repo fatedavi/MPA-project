@@ -158,7 +158,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengajuan-cuti', [CutiController::class, 'index'])->name('cuti.index');
     Route::post('/pengajuan-cuti', [CutiController::class, 'store'])->name('cuti.store');
     Route::get('/pengajuan-cuti/create', [CutiController::class, 'create'])->name('cuti.create');
+    Route::resource('attendances', AttendanceController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update']);
+
 });
+Route::resource('event-attendances', EventAttendanceController::class);
 
 // routes/web.php
 Route::middleware(['auth'])->group(function () {
