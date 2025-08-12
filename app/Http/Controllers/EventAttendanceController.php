@@ -28,22 +28,23 @@ class EventAttendanceController extends Controller
         return view('event_attendance.create', compact('employees', 'events'));
     }
 
-        public function store(Request $request)
+    public function store(Request $request)
 {
-    $request->validate([
-        'employee_id' => 'required|array',
-        'employee_id.*' => 'exists:employees,id',
-        'event_id' => 'required|exists:events,id',
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'role' => 'required|string',
+        'password' => 'required|string|min:8|confirmed',
     ]);
 
-    foreach ($request->employee_id as $employeeId) {
-        \App\Models\EventAttendance::create([
-            'employee_id' => $employeeId,
-            'event_id' => $request->event_id,
-        ]);
-    }
+    User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'role' => $validated['role'],
+        'password' => Hash::make($validated['password']),
+    ]);
 
-    return redirect()->route('event-attendances.index')->with('success', 'Data berhasil disimpan');
+    return redirect()->route('users.index')->with('success', 'User berhasil dibuat.');
 }
 
 
