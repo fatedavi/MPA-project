@@ -21,10 +21,10 @@ class Event extends Model
         'date' => 'datetime',
     ];
 
-    public function attendances()
-    {
-        return $this->hasMany(EventAttendance::class);
-    }
+    public function attendees()
+{
+    return $this->belongsToMany(Employee::class, 'event_attendances');
+}
 
     public function employees()
     {

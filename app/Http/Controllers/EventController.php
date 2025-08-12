@@ -55,4 +55,6 @@ class EventController extends Controller
 
         return redirect()->route('events.index')->with('success', 'Status event berhasil diperbarui.');
     }
+    
 }
+
