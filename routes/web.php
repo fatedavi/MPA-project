@@ -159,9 +159,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pengajuan-cuti', [CutiController::class, 'store'])->name('cuti.store');
     Route::get('/pengajuan-cuti/create', [CutiController::class, 'create'])->name('cuti.create');
     Route::resource('attendances', AttendanceController::class)
-    ->only(['index', 'create', 'store', 'edit', 'update']);
-
+        ->only(['index', 'create', 'store', 'edit', 'update']);
 });
+
+Route::get('/event-attendances', [EventAttendanceController::class, 'index'])->name('event-attendances.index');
+Route::get('/event-attendances/create', [EventAttendanceController::class, 'create'])->name('event-attendances.create');
+Route::post('/event-attendances', [EventAttendanceController::class, 'store'])->name('event-attendances.store');
+Route::get('/event-attendances/{id}/edit', [EventAttendanceController::class, 'edit'])->name('event-attendances.edit');
+Route::put('/event-attendances/{id}', [EventAttendanceController::class, 'update'])->name('event-attendances.update');
+Route::delete('/event-attendances/{id}', [EventAttendanceController::class, 'destroy'])->name('event-attendances.destroy');
 Route::resource('event-attendances', EventAttendanceController::class);
 
 

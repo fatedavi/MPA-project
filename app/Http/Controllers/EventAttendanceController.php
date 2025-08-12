@@ -22,29 +22,48 @@ class EventAttendanceController extends Controller
 
     public function create()
     {
-        $employees = Employee::all();
         $events = Event::all();
-
+        $employees = Employee::all(); // Nanti bisa difilter setelah event dipilih di frontend
         return view('event_attendance.create', compact('employees', 'events'));
     }
 
-        public function store(Request $request)
-{
-    $request->validate([
-        'employee_id' => 'required|array',
-        'employee_id.*' => 'exists:employees,id',
-        'event_id' => 'required|exists:events,id',
-    ]);
 
-    foreach ($request->employee_id as $employeeId) {
-        \App\Models\EventAttendance::create([
-            'employee_id' => $employeeId,
-            'event_id' => $request->event_id,
+    public function store(Request $request)
+    {
+        $request->validate([
+            'employee_id' => 'required|array',
+            'employee_id.*' => 'exists:employees,id',
+            'event_id' => 'required|exists:events,id',
         ]);
+
+        // Cek karyawan yang sudah ikut event
+        $sudahTerdaftar = EventAttendance::where('event_id', $request->event_id)
+            ->whereIn('employee_id', $request->employee_id)
+            ->pluck('employee_id')
+            ->toArray();
+
+        if (!empty($sudahTerdaftar)) {
+            $namaKaryawan = Employee::whereIn('id', $sudahTerdaftar)
+                ->pluck('name')
+                ->implode(', ');
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', "Karyawan berikut sudah terdaftar di event ini: {$namaKaryawan}");
+        }
+
+        foreach ($request->employee_id as $employeeId) {
+            EventAttendance::create([
+                'employee_id' => $employeeId,
+                'event_id' => $request->event_id,
+            ]);
+        }
+
+        return redirect()->route('event-attendances.index')
+            ->with('success', 'Data berhasil disimpan');
     }
 
-    return redirect()->route('event-attendances.index')->with('success', 'Data berhasil disimpan');
-}
+
 
 
 
