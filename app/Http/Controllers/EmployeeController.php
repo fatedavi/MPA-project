@@ -9,18 +9,26 @@ use Illuminate\Support\Facades\Storage;
 
 class EmployeeController extends Controller
 {
+
+
     public function index()
     {
+
         $employees = Employee::with('user')->get();
         return view('employees.index', compact('employees'));
+
+        $employees = Employee::with('user')->get();
+        return view('users.index', compact('employees'));
     }
 
     public function create()
     {
-        $users = User::all(); // Ambil semua user untuk relasi
-        $positions = ['Manager', 'Staff', 'Admin', 'karyawan']; // Bisa dari DB kalau mau dinamis
+        // Ambil user yang belum memiliki relasi employee
+        $users = User::doesntHave('employee')->get();
+        $positions = ['Manager', 'Staff', 'Admin', 'karyawan'];
         return view('employees.create', compact('users', 'positions'));
     }
+
 
     public function store(Request $request)
     {

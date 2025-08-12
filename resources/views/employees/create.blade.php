@@ -12,7 +12,7 @@
                     @csrf
 
 
-                    <div class="mb-4">
+                    {{-- <div class="mb-4">
                         <label for="user_id" class="block text-sm font-medium text-gray-700">Pilih User</label>
                         <select name="user_id" id="user_id"
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200">
@@ -21,7 +21,14 @@
                                 <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
+                    <select name="user_id" id="user_id" class="select2 w-full">
+                        <option value="">-- Pilih User --</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                        @endforeach
+                    </select>
+
 
 
                     {{-- Nama --}}
@@ -38,7 +45,7 @@
                     {{-- No Tlp --}}
                     <div class="mb-4">
                         <label for="phone" class="block text-gray-700 font-bold mb-2">No Tlp</label>
-                        <input type="text" name="phone" id="phone"
+                        <input type="number" name="phone" id="phone"
                             class="w-full border-gray-300 rounded-lg shadow-sm" placeholder="Masukkan nomor telepon"
                             value="{{ old('phone') }}">
                         @error('phone')
@@ -49,7 +56,7 @@
                     {{-- No Emergency --}}
                     <div class="mb-4">
                         <label for="emergency_phone" class="block text-gray-700 font-bold mb-2">No Emergency</label>
-                        <input type="text" name="emergency_phone" id="emergency_phone"
+                        <input type="number" name="emergency_phone" id="emergency_phone"
                             class="w-full border-gray-300 rounded-lg shadow-sm" placeholder="Masukkan nomor darurat"
                             value="{{ old('emergency_phone') }}">
                         @error('emergency_phone')
@@ -70,7 +77,7 @@
                     {{-- NIK --}}
                     <div class="mb-4">
                         <label for="nik" class="block text-gray-700 font-bold mb-2">NIK</label>
-                        <input type="text" name="nik" id="nik"
+                        <input type="number" name="nik" id="nik"
                             class="w-full border-gray-300 rounded-lg shadow-sm" placeholder="Masukkan NIK"
                             value="{{ old('nik') }}">
                         @error('nik')
@@ -171,3 +178,14 @@
         </div>
     </div>
 </x-app-layout>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#user_id').select2({
+            placeholder: "-- Pilih User --",
+            allowClear: true
+        });
+    });
+</script>
