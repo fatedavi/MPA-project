@@ -67,11 +67,11 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+public function store(Request $request): RedirectResponse
 {
     $request->validate([
         'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
         // 'role' bisa ditambahkan jika perlu validasi role
     ]);
@@ -79,17 +79,18 @@ class UserController extends Controller
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
-        // Jangan lupa tambahkan role kalau perlu, misal default 'karyawan'
         'role' => $request->role ?? 'karyawan',
         'password' => Hash::make($request->password),
     ]);
 
     event(new Registered($user));
 
-    Auth::login($user);
+    // Tidak auto login
 
-    return redirect(route('dashboard'));
+    return redirect()->route('users.index')
+        ->with('success', 'User created successfully!');
 }
+
 
 
 
