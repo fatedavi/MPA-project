@@ -160,9 +160,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengajuan-cuti/create', [CutiController::class, 'create'])->name('cuti.create');
 });
 
-// routes/web.php
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/daftarcuti-admin', [CutiController::class, 'adminIndex'])->name('cuti.admin.index');
     Route::patch('/cuti/{id}/approve', [CutiController::class, 'approve'])->name('cuti.approve');
     Route::patch('/cuti/{id}/reject', [CutiController::class, 'reject'])->name('cuti.reject');
 });
+
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+Route::post('/events', [EventController::class, 'store'])->name('events.store');
+Route::patch('/events/{event}/status', [EventController::class, 'updateStatus'])->name('events.updateStatus');
