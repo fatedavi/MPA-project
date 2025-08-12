@@ -34,4 +34,5 @@ class Employee extends Model
     return $this->belongsToMany(Event::class, 'event_attendances');
 }
 
+
 }

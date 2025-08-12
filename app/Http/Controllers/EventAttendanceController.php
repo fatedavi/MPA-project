@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\EventAttendance;
-use App\Models\Event;
 use App\Models\Employee;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventAttendanceController extends Controller
@@ -12,59 +12,85 @@ class EventAttendanceController extends Controller
     public function index()
     {
         $attendances = EventAttendance::with(['employee', 'event'])->get();
-        return view('attendances.index', compact('attendances'));
+
+        if (request()->expectsJson()) {
+            return response()->json($attendances);
+        }
+
+        return view('event_attendance.index', compact('attendances'));
     }
 
     public function create()
     {
-        $events = Event::all();
         $employees = Employee::all();
-        return view('attendances.create', compact('events', 'employees'));
+        $events = Event::all();
+
+        return view('event_attendance.create', compact('employees', 'events'));
     }
 
-    public function store(Request $request)
+        public function store(Request $request)
+{
+    $request->validate([
+        'employee_id' => 'required|array',
+        'employee_id.*' => 'exists:employees,id',
+        'event_id' => 'required|exists:events,id',
+    ]);
+
+    foreach ($request->employee_id as $employeeId) {
+        \App\Models\EventAttendance::create([
+            'employee_id' => $employeeId,
+            'event_id' => $request->event_id,
+        ]);
+    }
+
+    return redirect()->route('event-attendances.index')->with('success', 'Data berhasil disimpan');
+}
+
+
+
+    public function show(EventAttendance $eventAttendance)
     {
-        $validated = $request->validate([
+        $eventAttendance->load(['employee', 'event']);
+
+        if (request()->expectsJson()) {
+            return response()->json($eventAttendance);
+        }
+
+        return view('event-attendance.show', compact('eventAttendance'));
+    }
+
+    public function edit(EventAttendance $eventAttendance)
+    {
+        return view('event-attendance.edit', compact('eventAttendance'));
+    }
+
+    public function update(Request $request, EventAttendance $eventAttendance)
+    {
+        $request->validate([
             'employee_id' => 'required|exists:employees,id',
-            'event_id'    => 'required|exists:events,id',
-            'status'      => 'required|in:present,absent',
-            'notes'       => 'nullable|string',
+            'event_id' => 'required|exists:events,id',
         ]);
 
-        EventAttendance::create($validated);
+        $eventAttendance->update($request->only('employee_id', 'event_id'));
 
-        return redirect()->route('attendances.index')->with('success', 'Attendance recorded successfully.');
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Kehadiran berhasil diupdate',
+                'data' => $eventAttendance
+            ]);
+        }
+
+        return redirect()->route('event_attendances.index')->with('success', 'Kehadiran berhasil diupdate');
     }
 
-    public function show(EventAttendance $attendance)
+    public function destroy(EventAttendance $eventAttendance)
     {
-        return view('attendances.show', compact('attendance'));
-    }
+        $eventAttendance->delete();
 
-    public function edit(EventAttendance $attendance)
-    {
-        $events = Event::all();
-        $employees = Employee::all();
-        return view('attendances.edit', compact('attendance', 'events', 'employees'));
-    }
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Kehadiran berhasil dihapus']);
+        }
 
-    public function update(Request $request, EventAttendance $attendance)
-    {
-        $validated = $request->validate([
-            'employee_id' => 'required|exists:employees,id',
-            'event_id'    => 'required|exists:events,id',
-            'status'      => 'required|in:present,absent',
-            'notes'       => 'nullable|string',
-        ]);
-
-        $attendance->update($validated);
-
-        return redirect()->route('attendances.index')->with('success', 'Attendance updated successfully.');
-    }
-
-    public function destroy(EventAttendance $attendance)
-    {
-        $attendance->delete();
-        return redirect()->route('attendances.index')->with('success', 'Attendance deleted successfully.');
+        return redirect()->route('event-attendances.index')->with('success', 'Kehadiran berhasil dihapus');
     }
 }
