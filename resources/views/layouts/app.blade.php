@@ -81,14 +81,13 @@
                             @endif
                         @endauth
 
-
                         @auth
                             @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
                                 <!-- Employee Management -->
                                 <a href="{{ route('employees.index') }}"
-                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                    <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('employees.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('employees.*') ? 'text-white' : 'text-gray-400' }}"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                     </svg>
@@ -97,13 +96,13 @@
                             @endif
                         @endauth
 
-                        <!-- Cuti Management -->
                         @auth
                             @if (auth()->user()->role === 'karyawan')
+                                <!-- Cuti Management -->
                                 <a href="{{ route('cuti.index') }}"
-                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                    <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('cuti.index') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('cuti.index') ? 'text-white' : 'text-gray-400' }}"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                     </svg>
@@ -112,14 +111,13 @@
                             @endif
                         @endauth
 
-
-                        <!-- Daftar Cuti Management -->
                         @auth
                             @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <!-- Daftar Cuti Management -->
                                 <a href="{{ route('cuti.admin.index') }}"
-                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                    <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('cuti.admin.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('cuti.admin.*') ? 'text-white' : 'text-gray-400' }}"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                     </svg>
@@ -128,13 +126,13 @@
                             @endif
                         @endauth
 
-                        <!-- Gaji Management -->
                         @auth
                             @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <!-- Gaji Management -->
                                 <a href="{{ route('salary.index') }}"
-                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                    <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('salary.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('salary.*') ? 'text-white' : 'text-gray-400' }}"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                     </svg>
@@ -143,49 +141,70 @@
                             @endif
                         @endauth
 
-                        <!-- Absen Karyawan Management -->
                         @auth
                             @if (auth()->user()->role === 'karyawan')
+                                <!-- Absen Karyawan Management -->
                                 <a href="{{ route('attendances.index') }}"
-                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                    <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('attendances.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('attendances.*') ? 'text-white' : 'text-gray-400' }}"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                     </svg>
                                     Absen Karyawan
                                 </a>
-                        </div>
-                        @endif
-                    @endauth
+                            @endif
+                        @endauth
 
-                    @php
-                        $role = auth()->user()->role ?? '';
-                    @endphp
+                        @auth
+                            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <!-- Event Management -->
+                                <a href="{{ route('events.index') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('events.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('events.*') ? 'text-white' : 'text-gray-400' }}"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    Event
+                                </a>
+                            @endif
+                        @endauth
 
-                    @if (in_array($role, ['admin', 'super_admin']))
-                        <!-- Event Management -->
-                        <a href="{{ route('events.index') }}"
-                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('events.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                            <svg class="w-5 h-5 mr-3 {{ request()->routeIs('events.*') ? 'text-white' : 'text-gray-400' }}"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            Event
-                        </a>
+                        @auth
+                            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <!-- Event Attendances Management -->
+                                <a href="{{ route('event-attendances.index') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('event-attendances.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('event-attendances.*') ? 'text-white' : 'text-gray-400' }}"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    Event Attendances
+                                </a>
+                            @endif
+                        @endauth
 
-                        <!-- Users Management -->
-                        <a href="{{ route('users.index') }}"
-                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('users.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                            <svg class="w-5 h-5 mr-3 {{ request()->routeIs('users.*') ? 'text-white' : 'text-gray-400' }}"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            Users
-                        </a>
-                    @endif
+                        @auth
+                            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <!-- Users Management -->
+                                <a href="{{ route('users.index') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('users.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('users.*') ? 'text-white' : 'text-gray-400' }}"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    Users
+                                </a>
+                            @endif
+                        @endauth
+
+                    </div>
+
+
+
 
                     <!-- Invoice Section -->
                     <div class="pt-4">
