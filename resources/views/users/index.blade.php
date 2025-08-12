@@ -114,14 +114,11 @@
                                     <option value="">All Roles</option>
                                     <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin
                                     </option>
-                                    <option value="manager" {{ request('role') == 'manager' ? 'selected' : '' }}>Manager
+                                    <option value="super_admin" {{ request('role') == 'manager' ? 'selected' : '' }}>
+                                        Super Admin
                                     </option>
-                                    <option value="developer" {{ request('role') == 'developer' ? 'selected' : '' }}>
-                                        Developer</option>
-                                    <option value="designer" {{ request('role') == 'designer' ? 'selected' : '' }}>
-                                        Designer</option>
-                                    <option value="analyst" {{ request('role') == 'analyst' ? 'selected' : '' }}>
-                                        Analyst</option>
+                                    <option value="karyawan" {{ request('role') == 'developer' ? 'selected' : '' }}>
+                                        karyawan</option>
                                 </select>
 
                                 {{-- <select name="status"
