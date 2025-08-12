@@ -16,6 +16,9 @@ class EmployeeController extends Controller
 
         $employees = Employee::with('user')->get();
         return view('employees.index', compact('employees'));
+
+        $employees = Employee::with('user')->get();
+        return view('users.index', compact('employees'));
     }
 
     public function create()
