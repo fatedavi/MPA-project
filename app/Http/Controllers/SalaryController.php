@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
 use App\Models\Attendance;
 use App\Models\EventAttendance;
@@ -157,6 +159,37 @@ class SalaryController extends Controller
         // Tahun misal dari 5 tahun terakhir sampai sekarang
         $years = range(now()->year - 5, now()->year);
 
+    return view('salary.history', compact('salaries', 'month', 'year', 'months', 'years'));
+}
+public function exportPdf(Request $request)
+{
+    // Ambil data filter dari request
+    $month = $request->month ?? now()->format('m');
+    $year = $request->year ?? now()->format('Y');
+
+    $months = [
+        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+        5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+        9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+    ];
+
+    // Ambil data gaji
+    $salaries = Salary::with('employee')
+        ->whereMonth('created_at', $month)
+        ->whereYear('created_at', $year)
+        ->get();
+
+    // Load view PDF
+    $pdf = Pdf::loadView('salary.history_pdf', [
+        'salaries' => $salaries,
+        'month' => $month,
+        'year' => $year,
+        'months' => $months
+    ]);
+
+    // Download PDF
+    return $pdf->download("riwayat-gaji-{$month}-{$year}.pdf");
+}
         return view('salary.history', compact('salaries', 'month', 'year', 'months', 'years'));
     }
 

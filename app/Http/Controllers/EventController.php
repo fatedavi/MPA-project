@@ -53,7 +53,7 @@ class EventController extends Controller
         $event->status = $request->status;
         $event->save();
 
-        return redirect()->route('events.index')->with('success', 'Status event berhasil diperbarui.');
+        return redirect()->route('events.admin')->with('success', 'Status event berhasil diperbarui.');
     }
     public function admin()
     {
