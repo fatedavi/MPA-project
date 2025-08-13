@@ -186,3 +186,8 @@ Route::middleware(['auth', RoleMiddleware::class . ':karyawan'])->group(function
     Route::resource('attendances', AttendanceController::class)->only(['index', 'create', 'store', 'edit', 'update']);
     Route::post('/attendances/proses', [AttendanceController::class, 'proses'])->name('attendance.proses');
 });
+
+Route::middleware(['auth', RoleMiddleware::class . ':karyawan'])->group(function () {
+    // ...existing code...
+    Route::get('/my-salary', [SalaryController::class, 'mySalary'])->name('salary.my');
+});

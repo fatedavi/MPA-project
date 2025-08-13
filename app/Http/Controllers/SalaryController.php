@@ -9,6 +9,7 @@ use App\Models\Cuti;
 use App\Models\Salary;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class SalaryController extends Controller
 {
@@ -92,7 +93,7 @@ class SalaryController extends Controller
                 })
                 ->with('event')
                 ->get()
-                ->sum(fn ($ea) => $ea->event->reward);
+                ->sum(fn($ea) => $ea->event->reward);
 
             $totalCutiDays = Cuti::where('employee_id', $employee->id)
                 ->whereYear('tanggal', $year)
@@ -125,28 +126,54 @@ class SalaryController extends Controller
         return redirect()->route('salary.index')->with('success', 'Gaji berhasil disimpan untuk bulan ini.');
     }
     public function history(Request $request)
-{
-    // Ambil filter bulan dan tahun dari request, default ke bulan & tahun sekarang
-    $month = $request->input('month', now()->month);
-    $year = $request->input('year', now()->year);
+    {
+        // Ambil filter bulan dan tahun dari request, default ke bulan & tahun sekarang
+        $month = $request->input('month', now()->month);
+        $year = $request->input('year', now()->year);
 
-    // Query data salary dengan filter bulan & tahun dan eager load employee
-    $salaries = Salary::with('employee')
-        ->where('month', $month)
-        ->where('year', $year)
-        ->orderBy('employee_id')
-        ->get();
+        // Query data salary dengan filter bulan & tahun dan eager load employee
+        $salaries = Salary::with('employee')
+            ->where('month', $month)
+            ->where('year', $year)
+            ->orderBy('employee_id')
+            ->get();
 
-    // Buat array bulan untuk dropdown
-    $months = [
-        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
-        7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
-    ];
+        // Buat array bulan untuk dropdown
+        $months = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
 
-    // Tahun misal dari 5 tahun terakhir sampai sekarang
-    $years = range(now()->year - 5, now()->year);
+        // Tahun misal dari 5 tahun terakhir sampai sekarang
+        $years = range(now()->year - 5, now()->year);
 
-    return view('salary.history', compact('salaries', 'month', 'year', 'months', 'years'));
-}
+        return view('salary.history', compact('salaries', 'month', 'year', 'months', 'years'));
+    }
 
+    public function mySalary()
+    {
+        $user = Auth::user();
+        $employee = $user->employee; // pastikan relasi user->employee sudah ada di model User
+
+        if (!$employee) {
+            return redirect()->back()->with('error', 'Data karyawan tidak ditemukan.');
+        }
+
+        $salaries = Salary::where('employee_id', $employee->id)
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->get();
+
+        return view('salary.my', compact('salaries', 'employee'));
+    }
 }
