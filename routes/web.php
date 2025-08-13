@@ -166,6 +166,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group
     Route::delete('/event-attendances/{id}', [EventAttendanceController::class, 'destroy'])->name('event-attendances.destroy');
     Route::resource('event-attendances', EventAttendanceController::class);
 });
+Route::middleware(['auth', RoleMiddleware::class . ':super_admin'])->group(function () {
+    Route::get('/events/admin', [EventController::class, 'admin'])->name('events.admin');
+});
 
 /*
 |--------------------------------------------------------------------------

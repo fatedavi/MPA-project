@@ -10,12 +10,6 @@
                 <div class="mb-4 text-green-600">{{ session('success') }}</div>
             @endif
 
-            <div class="mb-4 text-right">
-                <a href="{{ route('events.create') }}"
-                   class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow transition">
-                   + Tambah Event
-                </a>
-            </div>
 
             <table class="w-full border-collapse border border-gray-300">
                 <thead>
@@ -25,6 +19,7 @@
                         <th class="border border-gray-300 px-4 py-2">Tanggal</th>
                         <th class="border border-gray-300 px-4 py-2">Reward</th>
                         <th class="border border-gray-300 px-4 py-2">Status</th>
+                        <th class="border border-gray-300 px-4 py-2">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,7 +38,24 @@
                                     <span class="text-yellow-600 font-semibold">Coming Soon</span>
                                 @endif
                             </td>
-                          
+                            <td class="border border-gray-300 px-4 py-2">
+                                @if($event->status === 'comingsoon')
+                                    <form action="{{ route('events.updateStatus', $event->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" name="status" value="approve" 
+                                            class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded mr-1">
+                                            Approve
+                                        </button>
+                                        <button type="submit" name="status" value="reject" 
+                                            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
+                                            Reject
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-gray-500">No action</span>
+                                @endif
+                            </td>
                         </tr>
                     @empty
                         <tr>
