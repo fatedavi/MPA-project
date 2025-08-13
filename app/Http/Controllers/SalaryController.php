@@ -94,7 +94,7 @@ class SalaryController extends Controller
                 })
                 ->with('event')
                 ->get()
-                ->sum(fn ($ea) => $ea->event->reward);
+                ->sum(fn($ea) => $ea->event->reward);
 
             $totalCutiDays = Cuti::where('employee_id', $employee->id)
                 ->whereYear('tanggal', $year)
@@ -127,57 +127,94 @@ class SalaryController extends Controller
         return redirect()->route('salary.index')->with('success', 'Gaji berhasil disimpan untuk bulan ini.');
     }
     public function history(Request $request)
-{
-    // Ambil filter bulan dan tahun dari request, default ke bulan & tahun sekarang
-    $month = $request->input('month', now()->month);
-    $year = $request->input('year', now()->year);
+    {
+        // Ambil filter bulan dan tahun dari request, default ke bulan & tahun sekarang
+        $month = $request->input('month', now()->month);
+        $year = $request->input('year', now()->year);
 
-    // Query data salary dengan filter bulan & tahun dan eager load employee
-    $salaries = Salary::with('employee')
-        ->where('month', $month)
-        ->where('year', $year)
-        ->orderBy('employee_id')
-        ->get();
+        // Query data salary dengan filter bulan & tahun dan eager load employee
+        $salaries = Salary::with('employee')
+            ->where('month', $month)
+            ->where('year', $year)
+            ->orderBy('employee_id')
+            ->get();
 
-    // Buat array bulan untuk dropdown
-    $months = [
-        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
-        7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
-    ];
+        // Buat array bulan untuk dropdown
+        $months = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
 
-    // Tahun misal dari 5 tahun terakhir sampai sekarang
-    $years = range(now()->year - 5, now()->year);
+        // Tahun misal dari 5 tahun terakhir sampai sekarang
+        $years = range(now()->year - 5, now()->year);
 
-    return view('salary.history', compact('salaries', 'month', 'year', 'months', 'years'));
-}
-public function exportPdf(Request $request)
-{
-    // Ambil data filter dari request
-    $month = $request->month ?? now()->format('m');
-    $year = $request->year ?? now()->format('Y');
+        return view('salary.history', compact('salaries', 'month', 'year', 'months', 'years'));
+    }
+    public function exportPdf(Request $request)
+    {
+        // Ambil data filter dari request
+        $month = $request->month ?? now()->format('m');
+        $year = $request->year ?? now()->format('Y');
 
-    $months = [
-        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
-        5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
-        9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
-    ];
+        $months = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
 
-    // Ambil data gaji
-    $salaries = Salary::with('employee')
-        ->whereMonth('created_at', $month)
-        ->whereYear('created_at', $year)
-        ->get();
+        // Ambil data gaji
+        $salaries = Salary::with('employee')
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->get();
 
-    // Load view PDF
-    $pdf = Pdf::loadView('salary.history_pdf', [
-        'salaries' => $salaries,
-        'month' => $month,
-        'year' => $year,
-        'months' => $months
-    ]);
+        // Load view PDF
+        $pdf = Pdf::loadView('salary.history_pdf', [
+            'salaries' => $salaries,
+            'month' => $month,
+            'year' => $year,
+            'months' => $months
+        ]);
 
-    // Download PDF
-    return $pdf->download("riwayat-gaji-{$month}-{$year}.pdf");
-}
+        // Download PDF
+        return $pdf->download("riwayat-gaji-{$month}-{$year}.pdf");
+    }
 
+
+
+    public function mySalary()
+    {
+        $user = Auth::user();
+        $employee = $user->employee; // pastikan relasi user->employee sudah ada di model User
+
+        if (!$employee) {
+            return redirect()->back()->with('error', 'Data karyawan tidak ditemukan.');
+        }
+
+        $salaries = Salary::where('employee_id', $employee->id)
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->get();
+
+        return view('salary.my', compact('salaries', 'employee'));
+    }
 }
