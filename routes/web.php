@@ -163,7 +163,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group
     Route::post('/event-attendances', [EventAttendanceController::class, 'store'])->name('event-attendances.store');
     Route::get('/event-attendances/{id}/edit', [EventAttendanceController::class, 'edit'])->name('event-attendances.edit');
     Route::put('/event-attendances/{id}', [EventAttendanceController::class, 'update'])->name('event-attendances.update');
-    Route::delete('/event-attendances/{id}', [EventAttendanceController::class, 'destroy'])->name('event-attendances.destroy');
+    Route::delete('/event-attendances/{eventAttendance}', [EventAttendanceController::class, 'destroy'])->name('event-attendances.destroy');
     Route::resource('event-attendances', EventAttendanceController::class);
 });
 
