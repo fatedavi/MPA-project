@@ -165,6 +165,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group
     Route::put('/event-attendances/{id}', [EventAttendanceController::class, 'update'])->name('event-attendances.update');
     Route::delete('/event-attendances/{eventAttendance}', [EventAttendanceController::class, 'destroy'])->name('event-attendances.destroy');
     Route::resource('event-attendances', EventAttendanceController::class);
+    Route::get('/salary/history/pdf', [SalaryController::class, 'exportPdf'])->name('salary.history.pdf');
 });
 Route::middleware(['auth', RoleMiddleware::class . ':super_admin'])->group(function () {
     Route::get('/events/admin', [EventController::class, 'admin'])->name('events.admin');
