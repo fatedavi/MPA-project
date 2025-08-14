@@ -17,15 +17,30 @@ class SalaryController extends Controller
     /**
      * Menampilkan daftar gaji karyawan bulan ini dengan detail perhitungan
      */
-    public function index()
+    // use di atas file pastikan sudah ada:
+    // use Illuminate\Http\Request;
+    // use Carbon\Carbon;
+
+    public function index(Request $request)
     {
         $now = Carbon::now();
         $month = $now->month;
-        $year = $now->year;
+        $year  = $now->year;
 
-        $employees = Employee::all();
+        // Ambil keyword search (nama karyawan)
+        $search = $request->input('search');
 
-        $salaryData = $employees->map(function ($employee) use ($month, $year) {
+        // Paginate data employee + filter pencarian
+        $employees = Employee::query()
+            ->when($search, function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->orderBy('name')
+            ->paginate(10)              // jumlah per halaman
+            ->withQueryString();        // agar ?search=... tetap ada saat pindah halaman
+
+        // Hitung komponen gaji hanya untuk item pada halaman saat ini
+        $salaryData = collect($employees->items())->map(function ($employee) use ($month, $year) {
             $baseSalary = $employee->base_salary;
 
             $totalBonus = Attendance::where('employee_id', $employee->id)
@@ -54,18 +69,21 @@ class SalaryController extends Controller
             $totalSalary = $baseSalary + $totalBonus + $totalEventReward - $potonganCuti;
 
             return [
-                'employee' => $employee,
-                'base_salary' => $baseSalary,
-                'total_bonus' => $totalBonus,
-                'total_event_reward' => $totalEventReward,
-                'total_cuti_days' => $totalCutiDays,
-                'potongan_cuti' => $potonganCuti,
-                'total_salary' => $totalSalary,
+                'employee'            => $employee,
+                'base_salary'         => $baseSalary,
+                'total_bonus'         => $totalBonus,
+                'total_event_reward'  => $totalEventReward,
+                'total_cuti_days'     => $totalCutiDays,
+                'potongan_cuti'       => $potonganCuti,
+                'total_salary'        => $totalSalary,
             ];
         });
 
-        return view('salary.index', compact('salaryData'));
+        // Kirim salaryData (untuk tabel) & employees (untuk links pagination)
+        return view('salary.index', compact('salaryData', 'employees'));
     }
+
+
 
     /**
      * Simpan data gaji karyawan bulan ini ke tabel salaries

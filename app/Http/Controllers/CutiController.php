@@ -26,12 +26,26 @@ class CutiController extends Controller
         return view('cuti.index', compact('cuti'));
     }
 
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $cuti = Cuti::orderBy('created_at', 'desc')->get();
+        $query = Cuti::with('employee')->orderBy('created_at', 'desc');
+
+        // Fitur Search
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('employee', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+                ->orWhere('tanggal', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        }
+
+        // Pagination (10 data per halaman)
+        $cuti = $query->paginate(10);
 
         return view('daftarcuti.index', compact('cuti'));
     }
+
 
     public function create()
     {

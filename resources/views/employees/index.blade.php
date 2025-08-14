@@ -23,6 +23,17 @@
                     </a>
                 </div>
 
+                {{-- Form Pencarian --}}
+                <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                    <form method="GET" action="{{ route('employees.index') }}" class="flex gap-2">
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Cari karyawan..."
+                            class="w-full sm:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <button type="submit"
+                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm">Cari</button>
+                    </form>
+                </div>
+
                 @if (session('success'))
                     <div class="px-6 py-3 bg-green-100 border-b border-green-300 text-green-700 text-sm">
                         ✅ {{ session('success') }}
@@ -45,14 +56,16 @@
                         <tbody>
                             @forelse ($employees as $employee)
                                 <tr class="hover:bg-gray-50 transition">
-                                    <td class="px-4 py-3">{{ $loop->iteration }}</td>
+                                    <td class="px-4 py-3">
+                                        {{ ($employees->currentPage() - 1) * $employees->perPage() + $loop->iteration }}
+                                    </td>
                                     <td class="px-4 py-3 font-medium text-gray-800">{{ $employee->name }}</td>
                                     <td class="px-4 py-3">{{ $employee->email }}</td>
                                     <td class="px-4 py-3">{{ $employee->phone ?? '-' }}</td>
                                     <td class="px-4 py-3">{{ $employee->address ?? '-' }}</td>
                                     <td class="px-4 py-3">{{ $employee->position }}</td>
                                     <td class="px-4 py-3 text-center space-x-1">
-                                        <!-- Detail -->
+                                        {{-- Tombol Aksi --}}
                                         <a href="{{ route('employees.show', $employee) }}"
                                             class="inline-flex items-center justify-center w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-sm"
                                             title="Detail">
@@ -64,7 +77,6 @@
                                                     d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
                                             </svg>
                                         </a>
-                                        <!-- Edit -->
                                         <a href="{{ route('employees.edit', $employee) }}"
                                             class="inline-flex items-center justify-center w-8 h-8 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full shadow-sm"
                                             title="Edit">
@@ -74,7 +86,6 @@
                                                     d="M15.232 5.232l3.536 3.536M9 13l6-6 3.536 3.536L12 16.536H9v-3.536z" />
                                             </svg>
                                         </a>
-                                        <!-- Hapus -->
                                         <form action="{{ route('employees.destroy', $employee) }}" method="POST"
                                             class="inline">
                                             @csrf
@@ -102,10 +113,14 @@
                         </tbody>
                     </table>
                 </div>
+
+                {{-- Pagination --}}
+                <div class="px-6 py-4">
+                    {{ $employees->links() }}
+                </div>
             </div>
         </div>
     </div>
-
 
 
 </x-app-layout>

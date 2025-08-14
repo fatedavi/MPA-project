@@ -11,15 +11,25 @@ class EmployeeController extends Controller
 {
 
 
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
 
-        $employees = Employee::with('user')->get();
-        return view('employees.index', compact('employees'));
+        $employees = Employee::with('user')
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%")
+                    ->orWhere('position', 'like', "%{$search}%");
+            })
+            ->orderBy('name')
+            ->paginate(10)
+            ->withQueryString();
 
-        $employees = Employee::with('user')->get();
-        return view('users.index', compact('employees'));
+        return view('employees.index', compact('employees', 'search'));
     }
+
 
     public function create()
     {
