@@ -9,11 +9,20 @@ use Carbon\Carbon;
 class EventController extends Controller
 {
     // Tampilkan daftar event
-    public function index()
+    public function index(Request $request)
     {
-        // Urut berdasarkan tanggal terbaru dulu
-        $events = Event::orderBy('date', 'desc')->get();
-        return view('events.index', compact('events'));
+        $search = $request->input('search');
+
+        $events = Event::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->orderBy('date', 'desc')
+            ->paginate(10)
+            ->appends(['search' => $search]);
+
+        return view('events.index', compact('events', 'search'));
     }
 
     // Tampilkan form tambah event
@@ -55,11 +64,22 @@ class EventController extends Controller
 
         return redirect()->route('events.admin')->with('success', 'Status event berhasil diperbarui.');
     }
-    public function admin()
+    public function admin(Request $request)
     {
-        $events = Event::orderBy('date', 'desc')->get();
+        $query = Event::query();
+
+        // Search
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Urutkan dari tanggal terbaru
+        $events = $query->orderBy('date', 'desc')->paginate(10); // 10 item per halaman
+
         return view('events.admin', compact('events'));
     }
-    
 }
-

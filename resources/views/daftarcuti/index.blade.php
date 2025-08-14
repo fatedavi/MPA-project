@@ -8,8 +8,29 @@
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                        📋 Daftar Cuti Karyawan
+                    </h3>
+                </div>
                 <div class="p-6 text-gray-900">
 
+                    {{-- Form Search --}}
+                    <div class="mb-4">
+                        <form method="GET" action="{{ route('cuti.admin.index') }}" class="flex gap-2">
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="Cari nama, tanggal, atau keterangan..."
+                                class="border border-gray-300 rounded-lg px-3 py-2 max-w-xs focus:ring focus:ring-blue-200">
+                            <button type="submit"
+                                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                                Cari
+                            </button>
+                        </form>
+                    </div>
+
+
+                    {{-- Tabel --}}
                     <div class="overflow-x-auto rounded-lg border border-gray-200">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-100">
@@ -78,9 +99,15 @@
                         </table>
                     </div>
 
+                    {{-- Pagination --}}
+                    <div class="mt-4">
+                        {{ $cuti->appends(request()->query())->links() }}
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+
 
 </x-app-layout>

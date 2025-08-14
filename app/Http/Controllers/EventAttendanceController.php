@@ -9,16 +9,29 @@ use Illuminate\Http\Request;
 
 class EventAttendanceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $attendances = EventAttendance::with(['employee', 'event'])->get();
+        $search = $request->input('search');
 
-        if (request()->expectsJson()) {
+        $attendances = EventAttendance::with(['employee', 'event'])
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('employee', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhereHas('event', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(5)
+            ->appends(['search' => $search]); // agar query search tetap di pagination
+
+        if ($request->expectsJson()) {
             return response()->json($attendances);
         }
 
-        return view('event_attendance.index', compact('attendances'));
+        return view('event_attendance.index', compact('attendances', 'search'));
     }
+
 
     public function create()
     {
