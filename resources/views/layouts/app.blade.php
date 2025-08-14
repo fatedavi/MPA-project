@@ -248,7 +248,7 @@
                             Management</h3>
 
                         <!-- MPA Invoice -->
-                        <a href="#"
+                        <a href="{{ route('invoice.mpa') }}"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -259,7 +259,7 @@
                         </a>
 
                         <!-- Rajata Invoice -->
-                        <a href="#"
+                        <a href="{{ route('invoice.index') }}"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
