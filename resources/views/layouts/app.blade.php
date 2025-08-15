@@ -68,7 +68,7 @@
                     <div class="pt-4">
                         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Master Data
                         </h3>
-
+{{-- 
                         @auth
                             @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
                                 <!-- Admin Management -->
@@ -82,7 +82,7 @@
                                     Admin
                                 </a>
                             @endif
-                        @endauth
+                        @endauth --}}
 
                         @auth
                             @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
@@ -224,6 +224,21 @@
 
                         @auth
                             @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <!-- Perusahaan Management -->
+                                <a href="{{ route('perusahaan.index') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('perusahaan.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('perusahaan.*') ? 'text-white' : 'text-gray-400' }}"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                    </svg>
+                                    Perusahaan
+                                </a>
+                            @endif
+                        @endauth
+
+                        @auth
+                            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
                                 <!-- Users Management -->
                                 <a href="{{ route('users.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('users.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
@@ -248,7 +263,7 @@
                             Management</h3>
 
                         <!-- MPA Invoice -->
-                        <a href="#"
+                        <a href="{{ route('invoice.mpa') }}"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">

@@ -7,7 +7,8 @@
 
     <div class="py-6">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
                 <form action="{{ route('employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data"
                     class="space-y-6">
                     @csrf
@@ -143,15 +144,18 @@
                     {{-- Tombol Submit --}}
                     <div class="flex justify-end gap-3 pt-4">
                         <a href="{{ route('employees.index') }}"
-                            class="flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition">
-                            <i class="fas fa-arrow-left"></i> Batal
+                            class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Batal
                         </a>
                         <button type="submit"
-                            class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                            <i class="fas fa-save"></i> Update
+                            class="inline-flex items-center px-4 py-2 bg-[#8D0907] border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-[#B91C1C] focus:bg-[#B91C1C] active:bg-[#8D0907] focus:outline-none focus:ring-2 focus:ring-[#8D0907] focus:ring-offset-2 transition ease-in-out duration-150">
+                            <i class="fas fa-save mr-2"></i>
+                            Update
                         </button>
                     </div>
                 </form>
+                </div>
             </div>
         </div>
     </div>

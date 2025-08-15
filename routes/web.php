@@ -19,6 +19,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\CutiController;
+use App\Http\Controllers\PerusahaanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -156,6 +157,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group
 
     // Employees
     Route::resource('employees', EmployeeController::class);
+
+    // Perusahaan Routes
+    Route::resource('perusahaan', PerusahaanController::class);
 
     // Event Attendance
     Route::get('/event-attendances', [EventAttendanceController::class, 'index'])->name('event-attendances.index');

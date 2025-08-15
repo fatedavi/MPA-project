@@ -7,7 +7,8 @@
 
     <div class="py-6">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white p-6 shadow-md sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
 
                 {{-- Foto Profil & Info Utama --}}
                 <div class="flex items-center gap-6 mb-8">
@@ -85,17 +86,15 @@
                 </div>
 
                 {{-- Tombol Kembali --}}
-                <div>
+                <div class="mt-6">
                     <a href="{{ route('employees.index') }}"
-                        class="inline-flex items-center gap-2 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-full transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                        <span>Kembali</span>
+                        class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Kembali
                     </a>
                 </div>
 
+                </div>
             </div>
         </div>
     </div>
