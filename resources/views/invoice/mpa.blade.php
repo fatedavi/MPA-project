@@ -14,9 +14,7 @@
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                    </svg>
+                                    <i class="fas fa-file-invoice text-white text-lg"></i>
                                 </div>
                             </div>
                             <div class="ml-4">
@@ -32,9 +30,7 @@
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
+                                    <i class="fas fa-check-circle text-white text-lg"></i>
                                 </div>
                             </div>
                             <div class="ml-4">
@@ -50,9 +46,7 @@
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
+                                    <i class="fas fa-clock text-white text-lg"></i>
                                 </div>
                             </div>
                             <div class="ml-4">
@@ -68,9 +62,7 @@
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <div class="w-8 h-8 bg-red-500 rounded-md flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-                                    </svg>
+                                    <i class="fas fa-money-bill-wave text-white text-lg"></i>
                                 </div>
                             </div>
                             <div class="ml-4">
@@ -96,18 +88,14 @@
                             <!-- Search -->
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                    </svg>
+                                    <i class="fas fa-search h-5 w-5 text-gray-400"></i>
                                 </div>
                                 <input type="text" placeholder="Search invoices..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
                             </div>
                             
                             <!-- Add Invoice Button -->
                             <a href="{{ route('invoice.create') }}" class="inline-flex items-center px-4 py-2 bg-[#8D0907] border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-[#B91C1C] focus:bg-[#B91C1C] active:bg-[#8D0907] focus:outline-none focus:ring-2 focus:ring-[#8D0907] focus:ring-offset-2 transition ease-in-out duration-150">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                </svg>
+                                <i class="fas fa-plus w-4 h-4 mr-2"></i>
                                 Create Invoice
                             </a>
                         </div>
@@ -164,12 +152,12 @@
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10">
                                                 <div class="h-10 w-10 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
-                                                    INV
+                                                    <i class="fas fa-file-invoice text-lg"></i>
                                                 </div>
                                             </div>
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900">{{ $invoice->no_invoice }}</div>
-                                                <div class="text-sm text-gray-500">{{ Str::limit($invoice->hdeskripsi, 30) }}</div>
+                                                <div class="text-sm text-gray-500">{{ Str::limit($invoice->deskripsi ?? 'No description', 30) }}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -215,21 +203,18 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex space-x-2">
-                                            <a href="{{ route('invoice.show', $invoice->id) }}" class="text-[#8D0907] hover:text-[#B91C1C]">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                </svg>
+                                            <a href="{{ route('invoice.show', $invoice->id) }}" class="text-[#8D0907] hover:text-[#B91C1C]" title="View Details">
+                                                <i class="fas fa-eye w-4 h-4"></i>
                                             </a>
-                                            <a href="{{ route('invoice.edit', $invoice->id) }}" class="text-[#8D0907] hover:text-[#B91C1C]">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                                </svg>
+                                            <a href="{{ route('invoice.edit', $invoice->id) }}" class="text-[#8D0907] hover:text-[#B91C1C]" title="Edit Invoice">
+                                                <i class="fas fa-edit w-4 h-4"></i>
                                             </a>
-                                            <button class="text-blue-600 hover:text-blue-900">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                                </svg>
-                                            </button>
+                                            <a href="{{ route('invoice.pdf', $invoice->id) }}" target="_blank" class="text-blue-600 hover:text-blue-900" title="View PDF">
+                                                <i class="fas fa-file-pdf w-4 h-4"></i>
+                                            </a>
+                                            <a href="{{ route('invoice.download', $invoice->id) }}" class="text-green-600 hover:text-green-900" title="Download PDF">
+                                                <i class="fas fa-download w-4 h-4"></i>
+                                            </a>
                                             <form action="{{ route('invoice.destroy', $invoice->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this invoice?')">
                                                 @csrf
                                                 @method('DELETE')
