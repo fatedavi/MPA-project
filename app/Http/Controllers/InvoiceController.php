@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceController extends Controller
 {
@@ -11,40 +13,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        // Sample data for display
-        $invoices = [
-            [
-                'id' => 1,
-                'invoice_number' => 'INV-001',
-                'client_name' => 'PT Maju Bersama',
-                'project_name' => 'MPA System Development',
-                'amount' => 15000,
-                'status' => 'paid',
-                'due_date' => '2024-02-15',
-                'issue_date' => '2024-01-15'
-            ],
-            [
-                'id' => 2,
-                'invoice_number' => 'INV-002',
-                'client_name' => 'Pemda Jakarta',
-                'project_name' => 'Jakarta Smart City Portal',
-                'amount' => 25000,
-                'status' => 'pending',
-                'due_date' => '2024-03-15',
-                'issue_date' => '2024-02-15'
-            ],
-            [
-                'id' => 3,
-                'invoice_number' => 'INV-003',
-                'client_name' => 'Bank Indonesia',
-                'project_name' => 'Bank Indonesia Mobile App',
-                'amount' => 30000,
-                'status' => 'overdue',
-                'due_date' => '2024-01-31',
-                'issue_date' => '2024-01-01'
-            ]
-        ];
-        
+        $invoices = Invoice::latest()->paginate(10);
         return view('invoice.mpa', compact('invoices'));
     }
 
@@ -61,17 +30,42 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        // Simple validation
         $request->validate([
-            'invoice_number' => 'required|string|max:255',
-            'client_id' => 'required',
-            'project_id' => 'required',
-            'amount' => 'required|numeric|min:0',
+            'tgl_invoice' => 'required|date',
+            'hdeskripsi' => 'required|string|max:400',
+            'nama_client' => 'required|string|max:50',
+            'alamat_client' => 'required|string|max:400',
+            'kd_admin' => 'required|integer',
+            'up' => 'required|string|max:25',
             'due_date' => 'required|date',
+            'nama_bank' => 'required|string|max:70',
+            'an' => 'required|string|max:70',
+            'ac' => 'required|string|max:25',
+            'total_invoice' => 'required|numeric|min:0',
+            'status' => 'required|string|max:15',
+            'ttd' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ttdkwitansi' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ttdbast' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ttdbakn' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // For now, just redirect with success message
-        // In real application, you would save to database here
+        $data = $request->all();
+        
+        // Handle file uploads
+        $uploadFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
+        foreach ($uploadFields as $field) {
+            if ($request->hasFile($field)) {
+                $filename = time() . '_' . $field . '.' . $request->file($field)->getClientOriginalExtension();
+                $path = $request->file($field)->storeAs('public/signatures', $filename);
+                $data[$field] = $filename;
+            } else {
+                $data[$field] = 'blank.png';
+            }
+        }
+
+        // Create invoice
+        Invoice::create($data);
+
         return redirect()->route('invoice.index')
             ->with('success', 'Invoice created successfully!');
     }
@@ -81,25 +75,7 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        // Sample invoice data
-        $invoice = [
-            'id' => $id,
-            'invoice_number' => 'INV-001',
-            'client_name' => 'PT Maju Bersama',
-            'project_name' => 'MPA System Development',
-            'amount' => 15000,
-            'status' => 'paid',
-            'due_date' => '2024-02-15',
-            'issue_date' => '2024-01-15',
-            'description' => 'Development services for MPA System',
-            'items' => [
-                ['description' => 'System Analysis', 'quantity' => 40, 'rate' => 100, 'amount' => 4000],
-                ['description' => 'Development', 'quantity' => 80, 'rate' => 100, 'amount' => 8000],
-                ['description' => 'Testing', 'quantity' => 20, 'rate' => 100, 'amount' => 2000],
-                ['description' => 'Documentation', 'quantity' => 10, 'rate' => 100, 'amount' => 1000]
-            ]
-        ];
-        
+        $invoice = Invoice::findOrFail($id);
         return view('invoice.show', compact('invoice'));
     }
 
@@ -108,19 +84,7 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        // Sample invoice data for editing
-        $invoice = [
-            'id' => $id,
-            'invoice_number' => 'INV-001',
-            'client_id' => 1,
-            'project_id' => 1,
-            'amount' => 15000,
-            'status' => 'paid',
-            'due_date' => '2024-02-15',
-            'issue_date' => '2024-01-15',
-            'description' => 'Development services for MPA System'
-        ];
-        
+        $invoice = Invoice::findOrFail($id);
         return view('invoice.edit', compact('invoice'));
     }
 
@@ -129,17 +93,46 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Simple validation
+        $invoice = Invoice::findOrFail($id);
+        
         $request->validate([
-            'invoice_number' => 'required|string|max:255',
-            'client_id' => 'required',
-            'project_id' => 'required',
-            'amount' => 'required|numeric|min:0',
+            'tgl_invoice' => 'required|date',
+            'hdeskripsi' => 'required|string|max:400',
+            'nama_client' => 'required|string|max:50',
+            'alamat_client' => 'required|string|max:400',
+            'kd_admin' => 'required|integer',
+            'up' => 'required|string|max:25',
             'due_date' => 'required|date',
+            'nama_bank' => 'required|string|max:70',
+            'an' => 'required|string|max:70',
+            'ac' => 'required|string|max:25',
+            'total_invoice' => 'required|numeric|min:0',
+            'status' => 'required|string|max:15',
+            'ttd' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ttdkwitansi' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ttdbast' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ttdbakn' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // For now, just redirect with success message
-        // In real application, you would update database here
+        $data = $request->all();
+        
+        // Handle file uploads
+        $uploadFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
+        foreach ($uploadFields as $field) {
+            if ($request->hasFile($field)) {
+                // Delete old file if exists
+                if ($invoice->$field && $invoice->$field !== 'blank.png') {
+                    Storage::delete('public/signatures/' . $invoice->$field);
+                }
+                
+                $filename = time() . '_' . $field . '.' . $request->file($field)->getClientOriginalExtension();
+                $path = $request->file($field)->storeAs('public/signatures', $filename);
+                $data[$field] = $filename;
+            }
+        }
+
+        $invoice->update($data);
+
         return redirect()->route('invoice.index')
             ->with('success', 'Invoice updated successfully!');
     }
@@ -149,8 +142,18 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        // For now, just redirect with success message
-        // In real application, you would delete from database here
+        $invoice = Invoice::findOrFail($id);
+        
+        // Delete signature files
+        $uploadFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
+        foreach ($uploadFields as $field) {
+            if ($invoice->$field && $invoice->$field !== 'blank.png') {
+                Storage::delete('public/signatures/' . $invoice->$field);
+            }
+        }
+        
+        $invoice->delete();
+
         return redirect()->route('invoice.index')
             ->with('success', 'Invoice deleted successfully!');
     }
@@ -160,6 +163,7 @@ class InvoiceController extends Controller
      */
     public function mpa()
     {
-        return view('invoice.mpa');
+        $invoices = Invoice::latest()->paginate(10);
+        return view('invoice.mpa', compact('invoices'));
     }
 } 
