@@ -94,6 +94,16 @@
                                 </a>
                             @endif
                         @endauth
+                        @auth
+                            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <!-- Vendor Management -->
+                                <a href="{{ route('vendors.index') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('vendors.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <i class="fa fa-users w-5 h-5 mr-3 {{ request()->routeIs('vendors.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    Vendor
+                                </a>
+                            @endif
+                        @endauth
                         
                         </div>
                     <!-- Master Data Section -->

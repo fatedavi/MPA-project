@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Breadcrumb -->
             <div class="mb-6">
                 <nav class="flex" aria-label="Breadcrumb">
@@ -34,124 +34,218 @@
             <!-- Form Card -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <form method="POST" action="{{ route('invoice.store') }}" class="space-y-6" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('invoice.store') }}" class="space-y-8" enctype="multipart/form-data">
                         @csrf
                         
                         <!-- Basic Information -->
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-blue-900 mb-4 flex items-center">
+                                <i class="fas fa-file-invoice text-blue-600 mr-3 text-xl"></i>
+                                Basic Information
+                            </h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="no_invoice" class="block text-sm font-medium text-gray-700">Invoice Number</label>
-                                    <input type="text" name="no_invoice" id="no_invoice" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Auto-generated" readonly>
-                                    <p class="mt-1 text-xs text-gray-500">Invoice number will be auto-generated</p>
+                                    <input type="text" name="no_invoice" id="no_invoice" value="{{ $nextInvoiceNumber }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="MPA000/INV/d-m-Y" readonly>
+                                    <p class="mt-1 text-xs text-gray-500">Invoice number will be auto-generated (MPA000/INV/d-m-Y)</p>
                                 </div>
                                 
                                 <div>
                                     <label for="tgl_invoice" class="block text-sm font-medium text-gray-700">Invoice Date *</label>
                                     <input type="date" name="tgl_invoice" id="tgl_invoice" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
                                 </div>
-                                
-                                <div class="md:col-span-2">
-                                    <label for="hdeskripsi" class="block text-sm font-medium text-gray-700">Description *</label>
-                                    <textarea name="hdeskripsi" id="hdeskripsi" rows="3" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Invoice description"></textarea>
-                                </div>
                             </div>
                         </div>
 
-                        <!-- Client Information -->
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Client Information</h3>
+                        <!-- Client Information Section -->
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-green-900 mb-4 flex items-center">
+                                <i class="fas fa-users text-green-600 mr-3 text-xl"></i>
+                                Client Information
+                            </h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="nama_client" class="block text-sm font-medium text-gray-700">Client Name *</label>
-                                    <input type="text" name="nama_client" id="nama_client" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Client name">
+                                    <label for="client_id" class="block text-sm font-medium text-gray-700">Select Client *</label>
+                                    <select name="client_id" id="client_id" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+                                        <option value="">Choose a client...</option>
+                                        @foreach($clients as $client)
+                                            <option value="{{ $client->id_client }}" 
+                                                    data-nama="{{ $client->nama_client }}" 
+                                                    data-alamat="{{ $client->alamat_client }}"
+                                                    data-up="{{ $client->up ?? $client->nama_client }}">
+                                                {{ $client->nama_client }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 
                                 <div>
+                                    <label for="up" class="block text-sm font-medium text-gray-700">UP *</label>
+                                    <input type="text" name="up" id="up" required 
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" 
+                                        placeholder="UP will be auto-filled from client name">
+                                    <p class="mt-1 text-xs text-gray-500">Auto-filled from selected client name</p>
+                                </div>
+                                
+                                <div class="md:col-span-2">
                                     <label for="alamat_client" class="block text-sm font-medium text-gray-700">Client Address *</label>
-                                    <textarea name="alamat_client" id="alamat_client" rows="2" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Client address"></textarea>
+                                    <textarea name="alamat_client" id="alamat_client" rows="2" required 
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" 
+                                            placeholder="Client address will be auto-filled"></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Admin & UP Information -->
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Admin & UP Information</h3>
+                        <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-purple-900 mb-4 flex items-center">
+                                <i class="fas fa-user-tie text-purple-600 mr-3 text-xl"></i>
+                                Admin Information
+                            </h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="kd_admin" class="block text-sm font-medium text-gray-700">Admin Code *</label>
-                                    <input type="number" name="kd_admin" id="kd_admin" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Admin code">
+                                    <label for="kd_admin" class="block text-sm font-medium text-gray-700">Admin</label>
+                                    <input type="text" name="kd_admin_display" id="kd_admin_display" value="{{ auth()->user()->name }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm" readonly>
+                                    <input type="hidden" name="kd_admin" value="{{ auth()->user()->id }}">
+                                    <p class="mt-1 text-xs text-gray-500">Current user: {{ auth()->user()->name }}</p>
                                 </div>
-                                
-                                <div>
-                                    <label for="up" class="block text-sm font-medium text-gray-700">UP *</label>
-                                    <input type="text" name="up" id="up" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="UP">
+                            
+                            </div>
+                        </div>
+
+                        <!-- Invoice Items - Moved to top -->
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
+                                <i class="fas fa-list-alt text-yellow-600 mr-3 text-xl"></i>
+                                Invoice Items
+                            </h3>
+                            <div id="invoice-items" class="space-y-4">
+                                <!-- Item pertama -->
+                                <div class="invoice-item bg-white border border-yellow-300 rounded-lg p-4 shadow-sm">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">Description *</label>
+                                            <input type="text" name="detail_invoice[0][deskripsi]" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Item description">
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700">Qty *</label>
+                                                <input type="number" name="detail_invoice[0][qty]" min="0.01" step="0.01" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="1" onchange="calculateItemTotal(this)">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700">Satuan</label>
+                                                <input type="text" name="detail_invoice[0][satuan]" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="pcs, jam, hari">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700">Harga *</label>
+                                                <input type="number" name="detail_invoice[0][harga]" min="0" step="0.01" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="0" onchange="calculateItemTotal(this)" onblur="formatHarga(this)">
+                                                <p class="mt-1 text-xs text-gray-500">Contoh: 5321.50</p>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700">Total</label>
+                                                <input type="text" name="detail_invoice[0][total]" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm" placeholder="Rp 0">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 flex space-x-3">
+                                <button type="button" id="add-item" class="inline-flex items-center px-4 py-2 border border-yellow-300 shadow-sm text-sm leading-4 font-medium rounded-md text-yellow-700 bg-white hover:bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors">
+                                    <i class="fas fa-plus mr-2"></i>
+                                    Add Item
+                                </button>
+                                <button type="button" id="remove-item" class="inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+                                    <i class="fas fa-trash mr-2"></i>
+                                    Remove Last Item
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- NBAST Information - Collapsible -->
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg">
+                            <button type="button" id="nbast-toggle" class="w-full p-6 text-left focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-inset">
+                                <h3 class="text-xl font-semibold text-orange-900 flex items-center justify-between">
+                                    <span class="flex items-center">
+                                        <i class="fas fa-file-contract text-orange-600 mr-3 text-xl"></i>
+                                        NBAST Information
+                                    </span>
+                                    <i id="nbast-icon" class="fas fa-chevron-down transform transition-transform duration-200"></i>
+                                </h3>
+                            </button>
+                            <div id="nbast-content" class="hidden px-6 pb-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="nbast" class="block text-sm font-medium text-gray-700">NBAST 1</label>
+                                        <input type="text" name="nbast" id="nbast" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 1">
+                                    </div>
+                                    <div>
+                                        <label for="nbast2" class="block text-sm font-medium text-gray-700">NBAST 2</label>
+                                        <input type="text" name="nbast2" id="nbast2" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 2">
+                                    </div>
+                                    <div>
+                                        <label for="nbast3" class="block text-sm font-medium text-gray-700">NBAST 3</label>
+                                        <input type="text" name="nbast3" id="nbast3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 3">
+                                    </div>
+                                    <div>
+                                        <label for="nbast4" class="block text-sm font-medium text-gray-700">NBAST 4</label>
+                                        <input type="text" name="nbast4" id="nbast4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 4">
+                                    </div>
+                                    <div>
+                                        <label for="nbast5" class="block text-sm font-medium text-gray-700">NBAST 5</label>
+                                        <input type="text" name="nbast5" id="nbast5" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 5">
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- NBAST Information -->
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">NBAST Information</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label for="nbast" class="block text-sm font-medium text-gray-700">NBAST 1</label>
-                                    <input type="text" name="nbast" id="nbast" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 1">
-                                </div>
-                                <div>
-                                    <label for="nbast2" class="block text-sm font-medium text-gray-700">NBAST 2</label>
-                                    <input type="text" name="nbast2" id="nbast2" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 2">
-                                </div>
-                                <div>
-                                    <label for="nbast3" class="block text-sm font-medium text-gray-700">NBAST 3</label>
-                                    <input type="text" name="nbast3" id="nbast3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 3">
-                                </div>
-                                <div>
-                                    <label for="nbast4" class="block text-sm font-medium text-gray-700">NBAST 4</label>
-                                    <input type="text" name="nbast4" id="nbast4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 4">
-                                </div>
-                                <div>
-                                    <label for="nbast5" class="block text-sm font-medium text-gray-700">NBAST 5</label>
-                                    <input type="text" name="nbast5" id="nbast5" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="NBAST 5">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FPB Information -->
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">FPB Information</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label for="jenis_no" class="block text-sm font-medium text-gray-700">Jenis No</label>
-                                    <input type="text" name="jenis_no" id="jenis_no" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Jenis No">
-                                </div>
-                                <div>
-                                    <label for="no_fpb" class="block text-sm font-medium text-gray-700">No FPB 1</label>
-                                    <input type="text" name="no_fpb" id="no_fpb" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 1">
-                                </div>
-                                <div>
-                                    <label for="no_fpb2" class="block text-sm font-medium text-gray-700">No FPB 2</label>
-                                    <input type="text" name="no_fpb2" id="no_fpb2" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 2">
-                                </div>
-                                <div>
-                                    <label for="no_fpb3" class="block text-sm font-medium text-gray-700">No FPB 3</label>
-                                    <input type="text" name="no_fpb3" id="no_fpb3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 3">
-                                </div>
-                                <div>
-                                    <label for="no_fpb4" class="block text-sm font-medium text-gray-700">No FPB 4</label>
-                                    <input type="text" name="no_fpb4" id="no_fpb4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 4">
-                                </div>
-                                <div>
-                                    <label for="no_fpb5" class="block text-sm font-medium text-gray-700">No FPB 5</label>
-                                    <input type="text" name="no_fpb5" id="no_fpb5" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 5">
+                        <!-- FPB Information - Collapsible -->
+                        <div class="bg-indigo-50 border border-indigo-200 rounded-lg">
+                            <button type="button" id="fpb-toggle" class="w-full p-6 text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-inset">
+                                <h3 class="text-xl font-semibold text-indigo-900 flex items-center justify-between">
+                                    <span class="flex items-center">
+                                        <i class="fas fa-file-alt text-indigo-600 mr-3 text-xl"></i>
+                                        FPB Information
+                                    </span>
+                                    <i id="fpb-icon" class="fas fa-chevron-down transform transition-transform duration-200"></i>
+                                </h3>
+                            </button>
+                            <div id="fpb-content" class="hidden px-6 pb-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="jenis_no" class="block text-sm font-medium text-gray-700">Jenis No</label>
+                                        <input type="text" name="jenis_no" id="jenis_no" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Jenis No">
+                                    </div>
+                                    <div>
+                                        <label for="no_fpb" class="block text-sm font-medium text-gray-700">No FPB 1</label>
+                                        <input type="text" name="no_fpb" id="no_fpb" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 1">
+                                    </div>
+                                    <div>
+                                        <label for="no_fpb2" class="block text-sm font-medium text-gray-700">No FPB 2</label>
+                                        <input type="text" name="no_fpb2" id="no_fpb2" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 2">
+                                    </div>
+                                    <div>
+                                        <label for="no_fpb3" class="block text-sm font-medium text-gray-700">No FPB 3</label>
+                                        <input type="text" name="no_fpb3" id="no_fpb3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 3">
+                                    </div>
+                                    <div>
+                                        <label for="no_fpb4" class="block text-sm font-medium text-gray-700">No FPB 4</label>
+                                        <input type="text" name="no_fpb4" id="no_fpb4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 4">
+                                    </div>
+                                    <div>
+                                        <label for="no_fpb5" class="block text-sm font-medium text-gray-700">No FPB 5</label>
+                                        <input type="text" name="no_fpb5" id="no_fpb5" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="No FPB 5">
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Payment Information -->
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Payment Information</h3>
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-emerald-900 mb-4 flex items-center">
+                                <i class="fas fa-credit-card text-emerald-600 mr-3 text-xl"></i>
+                                Payment Information
+                            </h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date *</label>
@@ -159,35 +253,44 @@
                                 </div>
                                 
                                 <div>
-                                    <label for="total_invoice" class="block text-sm font-medium text-gray-700">Total Invoice *</label>
-                                    <input type="number" name="total_invoice" id="total_invoice" min="0" step="0.01" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="0.00">
+                                    <label for="total_invoice" class="block text-sm font-medium text-gray-700">Total Invoice</label>
+                                    <input type="text" name="total_invoice" id="total_invoice" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm" placeholder="Rp 0">
+                                    <p class="mt-1 text-xs text-gray-500">Auto-calculated from items</p>
                                 </div>
                                 
                                 <div>
                                     <label for="nama_bank" class="block text-sm font-medium text-gray-700">Bank Name *</label>
-                                    <input type="text" name="nama_bank" id="nama_bank" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Bank name">
+                                    <select name="nama_bank" id="nama_bank" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" onchange="fillBankData()">
+                                        <option value="">Choose a bank...</option>
+                                        @foreach($banks as $bank)
+                                            <option value="{{ $bank->nama_bank }}" data-an="{{ $bank->an }}" data-ac="{{ $bank->ac }}">{{ $bank->nama_bank }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 
                                 <div>
                                     <label for="an" class="block text-sm font-medium text-gray-700">Account Name *</label>
-                                    <input type="text" name="an" id="an" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Account name">
+                                    <input type="text" name="an" id="an" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Account name will be auto-filled" readonly>
                                 </div>
                                 
                                 <div>
                                     <label for="ac" class="block text-sm font-medium text-gray-700">Account Number *</label>
-                                    <input type="text" name="ac" id="ac" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Account number">
+                                    <input type="text" name="ac" id="ac" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Account number will be auto-filled" readonly>
                                 </div>
                                 
                                 <div>
-                                    <label for="no_fp" class="block text-sm font-medium text-gray-700">FP Number</label>
-                                    <input type="text" name="no_fp" id="no_fp" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="FP number">
+                                    <label for="tgl_paid" class="block text-sm font-medium text-gray-700">Payment Date</label>
+                                    <input type="date" name="tgl_paid" id="tgl_paid" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Status & Additional Information -->
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Status & Additional Information</h3>
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-slate-900 mb-4 flex items-center">
+                                <i class="fas fa-check-circle text-slate-600 mr-3 text-xl"></i>
+                                Status & Additional Information
+                            </h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="status" class="block text-sm font-medium text-gray-700">Status *</label>
@@ -200,42 +303,56 @@
                                         <option value="cancelled">Cancelled</option>
                                     </select>
                                 </div>
-                                
                                 <div>
-                                    <label for="tgl_paid" class="block text-sm font-medium text-gray-700">Payment Date</label>
-                                    <input type="date" name="tgl_paid" id="tgl_paid" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+                                    <label for="no_fp" class="block text-sm font-medium text-gray-700">FP Number</label>
+                                    <input type="text" name="no_fp" id="no_fp" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="FP number">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Document Uploads -->
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Document Uploads</h3>
+                        <!-- Document Signatures Checklist -->
+                        <div class="bg-rose-50 border border-rose-200 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-rose-900 mb-4 flex items-center">
+                                <i class="fas fa-check-square text-rose-600 mr-3 text-xl"></i>
+                                Document Signatures Checklist
+                            </h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="ttd" class="block text-sm font-medium text-gray-700">Signature</label>
-                                    <input type="file" name="ttd" id="ttd" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
-                                    <p class="mt-1 text-xs text-gray-500">Default: blank.png</p>
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="ttd" id="ttd" value="1" class="h-4 w-4 text-[#8D0907] focus:ring-[#8D0907] border-gray-300 rounded">
+                                    <label for="ttd" class="ml-3 block text-sm font-medium text-gray-700">
+                                        <i class="fas fa-signature mr-2 text-rose-600"></i>
+                                        Signature Approved
+                                    </label>
                                 </div>
                                 
-                                <div>
-                                    <label for="ttdkwitansi" class="block text-sm font-medium text-gray-700">Receipt Signature</label>
-                                    <input type="file" name="ttdkwitansi" id="ttdkwitansi" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
-                                    <p class="mt-1 text-xs text-gray-500">Default: blank.png</p>
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="ttdkwitansi" id="ttdkwitansi" value="1" class="h-4 w-4 text-[#8D0907] focus:ring-[#8D0907] border-gray-300 rounded">
+                                    <label for="ttdkwitansi" id="ttdkwitansi" class="ml-3 block text-sm font-medium text-gray-700">
+                                        <i class="fas fa-receipt mr-2 text-rose-600"></i>
+                                        Receipt Signature Approved
+                                    </label>
                                 </div>
                                 
-                                <div>
-                                    <label for="ttdbast" class="block text-sm font-medium text-gray-700">BAST Signature</label>
-                                    <input type="file" name="ttdbast" id="ttdbast" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
-                                    <p class="mt-1 text-xs text-gray-500">Default: blank.png</p>
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="ttdbast" id="ttdbast" value="1" class="h-4 w-4 text-[#8D0907] focus:ring-[#8D0907] border-gray-300 rounded">
+                                    <label for="ttdbast" class="ml-3 block text-sm font-medium text-gray-700">
+                                        <i class="fas fa-file-contract mr-2 text-rose-600"></i>
+                                        BAST Signature Approved
+                                    </label>
                                 </div>
                                 
-                                <div>
-                                    <label for="ttdbakn" class="block text-sm font-medium text-gray-700">BAKN Signature</label>
-                                    <input type="file" name="ttdbakn" id="ttdbakn" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
-                                    <p class="mt-1 text-xs text-gray-500">Default: blank.png</p>
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="ttdbakn" id="ttdbakn" value="1" class="h-4 w-4 text-[#8D0907] focus:ring-[#8D0907] border-gray-300 rounded">
+                                    <label for="ttdbakn" class="ml-3 block text-sm font-medium text-gray-700">
+                                        <i class="fas fa-file-alt mr-2 text-rose-600"></i>
+                                        BAKN Signature Approved
+                                    </label>
                                 </div>
                             </div>
+                            <p class="mt-4 text-sm text-gray-600">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                Check the boxes above to indicate which signatures have been approved for this invoice.
+                            </p>
                         </div>
 
                         <!-- Form Actions -->
@@ -244,9 +361,7 @@
                                 Cancel
                             </a>
                             <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#8D0907] hover:bg-[#B91C1C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8D0907] transition-colors">
-                                <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                </svg>
+                                <i class="fas fa-plus mr-2"></i>
                                 Create Invoice
                             </button>
                         </div>
@@ -257,8 +372,15 @@
     </div>
 
     <script>
+        let itemCount = 1;
+
         document.addEventListener('DOMContentLoaded', function() {
             // Set default date to today
+            const clientSelect = document.getElementById('client_id');
+            
+            clientSelect.addEventListener('change', function() {
+                fillClientData(); // Call the same function
+            });
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('tgl_invoice').value = today;
             
@@ -266,6 +388,152 @@
             const dueDate = new Date();
             dueDate.setDate(dueDate.getDate() + 30);
             document.getElementById('due_date').value = dueDate.toISOString().split('T')[0];
+
+            // Calculate initial total
+            calculateTotal();
+
+            // Setup collapsible sections
+            setupCollapsibleSections();
         });
+
+        // Setup collapsible sections
+        function setupCollapsibleSections() {
+            // NBAST toggle
+            document.getElementById('nbast-toggle').addEventListener('click', function() {
+                const content = document.getElementById('nbast-content');
+                const icon = document.getElementById('nbast-icon');
+                content.classList.toggle('hidden');
+                icon.classList.toggle('fa-chevron-down');
+                icon.classList.toggle('fa-chevron-up');
+            });
+
+            // FPB toggle
+            document.getElementById('fpb-toggle').addEventListener('click', function() {
+                const content = document.getElementById('fpb-content');
+                const icon = document.getElementById('fpb-icon');
+                content.classList.toggle('hidden');
+                icon.classList.toggle('fa-chevron-down');
+                icon.classList.toggle('fa-chevron-up');
+            });
+        }
+
+        // Add new item
+        document.getElementById('add-item').addEventListener('click', function() {
+            const newItem = document.createElement('div');
+            newItem.className = 'invoice-item bg-white border border-yellow-300 rounded-lg p-4 shadow-sm';
+            newItem.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Description *</label>
+                        <input type="text" name="detail_invoice[${itemCount}][deskripsi]" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="Item description">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Qty *</label>
+                            <input type="number" name="detail_invoice[${itemCount}][qty]" min="0.01" step="0.01" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="1" onchange="calculateItemTotal(this)">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Satuan</label>
+                            <input type="text" name="detail_invoice[${itemCount}][satuan]" value="pcs" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="pcs, jam, hari">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Harga *</label>
+                            <input type="number" name="detail_invoice[${itemCount}][harga]" min="0" step="0.01" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" placeholder="0" onchange="calculateItemTotal(this)" onblur="formatHarga(this)">
+                            <p class="mt-1 text-xs text-gray-500">Contoh: 5321.50</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Total</label>
+                            <input type="text" name="detail_invoice[${itemCount}][total]" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm" placeholder="Rp 0">
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('invoice-items').appendChild(newItem);
+            itemCount++;
+        });
+
+        // Remove last item
+        document.getElementById('remove-item').addEventListener('click', function() {
+            const items = document.querySelectorAll('.invoice-item');
+            if (items.length > 1) {
+                items[items.length - 1].remove();
+                itemCount--;
+                calculateTotal();
+            }
+        });
+
+        // Format harga dengan 2 decimal places
+        function formatHarga(input) {
+            const value = parseFloat(input.value) || 0;
+            input.value = value.toFixed(2);
+        }
+
+        // Calculate item total
+        function calculateItemTotal(input) {
+            const itemDiv = input.closest('.invoice-item');
+            const qty = parseFloat(itemDiv.querySelector('input[name*="[qty]"]').value) || 0;
+            const harga = parseFloat(itemDiv.querySelector('input[name*="[harga]"]').value) || 0;
+            const total = qty * harga;
+            
+            // Format total dengan format IDR
+            const formattedTotal = formatIDR(total);
+            itemDiv.querySelector('input[name*="[total]"]').value = formattedTotal;
+            calculateTotal();
+        }
+
+        // Calculate total invoice
+        function calculateTotal() {
+            let total = 0;
+            const items = document.querySelectorAll('.invoice-item');
+            
+            items.forEach(item => {
+                const totalInput = item.querySelector('input[name*="[total]"]');
+                const totalText = totalInput.value.replace(/[^\d.,]/g, '').replace(',', '.');
+                const itemTotal = parseFloat(totalText) || 0;
+                total += itemTotal;
+            });
+
+            const formattedTotal = formatIDR(total);
+            document.getElementById('total_invoice').value = formattedTotal;
+        }
+
+        // Format number to IDR format
+        function formatIDR(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        function fillClientData() {
+            const clientSelect = document.getElementById('client_id');
+            const selectedOption = clientSelect.options[clientSelect.selectedIndex];
+            
+            if (selectedOption.value) {
+                const namaClient = selectedOption.getAttribute('data-nama');
+                const alamatClient = selectedOption.getAttribute('data-alamat');
+                const upClient = selectedOption.getAttribute('data-up');
+                
+                // Fill the UP field
+                document.getElementById('up').value = upClient || namaClient || '';
+                
+                // Fill the address field
+                document.getElementById('alamat_client').value = alamatClient || '';
+            } else {
+                // Clear fields if no client selected
+                document.getElementById('up').value = '';
+                document.getElementById('alamat_client').value = '';
+            }
+        }
+
+        // Function to fill bank data from select dropdown
+        function fillBankData() {
+            const selectedOption = document.getElementById('nama_bank').options[document.getElementById('nama_bank').selectedIndex];
+            document.getElementById('an').value = selectedOption.dataset.an;
+            document.getElementById('ac').value = selectedOption.dataset.ac;
+        }
     </script>
 </x-app-layout> 

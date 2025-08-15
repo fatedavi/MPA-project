@@ -21,6 +21,7 @@ use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\BankController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/invoices/{id}/edit', [InvoiceController::class, 'edit'])->name('invoice.edit');
     Route::put('/invoices/{id}', [InvoiceController::class, 'update'])->name('invoice.update');
     Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
+    Route::get('/invoices/{id}/pdf', [InvoiceController::class, 'viewPdf'])->name('invoice.pdf');
+    Route::get('/invoices/{id}/download', [InvoiceController::class, 'downloadPdf'])->name('invoice.download');
 
     Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group(function () {
         // User Management Routes
@@ -167,6 +170,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group
     Route::resource('event-attendances', EventAttendanceController::class);
     Route::get('/salary/history/pdf', [SalaryController::class, 'exportPdf'])->name('salary.history.pdf');
 });
+
 Route::middleware(['auth', RoleMiddleware::class . ':super_admin'])->group(function () {
     Route::get('/events/admin', [EventController::class, 'admin'])->name('events.admin');
 });
@@ -192,3 +196,5 @@ Route::middleware(['auth', RoleMiddleware::class . ':karyawan'])->group(function
     // ...existing code...
     Route::get('/my-salary', [SalaryController::class, 'mySalary'])->name('salary.my');
 });
+
+require __DIR__ . '/auth.php';
