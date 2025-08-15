@@ -21,7 +21,7 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Total Invoices</p>
-                                <p class="text-2xl font-semibold text-gray-900">234</p>
+                                <p class="text-2xl font-semibold text-gray-900">{{ $invoices->total() }}</p>
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Paid</p>
-                                <p class="text-2xl font-semibold text-gray-900">189</p>
+                                <p class="text-2xl font-semibold text-gray-900">{{ $invoices->where('status', 'paid')->count() }}</p>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Pending</p>
-                                <p class="text-2xl font-semibold text-gray-900">32</p>
+                                <p class="text-2xl font-semibold text-gray-900">{{ $invoices->where('status', 'pending')->count() }}</p>
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Total Amount</p>
-                                <p class="text-2xl font-semibold text-gray-900">$2.4M</p>
+                                <p class="text-2xl font-semibold text-gray-900">IDR {{ number_format($invoices->sum('total_invoice'), 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -126,9 +126,9 @@
                         
                         <select class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-[#8D0907] focus:border-[#8D0907]">
                             <option>All Clients</option>
-                            <option>PT Maju Bersama</option>
-                            <option>Pemda Jakarta</option>
-                            <option>Ahmad Budi</option>
+                            @foreach($invoices->pluck('nama_client')->unique() as $client)
+                                <option>{{ $client }}</option>
+                            @endforeach
                         </select>
                         
                         <input type="date" class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-[#8D0907] focus:border-[#8D0907]">
@@ -155,6 +155,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
+                                @forelse($invoices as $invoice)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <input type="checkbox" class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
@@ -167,190 +168,103 @@
                                                 </div>
                                             </div>
                                             <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">INV-2024-001</div>
-                                                <div class="text-sm text-gray-500">Data Center Project</div>
+                                                <div class="text-sm font-medium text-gray-900">{{ $invoice->no_invoice }}</div>
+                                                <div class="text-sm text-gray-500">{{ Str::limit($invoice->hdeskripsi, 30) }}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">PT Maju Bersama</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $invoice->nama_client }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">$45,000</div>
-                                        <div class="text-sm text-gray-500">USD</div>
+                                        <div class="text-sm font-medium text-gray-900">IDR {{ number_format($invoice->total_invoice, 0, ',', '.') }}</div>
+                                        <div class="text-sm text-gray-500">{{ $invoice->nama_bank }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            Paid
+                                        @php
+                                            $statusColors = [
+                                                'draft' => 'bg-gray-100 text-gray-800',
+                                                'sent' => 'bg-blue-100 text-blue-800',
+                                                'paid' => 'bg-green-100 text-green-800',
+                                                'overdue' => 'bg-red-100 text-red-800',
+                                                'cancelled' => 'bg-red-100 text-red-800'
+                                            ];
+                                            $statusColor = $statusColors[$invoice->status] ?? 'bg-gray-100 text-gray-800';
+                                        @endphp
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColor }}">
+                                            {{ ucfirst($invoice->status) }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">Dec 15, 2024</div>
-                                        <div class="text-sm text-green-600">Paid on Dec 10</div>
+                                        <div class="text-sm text-gray-900">{{ \Carbon\Carbon::parse($invoice->due_date)->format('M d, Y') }}</div>
+                                        @if($invoice->status === 'paid' && $invoice->tgl_paid)
+                                            <div class="text-sm text-green-600">Paid on {{ \Carbon\Carbon::parse($invoice->tgl_paid)->format('M d, Y') }}</div>
+                                        @elseif($invoice->status === 'overdue')
+                                            @php
+                                                $daysOverdue = \Carbon\Carbon::parse($invoice->due_date)->diffInDays(now());
+                                            @endphp
+                                            <div class="text-sm text-red-600">Overdue by {{ $daysOverdue }} days</div>
+                                        @else
+                                            @php
+                                                $daysUntilDue = \Carbon\Carbon::parse($invoice->due_date)->diffInDays(now());
+                                            @endphp
+                                            @if($daysUntilDue > 0)
+                                                <div class="text-sm text-yellow-600">Due in {{ $daysUntilDue }} days</div>
+                                            @else
+                                                <div class="text-sm text-red-600">Due today</div>
+                                            @endif
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex space-x-2">
-                                            <button class="text-[#8D0907] hover:text-[#B91C1C]">
+                                            <a href="{{ route('invoice.show', $invoice->id) }}" class="text-[#8D0907] hover:text-[#B91C1C]">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                 </svg>
-                                            </button>
-                                            <button class="text-[#8D0907] hover:text-[#B91C1C]">
+                                            </a>
+                                            <a href="{{ route('invoice.edit', $invoice->id) }}" class="text-[#8D0907] hover:text-[#B91C1C]">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                 </svg>
-                                            </button>
+                                            </a>
                                             <button class="text-blue-600 hover:text-blue-900">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                                 </svg>
                                             </button>
-                                            <button class="text-red-600 hover:text-red-900">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                </svg>
-                                            </button>
+                                            <form action="{{ route('invoice.destroy', $invoice->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this invoice?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-900">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                    </svg>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
-
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <input type="checkbox" class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10">
-                                                <div class="h-10 w-10 rounded-lg bg-gradient-to-r from-yellow-500 to-yellow-600 flex items-center justify-center text-white font-semibold">
-                                                    INV
-                                                </div>
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">INV-2024-002</div>
-                                                <div class="text-sm text-gray-500">Smart City Platform</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Pemda Jakarta</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">$125,000</div>
-                                        <div class="text-sm text-gray-500">USD</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                            Pending
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">Jan 30, 2025</div>
-                                        <div class="text-sm text-yellow-600">Due in 15 days</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <div class="flex space-x-2">
-                                            <button class="text-[#8D0907] hover:text-[#B91C1C]">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                </svg>
-                                            </button>
-                                            <button class="text-[#8D0907] hover:text-[#B91C1C]">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                                </svg>
-                                            </button>
-                                            <button class="text-blue-600 hover:text-blue-900">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                                </svg>
-                                            </button>
-                                            <button class="text-red-600 hover:text-red-900">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                </svg>
-                                            </button>
-                                        </div>
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                                        No invoices found. <a href="{{ route('invoice.create') }}" class="text-[#8D0907] hover:text-[#B91C1C]">Create your first invoice</a>
                                     </td>
                                 </tr>
-
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <input type="checkbox" class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10">
-                                                <div class="h-10 w-10 rounded-lg bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center text-white font-semibold">
-                                                    INV
-                                                </div>
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">INV-2024-003</div>
-                                                <div class="text-sm text-gray-500">E-Commerce Website</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Ahmad Budi</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">$8,500</div>
-                                        <div class="text-sm text-gray-500">USD</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                            Overdue
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">Dec 1, 2024</div>
-                                        <div class="text-sm text-red-600">Overdue by 14 days</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <div class="flex space-x-2">
-                                            <button class="text-[#8D0907] hover:text-[#B91C1C]">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                </svg>
-                                            </button>
-                                            <button class="text-[#8D0907] hover:text-[#B91C1C]">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                                </svg>
-                                            </button>
-                                            <button class="text-blue-600 hover:text-blue-900">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                                </svg>
-                                            </button>
-                                            <button class="text-red-600 hover:text-red-900">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Pagination -->
+                    @if($invoices->hasPages())
                     <div class="flex items-center justify-between mt-6">
                         <div class="flex items-center text-sm text-gray-700">
-                            <span>Showing 1 to 3 of 234 results</span>
+                            <span>Showing {{ $invoices->firstItem() }} to {{ $invoices->lastItem() }} of {{ $invoices->total() }} results</span>
                         </div>
                         
                         <div class="flex items-center space-x-2">
-                            <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                                Previous
-                            </button>
-                            <span class="px-3 py-2 text-sm font-medium text-gray-700 bg-[#8D0907] text-white border border-[#8D0907] rounded-md">1</span>
-                            <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-                                2
-                            </button>
-                            <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-                                3
-                            </button>
-                            <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-                                Next
-                            </button>
+                            {{ $invoices->links() }}
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

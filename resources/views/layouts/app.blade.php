@@ -264,8 +264,8 @@
 
                         <!-- MPA Invoice -->
                         <a href="{{ route('invoice.mpa') }}"
-                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                            <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
+                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('invoice.mpa') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                            <svg class="w-5 h-5 mr-3 {{ request()->routeIs('invoice.mpa') ? 'text-white' : 'text-gray-400' }}" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -274,7 +274,7 @@
                         </a>
 
                         <!-- Rajata Invoice -->
-                        <a href="#"
+                        {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -282,9 +282,9 @@
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Rajata Invoice
-                        </a>
+                        </a> --}}
                         <!-- Ramada Invoice -->
-                        <a href="#"
+                        {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -292,10 +292,10 @@
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Ramada Invoice
-                        </a>
+                        </a> --}}
 
                         <!-- Nains Media Invoice -->
-                        <a href="#"
+                        {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -303,9 +303,9 @@
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Nains Media Invoice
-                        </a>
+                        </a> --}}
                         <!-- Crafttime Invoice -->
-                        <a href="#"
+                        {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -313,9 +313,9 @@
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Crafttime Invoice
-                        </a>
+                        </a> --}}
                         <!-- Archico Invoice -->
-                        <a href="#"
+                        {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -323,9 +323,9 @@
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Archico Invoice
-                        </a>
+                        </a> --}}
                         <!-- Multi Creative Invoice -->
-                        <a href="#"
+                        {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -333,7 +333,7 @@
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Multi Creative Invoice
-                        </a>
+                        </a> --}}
 
                     </div>
 
@@ -354,7 +354,7 @@
                         </a>
 
                         <!-- PO 2019 -->
-                        <a href="#"
+                        {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -362,7 +362,7 @@
                                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
                             PO 2019
-                        </a>
+                        </a> --}}
                     </div>
 
                     <!-- SPH Section -->
@@ -382,7 +382,7 @@
                         </a>
 
                         <!-- SPH Rajata -->
-                        <a href="#"
+                        {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -390,7 +390,7 @@
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             SPH Rajata
-                        </a>
+                        </a> --}}
                     </div>
 
                     <!-- Realisasi Section -->
@@ -455,7 +455,7 @@
                             Analytics</h3>
 
                         <!-- Financial Reports -->
-                        <a href="#"
+                        {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -463,7 +463,7 @@
                                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
                             Financial Reports
-                        </a>
+                        </a> --}}
 
                         <!-- Project Reports -->
                         <a href="#"
@@ -522,7 +522,7 @@
                 <div class="border-t border-gray-200 my-6"></div>
 
                 <!-- Quick Stats -->
-                <div class="px-3">
+                {{-- <div class="px-3">
                     <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick Stats</h3>
                     <div class="space-y-3">
                         <div class="bg-gray-50 rounded-lg p-3">
@@ -545,7 +545,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </nav>
         </div>
 
