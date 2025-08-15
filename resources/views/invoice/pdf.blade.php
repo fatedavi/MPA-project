@@ -219,7 +219,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($invoice->detail_invoice as $index => $item)
+            @foreach($invoice->detail_invoice_array as $index => $item)
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $item['deskripsi'] }}</td>
