@@ -9,7 +9,7 @@ class PerusahaanController extends Controller
 {
     public function index()
     {
-        $perusahaan = Perusahaan::all();
+        $perusahaan = Perusahaan::orderBy('nama_perusahaan')->paginate(10);
         return view('perusahaan.index', compact('perusahaan'));
     }
 
