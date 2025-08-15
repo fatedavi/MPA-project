@@ -87,7 +87,7 @@ class InvoiceController extends Controller
             ];
         }
 
-        $data['detail_invoice'] = $detailItems;
+        $data['detail_invoice'] = json_encode($detailItems);
         
         // Set nama_client from hidden field
         $data['nama_client'] = $data['nama_client'] ?? $data['up'];
@@ -107,9 +107,6 @@ class InvoiceController extends Controller
         }
 
         $invoice = Invoice::create($data);
-        
-        // Debug: cek apakah data tersimpan
-        // dd('Invoice created:', $invoice->toArray());
 
         // Flash session data
         session()->flash('success', '🎉 Invoice berhasil dibuat! Data telah tersimpan ke database.');
@@ -207,7 +204,7 @@ class InvoiceController extends Controller
             ];
         }
         
-        $data['detail_invoice'] = $detailItems;
+        $data['detail_invoice'] = json_encode($detailItems);
         
         // Set nama_client from hidden field
         $data['nama_client'] = $data['nama_client'] ?? $data['up'];
