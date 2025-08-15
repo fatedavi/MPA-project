@@ -20,6 +20,7 @@ use App\Http\Controllers\SalaryController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\PerusahaanController;
+use App\Http\Controllers\VendorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,15 +50,6 @@ Route::middleware('auth')->group(function () {
 // Admin Routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-
-    // Client Routes
-    Route::get('/clients', [ClientController::class, 'index'])->name('client.index');
-    Route::get('/clients/create', [ClientController::class, 'create'])->name('client.create');
-    Route::post('/clients', [ClientController::class, 'store'])->name('client.store');
-    Route::get('/clients/{id}', [ClientController::class, 'show'])->name('client.show');
-    Route::get('/clients/{id}/edit', [ClientController::class, 'edit'])->name('client.edit');
-    Route::put('/clients/{id}', [ClientController::class, 'update'])->name('client.update');
-    Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
 
     // Project Routes
     Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
@@ -137,6 +129,10 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group(function () {
 
     // Event
+    Route::resource('clients', ClientController::class);
+
+    
+    Route::resource('vendors', VendorController::class);
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
     Route::post('/events', [EventController::class, 'store'])->name('events.store');
