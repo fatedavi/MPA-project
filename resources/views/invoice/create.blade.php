@@ -34,6 +34,67 @@
             <!-- Form Card -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
+                    <!-- Error Notifications -->
+                    @if ($errors->any())
+                        <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-red-800">
+                                        Terdapat {{ $errors->count() }} error yang perlu diperbaiki:
+                                    </h3>
+                                    <div class="mt-2 text-sm text-red-700">
+                                        <ul class="list-disc pl-5 space-y-1">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Success Notifications -->
+                    @if (session('success'))
+                        <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-green-800">
+                                        {{ session('success') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Error Notifications -->
+                    @if (session('error'))
+                        <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.586 9L9.293 8.293a1 1 0 00-1.414-1.414L8 8.586 6.707 7.293a1 1 0 00-1.414 1.414L6.586 10l-1.293 1.293a1 1 0 101.414 1.414L8 11.414l1.293 1.293a1 1 0 001.414-1.414L9.414 10l1.293-1.293a1 1 0 00-1.414-1.414L8 8.586z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-red-800">
+                                        {{ session('error') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('invoice.store') }}" class="space-y-8" enctype="multipart/form-data">
                         @csrf
                         
@@ -93,6 +154,9 @@
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm" 
                                             placeholder="Client address will be auto-filled"></textarea>
                                 </div>
+                                
+                                <!-- Hidden field untuk nama_client -->
+                                <input type="hidden" name="nama_client" id="nama_client">
                             </div>
                         </div>
 
@@ -255,6 +319,7 @@
                                 <div>
                                     <label for="total_invoice" class="block text-sm font-medium text-gray-700">Total Invoice</label>
                                     <input type="text" name="total_invoice" id="total_invoice" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm" placeholder="Rp 0">
+                                    <input type="hidden" name="total_invoice_hidden" id="total_invoice_hidden">
                                     <p class="mt-1 text-xs text-gray-500">Auto-calculated from items</p>
                                 </div>
                                 
@@ -496,6 +561,9 @@
 
             const formattedTotal = formatIDR(total);
             document.getElementById('total_invoice').value = formattedTotal;
+            
+            // Fill the hidden total_invoice_hidden field with numeric value
+            document.getElementById('total_invoice_hidden').value = total;
         }
 
         // Format number to IDR format
@@ -522,10 +590,14 @@
                 
                 // Fill the address field
                 document.getElementById('alamat_client').value = alamatClient || '';
+                
+                // Fill the hidden nama_client field
+                document.getElementById('nama_client').value = namaClient || '';
             } else {
                 // Clear fields if no client selected
                 document.getElementById('up').value = '';
                 document.getElementById('alamat_client').value = '';
+                document.getElementById('nama_client').value = '';
             }
         }
 

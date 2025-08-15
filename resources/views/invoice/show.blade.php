@@ -103,7 +103,7 @@
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6">
                             <h3 class="text-lg font-medium text-gray-900 mb-4">Invoice Items</h3>
-                            @if($invoice->detail_invoice && count($invoice->detail_invoice) > 0)
+                            @if($invoice->detail_invoice_array && count($invoice->detail_invoice_array) > 0)
                                 <div class="overflow-x-auto">
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
@@ -116,7 +116,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
-                                            @foreach($invoice->detail_invoice as $item)
+                                            @foreach($invoice->detail_invoice_array as $item)
                                             <tr>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item['deskripsi'] }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item['qty'] }}</td>

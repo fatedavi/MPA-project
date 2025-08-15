@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 
 class Invoice extends Model
 {
+    protected $table = 'invoices';
     protected $fillable = [
         'no_invoice', 'tgl_invoice', 'nama_client', 'alamat_client',
         'kd_admin', 'up', 'nbast', 'nbast2', 'nbast3', 'nbast4', 'nbast5',
@@ -16,7 +17,6 @@ class Invoice extends Model
     ];
 
     protected $casts = [
-        'detail_invoice' => 'array',
         'tgl_invoice' => 'date',
         'due_date' => 'date',
         'tgl_paid' => 'date',
@@ -62,22 +62,22 @@ class Invoice extends Model
     {
         if (!$this->detail_invoice) return 0;
         
-        return collect($this->detail_invoice)->sum(function ($item) {
+        $detail = json_decode($this->detail_invoice, true);
+        if (!$detail) return 0;
+        
+        return collect($detail)->sum(function ($item) {
             return ($item['qty'] ?? 0) * ($item['harga'] ?? 0);
         });
     }
 
-    // Mutator untuk update total_invoice otomatis
-    public function setDetailInvoiceAttribute($value)
+    // Accessor untuk detail_invoice sebagai array
+    public function getDetailInvoiceArrayAttribute()
     {
-        $this->attributes['detail_invoice'] = json_encode($value);
+        if (!$this->detail_invoice) return [];
         
-        // Update total_invoice otomatis
-        if (is_array($value)) {
-            $total = collect($value)->sum(function ($item) {
-                return ($item['qty'] ?? 0) * ($item['harga'] ?? 0);
-            });
-            $this->attributes['total_invoice'] = round($total, 2);
-        }
+        $detail = json_decode($this->detail_invoice, true);
+        return $detail ?: [];
     }
+
+
 }
