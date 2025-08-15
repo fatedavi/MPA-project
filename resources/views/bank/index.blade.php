@@ -28,67 +28,51 @@
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-university text-white text-xl"></i>
-                                </div>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Total Banks</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ $banks->count() }}</p>
-                            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-blue-400 rounded-full">
+                            <i class="fas fa-university text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-blue-100 text-sm font-medium">Total Banks</p>
+                            <p class="text-2xl font-bold">{{ $banks->total() }}</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-credit-card text-white text-xl"></i>
-                                </div>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Active Accounts</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ $banks->count() }}</p>
-                            </div>
+                <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-green-400 rounded-full">
+                            <i class="fas fa-credit-card text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-green-100 text-sm font-medium">Active Accounts</p>
+                            <p class="text-2xl font-bold">{{ $banks->total() }}</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-shield-alt text-white text-xl"></i>
-                                </div>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Secure</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ $banks->count() }}</p>
-                            </div>
+                <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-purple-400 rounded-full">
+                            <i class="fas fa-shield-alt text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-purple-100 text-sm font-medium">Secure</p>
+                            <p class="text-2xl font-bold">{{ $banks->total() }}</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-exchange-alt text-white text-xl"></i>
-                                </div>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Transactions</p>
-                                <p class="text-2xl font-bold text-gray-900">0</p>
-                            </div>
+                <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-orange-400 rounded-full">
+                            <i class="fas fa-exchange-alt text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-orange-100 text-sm font-medium">Transactions</p>
+                            <p class="text-2xl font-bold">0</p>
                         </div>
                     </div>
                 </div>

@@ -28,67 +28,51 @@
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-users text-white text-xl"></i>
-                                </div>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Total Vendors</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ $vendors->count() }}</p>
-                            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-blue-400 rounded-full">
+                            <i class="fas fa-users text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-blue-100 text-sm font-medium">Total Vendors</p>
+                            <p class="text-2xl font-bold">{{ $vendors->total() }}</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-check-circle text-white text-xl"></i>
-                                </div>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Active Vendors</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ $vendors->count() }}</p>
-                            </div>
+                <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-green-400 rounded-full">
+                            <i class="fas fa-check-circle text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-green-100 text-sm font-medium">Active Vendors</p>
+                            <p class="text-2xl font-bold">{{ $vendors->total() }}</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-map-marker-alt text-white text-xl"></i>
-                                </div>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Cities</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ $vendors->unique('kota')->count() }}</p>
-                            </div>
+                <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-purple-400 rounded-full">
+                            <i class="fas fa-map-marker-alt text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-purple-100 text-sm font-medium">Cities</p>
+                            <p class="text-2xl font-bold">{{ $vendors->unique('kota')->count() }}</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-phone text-white text-xl"></i>
-                                </div>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Contacts</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ $vendors->count() }}</p>
-                            </div>
+                <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-orange-400 rounded-full">
+                            <i class="fas fa-phone text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-orange-100 text-sm font-medium">Contacts</p>
+                            <p class="text-2xl font-bold">{{ $vendors->total() }}</p>
                         </div>
                     </div>
                 </div>
