@@ -3,143 +3,169 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>MPA Project - Welcome</title>
+        <title>EPower - Welcome</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
     <body class="font-sans antialiased">
         <!-- Hero Section -->
-        <div class="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
+        <div class="min-h-screen bg-gradient-to-br from-black via-[#1a0000] to-[#8D0907] relative overflow-hidden">
             <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-10">
-                <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-                <div class="absolute top-0 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
-                <div class="absolute bottom-0 left-0 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-0 left-0 w-96 h-96 bg-[#8D0907] rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+                <div class="absolute top-0 right-0 w-96 h-96 bg-[#B91C1C] rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-[#DC2626] rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
             </div>
 
             <!-- Navigation -->
             <nav class="relative z-10 px-6 py-6">
                 <div class="max-w-7xl mx-auto flex justify-between items-center">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg border border-white/30">
+                            <i class="fas fa-bolt text-2xl text-white"></i>
                         </div>
-                        <span class="text-2xl font-bold text-white">MPA Project</span>
+                        <span class="text-3xl font-bold text-white">EPower</span>
                     </div>
                     
-                        @if (Route::has('login'))
+                    @if (Route::has('login'))
                         <div class="flex items-center space-x-4">
-                                @auth
-                                <a href="{{ url('/dashboard') }}" class="text-white hover:text-blue-200 transition-colors duration-200">
-                                        Dashboard
-                                    </a>
-                                @else
-                                <a href="{{ route('login') }}" class="text-white hover:text-blue-200 transition-colors duration-200">
-                                        Log in
-                                    </a>
-                                    @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="bg-white text-blue-900 px-6 py-2 rounded-full font-medium hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl">
+                            @auth
+                                <a href="{{ url('/dashboard') }}" class="text-white/90 hover:text-white transition-colors duration-200 font-medium backdrop-blur-sm px-4 py-2 rounded-lg hover:bg-white/10">
+                                    <i class="fas fa-tachometer-alt mr-2"></i>
+                                    Dashboard
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}" class="text-white/90 hover:text-white transition-colors duration-200 font-medium backdrop-blur-sm px-4 py-2 rounded-lg hover:bg-white/10">
+                                    <i class="fas fa-sign-in-alt mr-2"></i>
+                                    Log in
+                                </a>
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}" class="bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/30">
+                                        <i class="fas fa-user-plus mr-2"></i>
                                         Sign up
-                                        </a>
-                                    @endif
-                                @endauth
+                                    </a>
+                                @endif
+                            @endauth
                         </div>
-                        @endif
-                                </div>
+                    @endif
+                </div>
             </nav>
 
             <!-- Main Content -->
             <div class="relative z-10 flex items-center justify-center min-h-screen px-6">
-                <div class="text-center max-w-4xl mx-auto">
+                <div class="text-center max-w-5xl mx-auto">
                     <!-- Main Heading -->
-                    <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                    <h1 class="text-6xl md:text-8xl font-bold text-white mb-8 leading-tight">
                         Welcome to
-                        <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                            MPA Project
+                        <span class="bg-gradient-to-r from-white via-[#FEF3C7] to-[#FDE68A] bg-clip-text text-transparent">
+                            EPower
                         </span>
                     </h1>
 
                     <!-- Subtitle -->
-                    <p class="text-xl md:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed">
-                        Your comprehensive project management solution. Streamline workflows, 
-                        collaborate seamlessly, and achieve your goals faster than ever before.
-                                            </p>
+                    <p class="text-2xl md:text-3xl text-white/80 mb-16 max-w-4xl mx-auto leading-relaxed font-light">
+                        Your comprehensive business management solution. Streamline operations, 
+                        manage resources efficiently, and power your business to new heights.
+                    </p>
 
                     <!-- CTA Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+                    <div class="flex flex-col sm:flex-row gap-8 justify-center items-center mb-20">
                         @auth
                             <a href="{{ url('/dashboard') }}" 
-                               class="group bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25 flex items-center space-x-2">
+                               class="group bg-white/20 backdrop-blur-md text-white px-10 py-5 rounded-2xl text-xl font-bold hover:bg-white/30 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25 flex items-center space-x-3 border border-white/30">
                                 <span>Go to Dashboard</span>
-                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                                </svg>
+                                <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform duration-200"></i>
                             </a>
                         @else
                             <a href="{{ route('login') }}" 
-                               class="group bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25 flex items-center space-x-2">
+                               class="group bg-white/20 backdrop-blur-md text-white px-10 py-5 rounded-2xl text-xl font-bold hover:bg-white/30 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25 flex items-center space-x-3 border border-white/30">
                                 <span>Get Started</span>
-                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                                </svg>
+                                <i class="fas fa-rocket group-hover:translate-y-[-2px] transition-transform duration-200"></i>
                             </a>
 
                             @if (Route::has('register'))
                                 <a href="{{ route('register') }}" 
-                                   class="group border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+                                   class="group border-2 border-white/50 text-white px-10 py-5 rounded-2xl text-xl font-bold hover:bg-white/20 hover:border-white/80 transition-all duration-300 transform hover:scale-105 flex items-center space-x-3 backdrop-blur-sm">
                                     <span>Sign Up Free</span>
-                                    <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                                    </svg>
+                                    <i class="fas fa-user-plus group-hover:rotate-12 transition-transform duration-200"></i>
                                 </a>
                             @endif
                         @endauth
-                                </div>
+                    </div>
 
                     <!-- Feature Highlights -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
                         <div class="text-center group">
-                            <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                                </svg>
+                            <div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg border border-white/30 group-hover:bg-white/30">
+                                <i class="fas fa-users-cog text-3xl text-white"></i>
                             </div>
-                            <h3 class="text-xl font-semibold text-white mb-2">Project Management</h3>
-                            <p class="text-blue-200">Organize tasks, track progress, and manage deadlines efficiently</p>
-                                </div>
+                            <h3 class="text-2xl font-bold text-white mb-4">Employee Management</h3>
+                            <p class="text-white/70 text-lg leading-relaxed">Comprehensive HR management with attendance tracking, salary management, and performance monitoring</p>
+                        </div>
 
                         <div class="text-center group">
-                            <div class="w-16 h-16 bg-gradient-to-r from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                    </svg>
+                            <div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg border border-white/30 group-hover:bg-white/30">
+                                <i class="fas fa-chart-line text-3xl text-white"></i>
                             </div>
-                            <h3 class="text-xl font-semibold text-white mb-2">Team Collaboration</h3>
-                            <p class="text-blue-200">Work together seamlessly with real-time updates and communication</p>
-                                </div>
+                            <h3 class="text-2xl font-bold text-white mb-4">Business Analytics</h3>
+                            <p class="text-white/70 text-lg leading-relaxed">Real-time insights and reports to make data-driven decisions and optimize business performance</p>
+                        </div>
 
                         <div class="text-center group">
-                            <div class="w-16 h-16 bg-gradient-to-r from-pink-400 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                </svg>
+                            <div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg border border-white/30 group-hover:bg-white/30">
+                                <i class="fas fa-cogs text-3xl text-white"></i>
                             </div>
-                            <h3 class="text-xl font-semibold text-white mb-2">Analytics & Reports</h3>
-                            <p class="text-blue-200">Get insights into performance and make data-driven decisions</p>
+                            <h3 class="text-2xl font-bold text-white mb-4">Process Automation</h3>
+                            <p class="text-white/70 text-lg leading-relaxed">Streamline workflows and automate repetitive tasks to increase productivity and efficiency</p>
+                        </div>
+                    </div>
+
+                    <!-- Additional Features -->
+                    <div class="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                        <div class="text-center group">
+                            <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/20 transition-all duration-300 border border-white/20">
+                                <i class="fas fa-calendar-alt text-2xl text-white/90"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-white mb-2">Event Management</h4>
+                            <p class="text-white/60 text-sm">Organize and track company events</p>
+                        </div>
+
+                        <div class="text-center group">
+                            <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/20 transition-all duration-300 border border-white/20">
+                                <i class="fas fa-file-invoice text-2xl text-white/90"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-white mb-2">Invoice System</h4>
+                            <p class="text-white/60 text-sm">Professional billing and payment tracking</p>
+                        </div>
+
+                        <div class="text-center group">
+                            <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/20 transition-all duration-300 border border-white/20">
+                                <i class="fas fa-university text-2xl text-white/90"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-white mb-2">Bank Management</h4>
+                            <p class="text-white/60 text-sm">Centralized banking operations</p>
+                        </div>
+
+                        <div class="text-center group">
+                            <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/20 transition-all duration-300 border border-white/20">
+                                <i class="fas fa-user-tie text-2xl text-white/90"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-white mb-2">Client Relations</h4>
+                            <p class="text-white/60 text-sm">Manage customer relationships</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Floating Elements -->
-            <div class="absolute top-1/4 left-10 w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
-            <div class="absolute top-1/3 right-20 w-3 h-3 bg-purple-400 rounded-full animate-bounce animation-delay-1000"></div>
-            <div class="absolute bottom-1/4 left-1/4 w-2 h-2 bg-pink-400 rounded-full animate-bounce animation-delay-2000"></div>
+            <div class="absolute top-1/4 left-10 w-3 h-3 bg-white/60 rounded-full animate-bounce"></div>
+            <div class="absolute top-1/3 right-20 w-4 h-4 bg-white/40 rounded-full animate-bounce animation-delay-1000"></div>
+            <div class="absolute bottom-1/4 left-1/4 w-3 h-3 bg-white/80 rounded-full animate-bounce animation-delay-2000"></div>
+            <div class="absolute top-1/2 right-1/4 w-2 h-2 bg-white/50 rounded-full animate-bounce animation-delay-3000"></div>
         </div>
 
         <style>
@@ -165,6 +191,9 @@
             }
             .animation-delay-2000 {
                 animation-delay: 2s;
+            }
+            .animation-delay-3000 {
+                animation-delay: 3s;
             }
             .animation-delay-4000 {
                 animation-delay: 4s;
