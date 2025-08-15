@@ -8,7 +8,7 @@ class VendorController extends Controller
 {
     public function index()
     {
-        $vendors = Vendor::all();
+        $vendors = Vendor::orderBy('nama_vendor')->paginate(10);
         return view('vendors.index', compact('vendors'));
     }
 

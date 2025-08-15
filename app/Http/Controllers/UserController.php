@@ -17,12 +17,6 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::all();
-
-        $totalUsers = $users->count();
-        $activeUsers = $users->where('status', 'active')->count();
-        $pendingUsers = $users->where('status', 'pending')->count();
-        $inactiveUsers = $users->where('status', 'inactive')->count();
         // Query untuk mengambil data user
         $query = User::query();
 
@@ -39,19 +33,20 @@ class UserController extends Controller
             $query->where('role', $request->role);
         }
 
-        // // Filter Status
-        // if ($request->filled('status')) {
-        //     $query->where('status', $request->status);
-        // }
+        $users = $query->paginate(10)->withQueryString();
 
-        $users = $query->paginate(10);
+        // Hitung statistik berdasarkan role yang tersedia
+        $totalUsers = User::count();
+        $adminUsers = User::where('role', 'admin')->count();
+        $superAdminUsers = User::where('role', 'super_admin')->count();
+        $karyawanUsers = User::where('role', 'karyawan')->count();
 
         return view('users.index', compact(
             'users',
             'totalUsers',
-            'activeUsers',
-            'pendingUsers',
-            'inactiveUsers'
+            'adminUsers',
+            'superAdminUsers',
+            'karyawanUsers'
         ));
     }
 
