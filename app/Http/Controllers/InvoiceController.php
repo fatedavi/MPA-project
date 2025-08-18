@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
 {
@@ -11,40 +15,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        // Sample data for display
-        $invoices = [
-            [
-                'id' => 1,
-                'invoice_number' => 'INV-001',
-                'client_name' => 'PT Maju Bersama',
-                'project_name' => 'MPA System Development',
-                'amount' => 15000,
-                'status' => 'paid',
-                'due_date' => '2024-02-15',
-                'issue_date' => '2024-01-15'
-            ],
-            [
-                'id' => 2,
-                'invoice_number' => 'INV-002',
-                'client_name' => 'Pemda Jakarta',
-                'project_name' => 'Jakarta Smart City Portal',
-                'amount' => 25000,
-                'status' => 'pending',
-                'due_date' => '2024-03-15',
-                'issue_date' => '2024-02-15'
-            ],
-            [
-                'id' => 3,
-                'invoice_number' => 'INV-003',
-                'client_name' => 'Bank Indonesia',
-                'project_name' => 'Bank Indonesia Mobile App',
-                'amount' => 30000,
-                'status' => 'overdue',
-                'due_date' => '2024-01-31',
-                'issue_date' => '2024-01-01'
-            ]
-        ];
-        
+        $invoices = Invoice::latest()->paginate(10);
         return view('invoice.mpa', compact('invoices'));
     }
 
@@ -53,7 +24,10 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        return view('invoice.create');
+        $clients = \App\Models\Client::all();
+        $banks = \App\Models\Bank::all();
+        $nextInvoiceNumber = \App\Models\Invoice::generateInvoiceNumber();
+        return view('invoice.create', compact('clients', 'banks', 'nextInvoiceNumber'));
     }
 
     /**
@@ -61,19 +35,95 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        // Simple validation
-        $request->validate([
-            'invoice_number' => 'required|string|max:255',
-            'client_id' => 'required',
-            'project_id' => 'required',
-            'amount' => 'required|numeric|min:0',
-            'due_date' => 'required|date',
-        ]);
+        try {
+            $request->validate([
+                'tgl_invoice' => 'required|date',
+                'client_id' => 'required|exists:clients,id_client',
+                'alamat_client' => 'required|string|max:400',
+                'up' => 'required|string|max:50',
+                'nbast' => 'nullable|string|max:50',
+                'nbast2' => 'nullable|string|max:50',
+                'nbast3' => 'nullable|string|max:50',
+                'nbast4' => 'nullable|string|max:50',
+                'nbast5' => 'nullable|string|max:50',
+                'jenis_no' => 'nullable|string|max:50',
+                'no_fpb' => 'nullable|string|max:50',
+                'no_fpb2' => 'nullable|string|max:50',
+                'no_fpb3' => 'nullable|string|max:50',
+                'no_fpb4' => 'nullable|string|max:50',
+                'no_fpb5' => 'nullable|string|max:50',
+                'due_date' => 'required|date',
+                'nama_bank' => 'required|string|max:100',
+                'an' => 'required|string|max:100',
+                'ac' => 'required|string|max:25',
+                'no_fp' => 'nullable|string|max:30',
+                'status' => 'required|string|max:15',
+                'tgl_paid' => 'nullable|date',
+                'detail_invoice' => 'required|array|min:1',
+                'detail_invoice.*.deskripsi' => 'required|string|max:255',
+                'detail_invoice.*.qty' => 'required|numeric|min:1',
+                'detail_invoice.*.satuan' => 'nullable|string|max:20',
+                'detail_invoice.*.harga' => 'required|numeric|min:0',
+                'ttd' => 'nullable|string|max:225',
+                'ttdkwitansi' => 'nullable|string|max:225',
+                'ttdbast' => 'nullable|string|max:225',
+                'ttdbakn' => 'nullable|string|max:225',
+            ]);
 
-        // For now, just redirect with success message
-        // In real application, you would save to database here
-        return redirect()->route('invoice.index')
-            ->with('success', 'Invoice created successfully!');
+        $data = $request->all();
+
+        // Remove client_id from data since it's not in fillable fields
+        unset($data['client_id']);
+
+        // Process detail_invoice items
+        $detailItems = [];
+        foreach ($request->detail_invoice as $item) {
+            $detailItems[] = [
+                'deskripsi' => $item['deskripsi'],
+                'qty' => (float) $item['qty'],
+                'satuan' => $item['satuan'] ?? 'pcs',
+                'harga' => (float) $item['harga'],
+                'total' => round((float) $item['qty'] * (float) $item['harga'], 2)
+            ];
+        }
+
+        $data['detail_invoice'] = json_encode($detailItems);
+        
+        // Set nama_client from hidden field
+        $data['nama_client'] = $data['nama_client'] ?? $data['up'];
+        
+        // Set kd_admin from current user if not provided
+        if (!isset($data['kd_admin']) || empty($data['kd_admin'])) {
+            $data['kd_admin'] = (int) Auth::user()->id;
+        }
+        
+        // Calculate total from items
+        $data['total_invoice'] = round(collect($detailItems)->sum('total'), 2);
+
+        // Handle signature checkboxes (set to empty string if not checked)
+        $signatureFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
+        foreach ($signatureFields as $field) {
+            $data[$field] = $request->has($field) ? '1' : '';
+        }
+
+        $invoice = Invoice::create($data);
+
+        // Flash session data
+        session()->flash('success', '🎉 Invoice berhasil dibuat! Data telah tersimpan ke database.');
+        session()->flash('invoice_id', $invoice->id);
+        
+        return redirect()->route('invoice.mpa');
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            session()->flash('error', '❌ Validasi gagal! Silakan periksa data yang dimasukkan.');
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (\Exception $e) {
+            session()->flash('error', '💥 Terjadi kesalahan! ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput();
+        }
     }
 
     /**
@@ -81,67 +131,115 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        // Sample invoice data
-        $invoice = [
-            'id' => $id,
-            'invoice_number' => 'INV-001',
-            'client_name' => 'PT Maju Bersama',
-            'project_name' => 'MPA System Development',
-            'amount' => 15000,
-            'status' => 'paid',
-            'due_date' => '2024-02-15',
-            'issue_date' => '2024-01-15',
-            'description' => 'Development services for MPA System',
-            'items' => [
-                ['description' => 'System Analysis', 'quantity' => 40, 'rate' => 100, 'amount' => 4000],
-                ['description' => 'Development', 'quantity' => 80, 'rate' => 100, 'amount' => 8000],
-                ['description' => 'Testing', 'quantity' => 20, 'rate' => 100, 'amount' => 2000],
-                ['description' => 'Documentation', 'quantity' => 10, 'rate' => 100, 'amount' => 1000]
-            ]
-        ];
-        
+        $invoice = Invoice::findOrFail($id);
         return view('invoice.show', compact('invoice'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        // Sample invoice data for editing
-        $invoice = [
-            'id' => $id,
-            'invoice_number' => 'INV-001',
-            'client_id' => 1,
-            'project_id' => 1,
-            'amount' => 15000,
-            'status' => 'paid',
-            'due_date' => '2024-02-15',
-            'issue_date' => '2024-01-15',
-            'description' => 'Development services for MPA System'
-        ];
+        $invoice = Invoice::findOrFail($id);
         
-        return view('invoice.edit', compact('invoice'));
+        $clients = \App\Models\Client::all();
+        $banks = \App\Models\Bank::all();
+        return view('invoice.edit', compact('invoice', 'clients', 'banks'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Invoice $invoice)
     {
-        // Simple validation
-        $request->validate([
-            'invoice_number' => 'required|string|max:255',
-            'client_id' => 'required',
-            'project_id' => 'required',
-            'amount' => 'required|numeric|min:0',
-            'due_date' => 'required|date',
-        ]);
+        try {
+            $request->validate([
+                'tgl_invoice' => 'required|date',
+                'client_id' => 'required|string|max:50',
+                'alamat_client' => 'required|string|max:400',
+                'up' => 'required|string|max:50',
+                'nbast' => 'nullable|string|max:50',
+                'nbast2' => 'nullable|string|max:50',
+                'nbast3' => 'nullable|string|max:50',
+                'nbast4' => 'nullable|string|max:50',
+                'nbast5' => 'nullable|string|max:50',
+                'jenis_no' => 'nullable|string|max:50',
+                'no_fpb' => 'nullable|string|max:50',
+                'no_fpb2' => 'nullable|string|max:50',
+                'no_fpb3' => 'nullable|string|max:50',
+                'no_fpb4' => 'nullable|string|max:50',
+                'no_fpb5' => 'nullable|string|max:50',
+                'due_date' => 'required|date',
+                'nama_bank' => 'required|string|max:100',
+                'an' => 'required|string|max:100',
+                'ac' => 'required|string|max:25',
+                'no_fp' => 'nullable|string|max:30',
+                'status' => 'required|string|max:15',
+                'tgl_paid' => 'nullable|date',
+                'detail_invoice' => 'required|array|min:1',
+                'detail_invoice.*.deskripsi' => 'required|string|max:255',
+                'detail_invoice.*.qty' => 'required|numeric|min:1',
+                'detail_invoice.*.satuan' => 'nullable|string|max:20',
+                'detail_invoice.*.harga' => 'required|numeric|min:0',
+                'ttd' => 'nullable|string|max:225',
+                'ttdkwitansi' => 'nullable|string|max:225',
+                'ttdbast' => 'nullable|string|max:225',
+                'ttdbakn' => 'nullable|string|max:225',
+            ]);
 
-        // For now, just redirect with success message
-        // In real application, you would update database here
-        return redirect()->route('invoice.index')
-            ->with('success', 'Invoice updated successfully!');
+        $data = $request->all();
+        
+        // Remove client_id from data since it's not in fillable fields
+        unset($data['client_id']);
+        
+        // Process detail_invoice items
+        $detailItems = [];
+        foreach ($request->detail_invoice as $item) {
+            $detailItems[] = [
+                'deskripsi' => $item['deskripsi'],
+                'qty' => (float) $item['qty'],
+                'satuan' => $item['satuan'] ?? 'pcs',
+                'harga' => (float) $item['harga'],
+                'total' => round((float) $item['qty'] * (float) $item['harga'], 2)
+            ];
+        }
+        
+        $data['detail_invoice'] = json_encode($detailItems);
+        
+        // Set nama_client from hidden field
+        $data['nama_client'] = $data['nama_client'] ?? $data['up'];
+        
+        // Set kd_admin from current user if not provided
+        if (!isset($data['kd_admin']) || empty($data['kd_admin'])) {
+            $data['kd_admin'] = (int) Auth::user()->id;
+        }
+        
+        // Calculate total from items
+        $data['total_invoice'] = round(collect($detailItems)->sum('total'), 2);
+
+        // Handle signature checkboxes (set to empty string if not checked)
+        $signatureFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
+        foreach ($signatureFields as $field) {
+            $data[$field] = $request->has($field) ? '1' : '';
+        }
+
+        $invoice->update($data);
+
+        // Flash session data
+        session()->flash('success', '✅ Invoice berhasil diperbarui! Data telah tersimpan ke database.');
+        
+        return redirect()->back();
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            session()->flash('error', '❌ Validasi gagal! Silakan periksa data yang dimasukkan.');
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (\Exception $e) {
+            session()->flash('error', '💥 Terjadi kesalahan! ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput();
+        }
     }
 
     /**
@@ -149,10 +247,28 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        // For now, just redirect with success message
-        // In real application, you would delete from database here
-        return redirect()->route('invoice.index')
-            ->with('success', 'Invoice deleted successfully!');
+        try {
+            $invoice = Invoice::findOrFail($id);
+            
+            // Delete signature files
+            $uploadFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
+            foreach ($uploadFields as $field) {
+                if ($invoice->$field) {
+                    Storage::delete('public/signatures/' . $invoice->$field);
+                }
+            }
+            
+            $invoice->delete();
+
+            // Flash session data
+            session()->flash('success', '🗑️ Invoice berhasil dihapus! Data telah dihapus dari database.');
+            
+            return redirect()->route('invoice.mpa');
+                
+        } catch (\Exception $e) {
+            session()->flash('error', '💥 Gagal menghapus invoice! ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**
@@ -160,6 +276,33 @@ class InvoiceController extends Controller
      */
     public function mpa()
     {
-        return view('invoice.mpa');
+        $invoices = Invoice::latest()->paginate(10);
+        return view('invoice.mpa', compact('invoices'));
+    }
+
+    /**
+     * View invoice as PDF in browser
+     */
+    public function viewPdf($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $pdf = Pdf::loadView('invoice.pdf', compact('invoice'));
+        
+        // Clean filename - remove invalid characters
+        $cleanFilename = preg_replace('/[^a-zA-Z0-9\-_\.]/', '_', $invoice->no_invoice);
+        return $pdf->stream('invoice-' . $cleanFilename . '.pdf');
+    }
+
+    /**
+     * Download invoice as PDF
+     */
+    public function downloadPdf($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $pdf = Pdf::loadView('invoice.pdf', compact('invoice'));
+        
+        // Clean filename - remove invalid characters
+        $cleanFilename = preg_replace('/[^a-zA-Z0-9\-_\.]/', '_', $invoice->no_invoice);
+        return $pdf->download('invoice-' . $cleanFilename . '.pdf');
     }
 } 

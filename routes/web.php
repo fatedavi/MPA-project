@@ -19,6 +19,9 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\CutiController;
+use App\Http\Controllers\PerusahaanController;
+use App\Http\Controllers\VendorController;
+use App\Http\Controllers\BankController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,15 +52,6 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
-    // Client Routes
-    Route::get('/clients', [ClientController::class, 'index'])->name('client.index');
-    Route::get('/clients/create', [ClientController::class, 'create'])->name('client.create');
-    Route::post('/clients', [ClientController::class, 'store'])->name('client.store');
-    Route::get('/clients/{id}', [ClientController::class, 'show'])->name('client.show');
-    Route::get('/clients/{id}/edit', [ClientController::class, 'edit'])->name('client.edit');
-    Route::put('/clients/{id}', [ClientController::class, 'update'])->name('client.update');
-    Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
-
     // Project Routes
     Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('project.create');
@@ -76,6 +70,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/invoices/{id}/edit', [InvoiceController::class, 'edit'])->name('invoice.edit');
     Route::put('/invoices/{id}', [InvoiceController::class, 'update'])->name('invoice.update');
     Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
+    Route::get('/invoices/{id}/pdf', [InvoiceController::class, 'viewPdf'])->name('invoice.pdf');
+    Route::get('/invoices/{id}/download', [InvoiceController::class, 'downloadPdf'])->name('invoice.download');
 
     Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group(function () {
         // User Management Routes
@@ -86,6 +82,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        
+        Route::resource('bank', BankController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy', 'show']);   
     });
 
     // Task Management Routes
@@ -136,6 +134,10 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group(function () {
 
     // Event
+    Route::resource('clients', ClientController::class);
+
+    
+    Route::resource('vendors', VendorController::class);
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
     Route::post('/events', [EventController::class, 'store'])->name('events.store');
@@ -157,6 +159,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group
     // Employees
     Route::resource('employees', EmployeeController::class);
 
+    // Perusahaan Routes
+    Route::resource('perusahaan', PerusahaanController::class);
+
     // Event Attendance
     Route::get('/event-attendances', [EventAttendanceController::class, 'index'])->name('event-attendances.index');
     Route::get('/event-attendances/create', [EventAttendanceController::class, 'create'])->name('event-attendances.create');
@@ -167,6 +172,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group
     Route::resource('event-attendances', EventAttendanceController::class);
     Route::get('/salary/history/pdf', [SalaryController::class, 'exportPdf'])->name('salary.history.pdf');
 });
+
 Route::middleware(['auth', RoleMiddleware::class . ':super_admin'])->group(function () {
     Route::get('/events/admin', [EventController::class, 'admin'])->name('events.admin');
 });
@@ -192,3 +198,5 @@ Route::middleware(['auth', RoleMiddleware::class . ':karyawan'])->group(function
     // ...existing code...
     Route::get('/my-salary', [SalaryController::class, 'mySalary'])->name('salary.my');
 });
+
+require __DIR__ . '/auth.php';
