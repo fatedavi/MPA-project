@@ -5,8 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'EPower') }}</title>
+        <title>PT MULTI POWER ABADI | EPOWER</title>
 
+            <!-- Favicon -->
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+        <!-- Fallback untuk browser modern -->
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -20,11 +24,8 @@
             <!-- Logo/Header -->
             <div class="mb-8 text-center">
                 <div class="flex justify-center">
-                    <svg class="w-16 h-16 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
                 </div>
-                <h1 class="text-3xl font-bold text-gray-800 mt-4">{{ config('app.name', 'EPower') }}</h1>
+
             </div>
 
             <!-- Card Container -->
