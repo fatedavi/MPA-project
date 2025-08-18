@@ -8,224 +8,291 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             color: #333;
+            font-size: 12px;
+            line-height: 1.4;
         }
         .header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #8D0907;
-            padding-bottom: 20px;
-        }
-        .company-name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #8D0907;
-            margin-bottom: 5px;
-        }
-        .company-info {
-            font-size: 12px;
-            color: #666;
-        }
-        .invoice-details {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
         }
-        .invoice-info {
+        .company-info {
             flex: 1;
         }
-        .client-info {
+        .company-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .company-details {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.3;
+        }
+        .invoice-title {
             flex: 1;
             text-align: right;
         }
-        .section-title {
-            font-size: 16px;
+        .invoice-title h1 {
+            font-size: 24px;
             font-weight: bold;
-            color: #8D0907;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
+            color: #333;
+            margin: 0;
+            letter-spacing: 2px;
         }
-        .info-row {
+        .invoice-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .client-section {
+            flex: 1;
+            margin-right: 30px;
+        }
+        .invoice-details {
+            flex: 1;
+            text-align: right;
+        }
+        .section-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #666;
+        }
+        .client-name {
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        .client-address {
+            font-size: 11px;
+            line-height: 1.3;
             margin-bottom: 8px;
         }
-        .label {
-            font-weight: bold;
-            display: inline-block;
-            width: 120px;
+        .reference-section {
+            margin: 20px 0;
         }
-        .value {
-            display: inline-block;
+        .reference-row {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+        .reference-label {
+            font-weight: bold;
+            width: 80px;
+            margin-right: 10px;
         }
         .items-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            font-size: 11px;
         }
         .items-table th {
-            background-color: #f8f9fa;
+            background-color: #f5f5f5;
             border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
+            padding: 8px;
+            text-align: center;
             font-weight: bold;
+            font-size: 10px;
         }
         .items-table td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 8px;
+            vertical-align: top;
         }
-        .text-right {
+        .items-table .desc-col {
+            text-align: left;
+        }
+        .items-table .num-col {
             text-align: right;
+        }
+        .items-table .center-col {
+            text-align: center;
         }
         .total-section {
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: right;
         }
-        .total-row {
-            margin-bottom: 10px;
-        }
-        .grand-total {
-            font-size: 18px;
-            font-weight: bold;
-            color: #8D0907;
-            border-top: 2px solid #8D0907;
-            padding-top: 10px;
-        }
-        .bank-info {
+        .payment-info {
             margin-top: 30px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
+            font-size: 11px;
         }
-        .signatures {
+        .payment-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .bank-details {
+            line-height: 1.4;
+        }
+        .footer {
             margin-top: 40px;
             display: flex;
             justify-content: space-between;
+            align-items: flex-end;
         }
-        .signature-box {
+        .signature-section {
             text-align: center;
-            flex: 1;
-            margin: 0 20px;
+            font-size: 11px;
         }
         .signature-line {
-            border-top: 1px solid #333;
-            margin-top: 50px;
-            padding-top: 10px;
+            width: 150px;
+            height: 60px;
+            border-bottom: 1px solid #333;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
         }
-        .page-break {
-            page-break-before: always;
+        .contact-info {
+            font-size: 10px;
+            color: #666;
+            text-align: right;
+        }
+        .terbilang {
+            font-style: italic;
+            font-size: 10px;
+            text-align: center;
+            margin: 10px 0;
+            color: #666;
+        }
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 11px;
+        }
+        .meta-label {
+            font-weight: bold;
+            width: 100px;
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <div class="header">
-        <div class="company-name">MPA PROJECT</div>
         <div class="company-info">
-            Professional Project Management & Consulting Services<br>
-            Jakarta, Indonesia
+            <div class="company-name">MPA</div>
+            <div class="company-details">
+                PT. Multi Power Abadi<br>
+                Jl. Ahmad Yani, Tambak IV No. 80<br>
+                Kecamatan Gayungan Kota Surabaya Jawa Timur 60235<br>
+                Email : multipowerabadi@gmail.com<br>
+                Telp: 031-5913774 ✦ Fax: 031127845<br>
+                WA/HP: +1.829.963.3.038.036
+            </div>
+        </div>
+        <div class="invoice-title">
+            <h1>INVOICE</h1>
         </div>
     </div>
 
-    <!-- Invoice Details -->
-    <div class="invoice-details">
-        <div class="invoice-info">
-            <div class="section-title">INVOICE</div>
-            <div class="info-row">
-                <span class="label">Invoice No:</span>
-                <span class="value">{{ $invoice->no_invoice }}</span>
-            </div>
-            <div class="info-row">
-                <span class="label">Date:</span>
-                <span class="value">{{ $invoice->tgl_invoice->format('d M Y') }}</span>
-            </div>
-            <div class="info-row">
-                <span class="label">Due Date:</span>
-                <span class="value">{{ $invoice->due_date->format('d M Y') }}</span>
-            </div>
-            <div class="info-row">
-                <span class="label">Status:</span>
-                <span class="value">{{ ucfirst($invoice->status) }}</span>
+    <!-- Invoice Meta Information -->
+    <div class="invoice-meta">
+        <div class="client-section">
+            <div class="section-label">Kepada :</div>
+            <div class="client-name">{{ $invoice->nama_client }}</div>
+            <div class="client-address">
+                {{ $invoice->alamat_client }}<br>
+                @if($invoice->up)
+                Up. {{ $invoice->up }}
+                @endif
             </div>
         </div>
         
-        <div class="client-info">
-            <div class="section-title">BILL TO</div>
-            <div class="info-row">
-                <strong>{{ $invoice->nama_client }}</strong>
+        <div class="invoice-details">
+            <div class="meta-row">
+                <span class="meta-label">No. Invoice :</span>
+                <span>{{ $invoice->no_invoice }}</span>
             </div>
-            <div class="info-row">
-                {{ $invoice->alamat_client }}
+            <div class="meta-row">
+                <span class="meta-label">Tgl. Invoice :</span>
+                <span>{{ $invoice->tgl_invoice->format('d M Y') }}</span>
             </div>
-            <div class="info-row">
-                <span class="label">UP:</span>
-                <span class="value">{{ $invoice->up }}</span>
+            <div class="meta-row">
+                <span class="meta-label">Due Date Inv :</span>
+                <span>{{ $invoice->due_date->format('d M Y') }}</span>
             </div>
         </div>
     </div>
 
-    <!-- Project Information -->
-    <div class="section-title">PROJECT INFORMATION</div>
-    <div class="info-row">
-        <span class="label">Admin Code:</span>
-        <span class="value">{{ $invoice->kd_admin }}</span>
+    <!-- Reference Section -->
+    <div class="reference-section">
+        <div class="reference-row">
+            <span class="reference-label">Referensi</span>
+            <span>:</span>
+        </div>
+        <div class="reference-row">
+            <span class="reference-label">No.</span>
+            <span class="reference-label" style="width: 100px;">No. BAST</span>
+        </div>
+        
+        @if($invoice->nbast)
+        <div class="reference-row">
+            <span class="reference-label">1.</span>
+            <span>{{ $invoice->nbast }}</span>
+        </div>
+        @endif
+        
+        @if($invoice->nbast2)
+        <div class="reference-row">
+            <span class="reference-label">2.</span>
+            <span>{{ $invoice->nbast2 }}</span>
+        </div>
+        @endif
+        
+        @if($invoice->nbast3)
+        <div class="reference-row">
+            <span class="reference-label">3.</span>
+            <span>{{ $invoice->nbast3 }}</span>
+        </div>
+        @endif
+        
+        @if($invoice->nbast4)
+        <div class="reference-row">
+            <span class="reference-label">4.</span>
+            <span>{{ $invoice->nbast4 }}</span>
+        </div>
+        @endif
+        
+        @if($invoice->nbast5)
+        <div class="reference-row">
+            <span class="reference-label">5.</span>
+            <span>{{ $invoice->nbast5 }}</span>
+        </div>
+        @endif
     </div>
-    
-    @if($invoice->nbast)
-    <div class="info-row">
-        <span class="label">NBAST:</span>
-        <span class="value">{{ $invoice->nbast }}</span>
-    </div>
-    @endif
-    
-    @if($invoice->nbast2)
-    <div class="info-row">
-        <span class="label">NBAST 2:</span>
-        <span class="value">{{ $invoice->nbast2 }}</span>
-    </div>
-    @endif
-    
-    @if($invoice->nbast3)
-    <div class="info-row">
-        <span class="label">NBAST 3:</span>
-        <span class="value">{{ $invoice->nbast3 }}</span>
-    </div>
-    @endif
-    
-    @if($invoice->nbast4)
-    <div class="info-row">
-        <span class="label">NBAST 4:</span>
-        <span class="value">{{ $invoice->nbast4 }}</span>
-    </div>
-    @endif
-    
-    @if($invoice->nbast5)
-    <div class="info-row">
-        <span class="label">NBAST 5:</span>
-        <span class="value">{{ $invoice->nbast5 }}</span>
-    </div>
-    @endif
 
     <!-- Items Table -->
-    <div class="section-title">SERVICES / ITEMS</div>
     <table class="items-table">
         <thead>
             <tr>
                 <th style="width: 5%">No</th>
-                <th style="width: 45%">Description</th>
-                <th style="width: 15%">Qty</th>
-                <th style="width: 15%">Unit Price</th>
-                <th style="width: 20%">Total</th>
+                <th style="width: 45%">Deskripsi</th>
+                <th style="width: 10%">Qty</th>
+                <th style="width: 10%">Satuan</th>
+                <th style="width: 15%">Harga</th>
+                <th style="width: 15%">Jumlah</th>
             </tr>
         </thead>
         <tbody>
             @foreach($invoice->detail_invoice_array as $index => $item)
             <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $item['deskripsi'] }}</td>
-                <td class="text-right">{{ number_format($item['qty'], 2) }} {{ $item['satuan'] ?? 'pcs' }}</td>
-                <td class="text-right">Rp {{ number_format($item['harga'], 0, ',', '.') }}</td>
-                <td class="text-right">Rp {{ number_format($item['total'], 0, ',', '.') }}</td>
+                <td class="center-col">{{ $index + 1 }}</td>
+                <td class="desc-col">{{ $item['deskripsi'] }}</td>
+                <td class="center-col">{{ number_format($item['qty'], 2) }}</td>
+                <td class="center-col">{{ $item['satuan'] ?? 'LS' }}</td>
+                <td class="num-col">Rp. {{ number_format($item['harga'], 0, ',', '.') }}</td>
+                <td class="num-col">Rp. {{ number_format($item['total'], 0, ',', '.') }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -233,72 +300,62 @@
 
     <!-- Total Section -->
     <div class="total-section">
-        <div class="total-row">
-            <span style="font-weight: bold; margin-right: 20px;">Total Amount:</span>
-            <span style="font-weight: bold;">Rp {{ number_format($invoice->total_invoice, 0, ',', '.') }}</span>
+        <div style="text-align: right; margin-bottom: 10px;">
+            <div style="margin-bottom: 8px;">
+                <span style="font-weight: bold; margin-right: 50px;">JUMLAH</span>
+                <span style="font-weight: bold;">Rp. {{ number_format($invoice->total_invoice, 0, ',', '.') }}</span>
+            </div>
+            <div style="margin-bottom: 8px;">
+                <span style="font-weight: bold; margin-right: 50px;">PPN 11%</span>
+                <span style="font-weight: bold;">Rp. {{ number_format($invoice->total_invoice * 0.11, 0, ',', '.') }}</span>
+            </div>
+            <div style="border-top: 2px solid #333; padding-top: 8px; margin-top: 8px;">
+                <span style="font-weight: bold; margin-right: 30px; font-size: 13px;">TOTAL HARGA</span>
+                <span style="font-weight: bold; font-size: 13px;">Rp. {{ number_format($invoice->total_invoice * 1.11, 0, ',', '.') }}</span>
+            </div>
         </div>
     </div>
 
-    <!-- Bank Information -->
-    <div class="bank-info">
-        <div class="section-title">PAYMENT INFORMATION</div>
-        <div class="info-row">
-            <span class="label">Bank:</span>
-            <span class="value">{{ $invoice->nama_bank }}</span>
-        </div>
-        <div class="info-row">
-            <span class="label">Account Name:</span>
-            <span class="value">{{ $invoice->an }}</span>
-        </div>
-        <div class="info-row">
-            <span class="label">Account Number:</span>
-            <span class="value">{{ $invoice->ac }}</span>
-        </div>
-    </div>
+<div class="terbilang">
+    Terbilang: {{ \Illuminate\Support\Str::title(\Riskihajar\Terbilang\Facades\Terbilang::make((int) round($invoice->total_invoice * 1.11))) }} Rupiah
+</div>
 
-    <!-- Signatures -->
-    <div class="signatures">
-        <div class="signature-box">
-            @if($invoice->ttd)
-            <div class="signature-line">✓</div>
-            @else
-            <div class="signature-line">_____________</div>
-            @endif
-            <div>Invoice</div>
+
+
+    <!-- Payment Information -->
+    <div class="payment-info">
+        <div class="payment-label">Pembayaran dapat dilakukan berupa Transfer ke:</div>
+        <div class="bank-details">
+            Bank : {{ $invoice->nama_bank ?? 'BNI Cabang Surabaya' }}<br>
+            A/n : {{ $invoice->an ?? 'PT. Multi Power Abadi' }}<br>
+            A/c : {{ $invoice->ac ?? '8112728253' }}
         </div>
-        
-        <div class="signature-box">
-            @if($invoice->ttdkwitansi)
-            <div class="signature-line">✓</div>
-            @else
-            <div class="signature-line">_____________</div>
-            @endif
-            <div>Kwitansi</div>
-        </div>
-        
-        <div class="signature-box">
-            @if($invoice->ttdbast)
-            <div class="signature-line">✓</div>
-            @else
-            <div class="signature-line">_____________</div>
-            @endif
-            <div>BAST</div>
-        </div>
-        
-        <div class="signature-box">
-            @if($invoice->ttdbakn)
-            <div class="signature-line">✓</div>
-            @else
-            <div class="signature-line">_____________</div>
-            @endif
-            <div>BAKN</div>
+        <br>
+        <div style="font-size: 10px;">
+            Jika sudah di lakukan pembayaran mohon konfirmasi ke <strong>multipowerabadi@gmail.com</strong><br>
+            atau ke 08112728253 / 081024272825
         </div>
     </div>
 
     <!-- Footer -->
-    <div style="margin-top: 50px; text-align: center; font-size: 12px; color: #666;">
-        <p>Thank you for your business!</p>
-        <p>This is a computer generated document. No signature required.</p>
+    <div class="footer">
+        <div class="contact-info">
+            <div>Surabaya, {{ date('d M Y') }}</div>
+        </div>
+        <div class="signature-section">
+            <div class="signature-line">
+                @if($invoice->ttd)
+                <span style="font-size: 24px;">MPA</span>
+                @endif
+            </div>
+            <div>( Mariyadi, ST, MM )</div>
+            <div>Direktur</div>
+        </div>
+    </div>
+
+    <!-- Footer URL -->
+    <div style="margin-top: 30px; font-size: 9px; color: #999; text-align: center;">
+        https://erpower.multipowerabadi.co.id/invoice/cetak-invoice/ebook.php?invoice=MPA0638
     </div>
 </body>
 </html>
