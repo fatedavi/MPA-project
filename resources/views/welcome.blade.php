@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>EPower - Welcome</title>
+        <title>PT MULTI POWER ABADI | EPOWER</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -158,7 +158,7 @@
                         </div>
 
                         <!-- Additional Features -->
-                        <div class="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                        <div class="py-20 mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
                             <div class="text-center group">
                                 <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/20 transition-all duration-300 border border-white/20">
                                     <i class="fas fa-calendar-alt text-2xl text-white/90"></i>
@@ -201,5 +201,143 @@
             <div class="absolute bottom-1/4 left-1/4 w-3 h-3 bg-white/80 rounded-full animate-bounce animation-delay-2000 z-20"></div>
             <div class="absolute top-1/2 right-1/4 w-2 h-2 bg-white/50 rounded-full animate-bounce animation-delay-3000 z-20"></div>
         </div>
+
+        <!-- Footer Section -->
+        <footer class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 relative z-10">
+            <div class="max-w-7xl mx-auto px-6 py-16">
+                <!-- Main Footer Content -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                    <!-- Company Info -->
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg border border-white/30">
+                                <i class="fas fa-bolt text-xl text-white"></i>
+                            </div>
+                            <span class="text-2xl font-bold text-white">EPower</span>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Your comprehensive business management solution. Streamline operations, 
+                            manage resources efficiently, and power your business to new heights.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/20 group">
+                                <i class="fab fa-facebook-f text-white/80 group-hover:text-white transition-colors"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/20 group">
+                                <i class="fab fa-twitter text-white/80 group-hover:text-white transition-colors"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/20 group">
+                                <i class="fab fa-linkedin-in text-white/80 group-hover:text-white transition-colors"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/20 group">
+                                <i class="fab fa-instagram text-white/80 group-hover:text-white transition-colors"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center group">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-white/60 group-hover:text-white transition-colors"></i>
+                                Dashboard
+                            </a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center group">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-white/60 group-hover:text-white transition-colors"></i>
+                                Employee Management
+                            </a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center group">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-white/60 group-hover:text-white transition-colors"></i>
+                                Reports & Analytics
+                            </a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center group">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-white/60 group-hover:text-white transition-colors"></i>
+                                Settings
+                            </a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white mb-4">Features</h3>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center group">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-white/60 group-hover:text-white transition-colors"></i>
+                                Attendance Tracking
+                            </a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center group">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-white/60 group-hover:text-white transition-colors"></i>
+                                Salary Management
+                            </a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center group">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-white/60 group-hover:text-white transition-colors"></i>
+                                Event Management
+                            </a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center group">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-white/60 group-hover:text-white transition-colors"></i>
+                                Invoice System
+                            </a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-map-marker-alt text-white/60 mt-1 text-sm"></i>
+                                <p class="text-gray-300 text-sm">Jl. Sudirman No. 123, Jakarta Pusat, Indonesia</p>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-phone text-white/60 text-sm"></i>
+                                <p class="text-gray-300 text-sm">+62 21 1234 5678</p>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-envelope text-white/60 text-sm"></i>
+                                <p class="text-gray-300 text-sm">info@epower.com</p>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-clock text-white/60 text-sm"></i>
+                                <p class="text-gray-300 text-sm">Mon - Fri: 9:00 AM - 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Newsletter Subscription -->
+                <div class="border-t border-white/10 pt-8 mb-8">
+                    <div class="max-w-2xl mx-auto text-center">
+                        <h3 class="text-xl font-semibold text-white mb-4">Stay Updated</h3>
+                        <p class="text-gray-300 mb-6">Subscribe to our newsletter for the latest updates and insights</p>
+                        <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                            <input type="email" placeholder="Enter your email" 
+                                   class="flex-1 px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/30 transition-all duration-300">
+                            <button class="px-6 py-3 bg-white/20 backdrop-blur-md text-white font-semibold rounded-lg hover:bg-white/30 transition-all duration-300 border border-white/30 hover:border-white/50 flex items-center justify-center space-x-2">
+                                <span>Subscribe</span>
+                                <i class="fas fa-paper-plane text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Footer -->
+                <div class="border-t border-white/10 pt-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                        <div class="text-gray-400 text-sm">
+                            <p>&copy; 2024 EPower. All rights reserved. | 
+                                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a> | 
+                                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                            </p>
+                        </div>
+                        <div class="flex items-center space-x-6 text-sm">
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">Support</a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">Documentation</a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">API</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>

@@ -1,7 +1,13 @@
 <x-guest-layout>
     <div class="text-center mb-8">
+        <div class="flex items-center justify-center mb-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-[#8D0907] to-[#B91C1C] rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-bolt text-2xl text-white"></i>
+            </div>
+            <span class="text-2xl font-bold text-gray-900 ml-3">EPower</span>
+        </div>
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
-        <p class="text-gray-600">Join MPA and start managing your projects</p>
+        <p class="text-gray-600">Join EPower and start managing your business</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}" class="space-y-6">
