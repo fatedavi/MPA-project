@@ -316,10 +316,9 @@
         </div>
     </div>
 
-<div class="terbilang">
-    Terbilang: {{ \Illuminate\Support\Str::title(\Riskihajar\Terbilang\Facades\Terbilang::make((int) round($invoice->total_invoice * 1.11))) }} Rupiah
-</div>
-
+        <div class="terbilang">
+    Terbilang: <b>{{ strtoupper(\Riskihajar\Terbilang\Facades\Terbilang::make((int) round($invoice->total_invoice * 1.11))) }} RUPIAH</b>
+        </div>
 
 
     <!-- Payment Information -->
