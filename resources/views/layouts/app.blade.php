@@ -48,20 +48,22 @@
                     <!-- Dashboard -->
                     <a href="{{ route('dashboard') }}"
                         class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('dashboard') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                        <i class="fas fa-tachometer-alt w-5 h-5 mr-3 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400' }}"></i>
+                        <i
+                            class="fas fa-tachometer-alt w-5 h-5 mr-3 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400' }}"></i>
                         Dashboard
                     </a>
-                    
+
                     <!-- Master Data Section -->
                     <div class="pt-4">
                         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Master Data
                         </h3>
-                                                @auth
+                        @auth
                             @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
                                 <!-- Perusahaan Management -->
                                 <a href="{{ route('perusahaan.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('perusahaan.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-building w-5 h-5 mr-3 {{ request()->routeIs('perusahaan.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-building w-5 h-5 mr-3 {{ request()->routeIs('perusahaan.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Perusahaan
                                 </a>
                             @endif
@@ -71,17 +73,19 @@
                                 <!-- Clients Management -->
                                 <a href="{{ route('clients.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('clients.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-users w-5 h-5 mr-3 {{ request()->routeIs('clients.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-users w-5 h-5 mr-3 {{ request()->routeIs('clients.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Clients
                                 </a>
                             @endif
                         @endauth
-                            @auth
+                        @auth
                             @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
                                 <!-- Bank Management -->
                                 <a href="{{ route('bank.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('bank.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-university w-5 h-5 mr-3 {{ request()->routeIs('bank.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-university w-5 h-5 mr-3 {{ request()->routeIs('bank.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Bank
                                 </a>
                             @endif
@@ -91,19 +95,20 @@
                                 <!-- Vendor Management -->
                                 <a href="{{ route('vendors.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('vendors.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-users w-5 h-5 mr-3 {{ request()->routeIs('vendors.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-users w-5 h-5 mr-3 {{ request()->routeIs('vendors.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Vendor
                                 </a>
                             @endif
                         @endauth
-                        
-                        </div>
-                    
+
+                    </div>
+
                     <!-- HR Management Section -->
                     <div class="pt-4">
                         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">HR Management
                         </h3>
-{{-- 
+                        {{--
                         @auth
                             @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
                                 <!-- Admin Management -->
@@ -124,7 +129,8 @@
                                 <!-- Employee Management -->
                                 <a href="{{ route('employees.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('employees.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-user-tie w-5 h-5 mr-3 {{ request()->routeIs('employees.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-user-tie w-5 h-5 mr-3 {{ request()->routeIs('employees.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Employee
                                 </a>
                             @endif
@@ -135,7 +141,8 @@
                                 <!-- Cuti Management -->
                                 <a href="{{ route('cuti.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('cuti.index') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-calendar-alt w-5 h-5 mr-3 {{ request()->routeIs('cuti.index') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-calendar-alt w-5 h-5 mr-3 {{ request()->routeIs('cuti.index') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Cuti
                                 </a>
                             @endif
@@ -146,7 +153,8 @@
                                 <!-- Daftar Cuti Management -->
                                 <a href="{{ route('cuti.admin.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('cuti.admin.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-list-alt w-5 h-5 mr-3 {{ request()->routeIs('cuti.admin.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-list-alt w-5 h-5 mr-3 {{ request()->routeIs('cuti.admin.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Daftar Cuti
                                 </a>
                             @endif
@@ -157,7 +165,8 @@
                                 <!-- Gaji Management -->
                                 <a href="{{ route('salary.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('salary.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-money-bill-wave w-5 h-5 mr-3 {{ request()->routeIs('salary.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-money-bill-wave w-5 h-5 mr-3 {{ request()->routeIs('salary.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Gaji
                                 </a>
                             @endif
@@ -168,7 +177,8 @@
                                 <!-- Absen Karyawan Management -->
                                 <a href="{{ route('attendances.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('attendances.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-clock w-5 h-5 mr-3 {{ request()->routeIs('attendances.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-clock w-5 h-5 mr-3 {{ request()->routeIs('attendances.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Absen Karyawan
                                 </a>
                             @endif
@@ -179,7 +189,8 @@
                                 <!-- Slip Gaji Management -->
                                 <a href="{{ route('salary.my') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('salary.my') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-file-invoice-dollar w-5 h-5 mr-3 {{ request()->routeIs('salary.my') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-file-invoice-dollar w-5 h-5 mr-3 {{ request()->routeIs('salary.my') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Slip Gaji
                                 </a>
                             @endif
@@ -191,7 +202,8 @@
                                 <a href="{{ route('events.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
                                             {{ request()->routeIs('events.*') && !request()->routeIs('events.admin') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-calendar w-5 h-5 mr-3 {{ request()->routeIs('events.*') && !request()->routeIs('events.admin') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-calendar w-5 h-5 mr-3 {{ request()->routeIs('events.*') && !request()->routeIs('events.admin') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Event
                                 </a>
                             @endif
@@ -202,7 +214,8 @@
                                 <!-- Event Attendances Management -->
                                 <a href="{{ route('event-attendances.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('event-attendances.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-user-check w-5 h-5 mr-3 {{ request()->routeIs('event-attendances.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-user-check w-5 h-5 mr-3 {{ request()->routeIs('event-attendances.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Event Attendances
                                 </a>
                             @endif
@@ -214,7 +227,8 @@
                                 <a href="{{ route('events.admin') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
                                             {{ request()->routeIs('events.admin') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-check-double w-5 h-5 mr-3 {{ request()->routeIs('events.admin') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-check-double w-5 h-5 mr-3 {{ request()->routeIs('events.admin') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Event Approve
                                 </a>
                             @endif
@@ -228,7 +242,8 @@
                                 <!-- Users Management -->
                                 <a href="{{ route('users.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('users.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-users-cog w-5 h-5 mr-3 {{ request()->routeIs('users.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    <i
+                                        class="fas fa-users-cog w-5 h-5 mr-3 {{ request()->routeIs('users.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Users
                                 </a>
                             @endif
@@ -247,7 +262,8 @@
                         <!-- MPA Invoice -->
                         <a href="{{ route('invoice.mpa') }}"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('invoice.mpa') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                            <i class="fas fa-file-invoice w-5 h-5 mr-3 {{ request()->routeIs('invoice.mpa') ? 'text-white' : 'text-gray-400' }}"></i>
+                            <i
+                                class="fas fa-file-invoice w-5 h-5 mr-3 {{ request()->routeIs('invoice.mpa') ? 'text-white' : 'text-gray-400' }}"></i>
                             MPA Invoice
                         </a>
 
