@@ -401,21 +401,26 @@
 
                     <!-- BA Section -->
                     <div class="pt-4">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Berita Acara
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Invoice Old Archive
                         </h3>
 
                         <!-- BAST -->
-                        <a href="#"
+                        <a href="{{ route('invoice.old') }}"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <i class="fas fa-file-signature w-5 h-5 mr-3 text-gray-400"></i>
-                            BAST
+                            Invoice Old
                         </a>
 
                         <!-- BAKN -->
-                        <a href="#"
+                        <a href="{{ route('invoice.old19') }}"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <i class="fas fa-file-alt w-5 h-5 mr-3 text-gray-400"></i>
-                            BAKN
+                            Invoice Old 2019
+                        </a>
+                        <a href="{{ route('invoice.old_all') }}"
+                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                            <i class="fas fa-file-alt w-5 h-5 mr-3 text-gray-400"></i>
+                            Invoice Old All
                         </a>
                     </div>
 
