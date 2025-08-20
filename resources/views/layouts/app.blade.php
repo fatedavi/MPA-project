@@ -332,7 +332,7 @@
                     </div>
 
                     <!-- Purchase Order Section -->
-                    <div class="pt-4">
+                    {{-- <div class="pt-4">
                         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Purchase
                             Order</h3>
 
@@ -341,10 +341,10 @@
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <i class="fas fa-shopping-cart w-5 h-5 mr-3 text-gray-400"></i>
                             Purchase Order
-                        </a>
+                        </a> --}}
 
-                        <!-- PO 2019 -->
-                        {{-- <a href="#"
+                    <!-- PO 2019 -->
+                    {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -353,10 +353,10 @@
                             </svg>
                             PO 2019
                         </a> --}}
-                    </div>
+                    {{-- </div> --}}
 
                     <!-- SPH Section -->
-                    <div class="pt-4">
+                    {{-- <div class="pt-4">
                         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Surat
                             Penawaran Harga</h3>
 
@@ -365,10 +365,10 @@
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <i class="fas fa-file-contract w-5 h-5 mr-3 text-gray-400"></i>
                             SPH All
-                        </a>
+                        </a> --}}
 
-                        <!-- SPH Rajata -->
-                        {{-- <a href="#"
+                    <!-- SPH Rajata -->
+                    {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -377,10 +377,10 @@
                             </svg>
                             SPH Rajata
                         </a> --}}
-                    </div>
+                    {{-- </div> --}}
 
                     <!-- Realisasi Section -->
-                    <div class="pt-4">
+                    {{-- <div class="pt-4">
                         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Realisasi &
                             Justifikasi</h3>
 
@@ -397,40 +397,51 @@
                             <i class="fas fa-question-circle w-5 h-5 mr-3 text-gray-400"></i>
                             Justifikasi
                         </a>
-                    </div>
+                    </div> --}}
 
-                    <!-- BA Section -->
+                    <!-- Invoice Old Section -->
                     <div class="pt-4">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Invoice Old Archive
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Invoice Old
+                            Archive
                         </h3>
 
-                        <!-- BAST -->
+
                         <a href="{{ route('invoice.old') }}"
-                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                            <i class="fas fa-file-signature w-5 h-5 mr-3 text-gray-400"></i>
+                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
+        {{ request()->routeIs('invoice.old') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                            <i
+                                class="fas fa-file-signature w-5 h-5 mr-3
+        {{ request()->routeIs('invoice.old') ? 'text-white' : 'text-gray-400' }}"></i>
                             Invoice Old
                         </a>
 
-                        <!-- BAKN -->
                         <a href="{{ route('invoice.old19') }}"
-                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                            <i class="fas fa-file-alt w-5 h-5 mr-3 text-gray-400"></i>
+                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
+        {{ request()->routeIs('invoice.old19') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                            <i
+                                class="fas fa-file-alt w-5 h-5 mr-3
+        {{ request()->routeIs('invoice.old19') ? 'text-white' : 'text-gray-400' }}"></i>
                             Invoice Old 2019
                         </a>
+
                         <a href="{{ route('invoice.old_all') }}"
-                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                            <i class="fas fa-file-alt w-5 h-5 mr-3 text-gray-400"></i>
+                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
+        {{ request()->routeIs('invoice.old_all') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                            <i
+                                class="fas fa-file-alt w-5 h-5 mr-3
+        {{ request()->routeIs('invoice.old_all') ? 'text-white' : 'text-gray-400' }}"></i>
                             Invoice Old All
                         </a>
+
                     </div>
 
                     <!-- Reports Section -->
-                    <div class="pt-4">
+                    {{-- <div class="pt-4">
                         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Reports &
-                            Analytics</h3>
+                            Analytics</h3> --}}
 
-                        <!-- Financial Reports -->
-                        {{-- <a href="#"
+                    <!-- Financial Reports -->
+                    {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -440,8 +451,8 @@
                             Financial Reports
                         </a> --}}
 
-                        <!-- Project Reports -->
-                        <a href="#"
+                    <!-- Project Reports -->
+                    {{-- <a href="#"
                             class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <i class="fas fa-chart-bar w-5 h-5 mr-3 text-gray-400"></i>
                             Project Reports
@@ -453,10 +464,10 @@
                             <i class="fas fa-chart-pie w-5 h-5 mr-3 text-gray-400"></i>
                             Entity Reports
                         </a>
-                    </div>
+                    </div> --}}
 
                     <!-- Settings Section -->
-                    <div class="pt-4">
+                    {{-- <div class="pt-4">
                         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">System</h3>
 
                         <!-- Settings -->
@@ -472,7 +483,7 @@
                             <i class="fas fa-signature w-5 h-5 mr-3 text-gray-400"></i>
                             Digital Signature
                         </a>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Divider -->

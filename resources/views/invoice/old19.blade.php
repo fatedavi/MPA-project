@@ -72,11 +72,12 @@
                         <div class="ml-4">
                             <p class="text-purple-100 text-sm font-medium">Total Value</p>
                             <p class="text-lg font-bold">IDR
-                                {{ number_format($invoices->sum('total_invoice'), 0, ',', '.') }}
+                                {{ number_format($totalValue, 0, ',', '.') }}
                             </p>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- Main Content -->
@@ -148,41 +149,51 @@
                         <table class="min-w-full divide-y divide-gray-200" id="invoiceTable">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        <input type="checkbox" id="selectAll"
+                                            class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-file-invoice mr-2"></i>Invoice Code
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-user mr-2"></i>Client Info
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-list mr-2"></i>Document Details
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-money-bill-wave mr-2"></i>Amount
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-university mr-2"></i>Bank Info
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-calendar mr-2"></i>Dates
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($invoices as $invoice)
-                                    <tr class="hover:bg-gray-50 transition-colors duration-200 invoice-row" 
-                                        data-client="{{ $invoice->nama_client }}" 
-                                        data-type="{{ $invoice->jenis_no }}" 
+                                    <tr class="hover:bg-gray-50 transition-colors duration-200 invoice-row"
+                                        data-client="{{ $invoice->nama_client }}"
+                                        data-type="{{ $invoice->jenis_no }}"
                                         data-date="{{ $invoice->tgl_invoice }}">
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <input type="checkbox" class="row-checkbox rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
+                                            <input type="checkbox"
+                                                class="row-checkbox rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#8D0907] to-[#B91C1C] flex items-center justify-center text-white font-bold text-sm">
+                                                <div
+                                                    class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#8D0907] to-[#B91C1C] flex items-center justify-center text-white font-bold text-sm">
                                                     {{ substr($invoice->kd_invoice, -3) }}
                                                 </div>
                                                 <div class="ml-4">
@@ -198,17 +209,19 @@
                                         <td class="px-6 py-4">
                                             <div class="text-sm font-medium text-gray-900 max-w-xs">
                                                 <i class="fas fa-building mr-1 text-[#8D0907]"></i>
-                                                <div class="font-semibold truncate" title="{{ $invoice->nama_client }}">
+                                                <div class="font-semibold truncate"
+                                                    title="{{ $invoice->nama_client }}">
                                                     {{ Str::limit($invoice->nama_client, 35) }}
                                                 </div>
                                             </div>
-                                            @if($invoice->alamat_client)
-                                                <div class="text-xs text-gray-500 max-w-xs mt-1" title="{{ $invoice->alamat_client }}">
+                                            @if ($invoice->alamat_client)
+                                                <div class="text-xs text-gray-500 max-w-xs mt-1"
+                                                    title="{{ $invoice->alamat_client }}">
                                                     <i class="fas fa-map-marker-alt mr-1"></i>
                                                     {{ Str::limit($invoice->alamat_client, 50) }}
                                                 </div>
                                             @endif
-                                            @if($invoice->up && $invoice->up !== '-')
+                                            @if ($invoice->up && $invoice->up !== '-')
                                                 <div class="text-xs text-blue-600 mt-1">
                                                     <i class="fas fa-user-tie mr-1"></i>
                                                     UP: {{ Str::limit($invoice->up, 20) }}
@@ -217,9 +230,10 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="space-y-1">
-                                                @if($invoice->jenis_no)
-                                                    <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                        @if(str_contains(strtolower($invoice->jenis_no), 'po')) bg-blue-100 text-blue-800
+                                                @if ($invoice->jenis_no)
+                                                    <div
+                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                                        @if (str_contains(strtolower($invoice->jenis_no), 'po')) bg-blue-100 text-blue-800
                                                         @elseif(str_contains(strtolower($invoice->jenis_no), 'fpb')) bg-green-100 text-green-800
                                                         @elseif(str_contains(strtolower($invoice->jenis_no), 'kontrak')) bg-purple-100 text-purple-800
                                                         @elseif(str_contains(strtolower($invoice->jenis_no), 'sppk') || str_contains(strtolower($invoice->jenis_no), 'spk')) bg-orange-100 text-orange-800
@@ -227,8 +241,9 @@
                                                         {{ $invoice->jenis_no }}
                                                     </div>
                                                 @endif
-                                                @if($invoice->no_fpb && $invoice->no_fpb !== '-')
-                                                    <div class="text-xs text-gray-600 max-w-xs truncate" title="{{ $invoice->no_fpb }}">
+                                                @if ($invoice->no_fpb && $invoice->no_fpb !== '-')
+                                                    <div class="text-xs text-gray-600 max-w-xs truncate"
+                                                        title="{{ $invoice->no_fpb }}">
                                                         <i class="fas fa-file-alt mr-1"></i>
                                                         {{ Str::limit($invoice->no_fpb, 25) }}
                                                     </div>
@@ -236,7 +251,7 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            @if($invoice->total_invoice > 0)
+                                            @if ($invoice->total_invoice > 0)
                                                 <div class="text-lg font-bold text-[#8D0907]">
                                                     IDR {{ number_format($invoice->total_invoice, 0, ',', '.') }}
                                                 </div>
@@ -258,13 +273,14 @@
                                                     {{ Str::limit($invoice->nama_bank, 25) }}
                                                 </div>
                                             </div>
-                                            @if($invoice->an)
-                                                <div class="text-xs text-gray-600 max-w-xs mt-1 truncate" title="{{ $invoice->an }}">
+                                            @if ($invoice->an)
+                                                <div class="text-xs text-gray-600 max-w-xs mt-1 truncate"
+                                                    title="{{ $invoice->an }}">
                                                     <i class="fas fa-user mr-1"></i>
                                                     A/N: {{ Str::limit($invoice->an, 20) }}
                                                 </div>
                                             @endif
-                                            @if($invoice->ac)
+                                            @if ($invoice->ac)
                                                 <div class="text-xs text-gray-600 mt-1">
                                                     <i class="fas fa-credit-card mr-1"></i>
                                                     {{ $invoice->ac }}
@@ -279,7 +295,7 @@
                                                 </div>
                                                 <div class="text-xs text-gray-500">Invoice Date</div>
                                             </div>
-                                            @if($invoice->due_date && $invoice->due_date !== '0000-00-00')
+                                            @if ($invoice->due_date && $invoice->due_date !== '0000-00-00')
                                                 <div class="text-sm text-gray-900 mt-2">
                                                     <i class="fas fa-calendar-day mr-1 text-yellow-600"></i>
                                                     <div class="font-medium">
@@ -291,9 +307,10 @@
                                                         $invoiceDate = \Carbon\Carbon::parse($invoice->tgl_invoice);
                                                         $daysDiff = $invoiceDate->diffInDays($dueDate);
                                                     @endphp
-                                                    <div class="text-xs 
-                                                        @if($daysDiff <= 30) text-red-600 
-                                                        @elseif($daysDiff <= 60) text-yellow-600 
+                                                    <div
+                                                        class="text-xs
+                                                        @if ($daysDiff <= 30) text-red-600
+                                                        @elseif($daysDiff <= 60) text-yellow-600
                                                         @else text-green-600 @endif">
                                                         {{ $daysDiff }} days term
                                                     </div>
@@ -335,15 +352,18 @@
                             </div>
                             <div>
                                 <span class="text-gray-500">Non-zero Amounts:</span>
-                                <span class="font-medium text-gray-900">{{ $invoices->where('total_invoice', '>', 0)->count() }}</span>
+                                <span
+                                    class="font-medium text-gray-900">{{ $invoices->where('total_invoice', '>', 0)->count() }}</span>
                             </div>
                             <div>
                                 <span class="text-gray-500">Unique Clients:</span>
-                                <span class="font-medium text-gray-900">{{ $invoices->pluck('nama_client')->unique()->count() }}</span>
+                                <span
+                                    class="font-medium text-gray-900">{{ $invoices->pluck('nama_client')->unique()->count() }}</span>
                             </div>
                             <div>
                                 <span class="text-gray-500">Document Types:</span>
-                                <span class="font-medium text-gray-900">{{ $invoices->pluck('jenis_no')->unique()->filter()->count() }}</span>
+                                <span
+                                    class="font-medium text-gray-900">{{ $invoices->pluck('jenis_no')->unique()->filter()->count() }}</span>
                             </div>
                         </div>
                     </div>
@@ -353,64 +373,64 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const clientFilter = document.getElementById('clientFilter');
-        const typeFilter = document.getElementById('typeFilter');
-        const dateFilter = document.getElementById('dateFilter');
-        const resetButton = document.getElementById('resetFilter');
-        const selectAll = document.getElementById('selectAll');
-        const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const clientFilter = document.getElementById('clientFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            const dateFilter = document.getElementById('dateFilter');
+            const resetButton = document.getElementById('resetFilter');
+            const selectAll = document.getElementById('selectAll');
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
 
-        // Filter functionality
-        function filterTable() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const clientValue = clientFilter.value;
-            const typeValue = typeFilter.value;
-            const dateValue = dateFilter.value;
-            const rows = document.querySelectorAll('.invoice-row');
+            // Filter functionality
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const clientValue = clientFilter.value;
+                const typeValue = typeFilter.value;
+                const dateValue = dateFilter.value;
+                const rows = document.querySelectorAll('.invoice-row');
 
-            rows.forEach(row => {
-                const client = row.dataset.client.toLowerCase();
-                const type = row.dataset.type;
-                const date = row.dataset.date;
-                const text = row.textContent.toLowerCase();
+                rows.forEach(row => {
+                    const client = row.dataset.client.toLowerCase();
+                    const type = row.dataset.type;
+                    const date = row.dataset.date;
+                    const text = row.textContent.toLowerCase();
 
-                const matchesSearch = text.includes(searchTerm);
-                const matchesClient = !clientValue || client.includes(clientValue.toLowerCase());
-                const matchesType = !typeValue || type === typeValue;
-                const matchesDate = !dateValue || date === dateValue;
+                    const matchesSearch = text.includes(searchTerm);
+                    const matchesClient = !clientValue || client.includes(clientValue.toLowerCase());
+                    const matchesType = !typeValue || type === typeValue;
+                    const matchesDate = !dateValue || date === dateValue;
 
-                if (matchesSearch && matchesClient && matchesType && matchesDate) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                    if (matchesSearch && matchesClient && matchesType && matchesDate) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            // Event listeners for filters
+            searchInput.addEventListener('input', filterTable);
+            clientFilter.addEventListener('change', filterTable);
+            typeFilter.addEventListener('change', filterTable);
+            dateFilter.addEventListener('change', filterTable);
+
+            // Reset filters
+            resetButton.addEventListener('click', function() {
+                searchInput.value = '';
+                clientFilter.value = '';
+                typeFilter.value = '';
+                dateFilter.value = '';
+                filterTable();
             });
-        }
 
-        // Event listeners for filters
-        searchInput.addEventListener('input', filterTable);
-        clientFilter.addEventListener('change', filterTable);
-        typeFilter.addEventListener('change', filterTable);
-        dateFilter.addEventListener('change', filterTable);
-
-        // Reset filters
-        resetButton.addEventListener('click', function() {
-            searchInput.value = '';
-            clientFilter.value = '';
-            typeFilter.value = '';
-            dateFilter.value = '';
-            filterTable();
+            // Select all functionality
+            selectAll.addEventListener('change', function() {
+                const visibleCheckboxes = Array.from(rowCheckboxes).filter(cb =>
+                    cb.closest('.invoice-row').style.display !== 'none'
+                );
+                visibleCheckboxes.forEach(cb => cb.checked = this.checked);
+            });
         });
-
-        // Select all functionality
-        selectAll.addEventListener('change', function() {
-            const visibleCheckboxes = Array.from(rowCheckboxes).filter(cb => 
-                cb.closest('.invoice-row').style.display !== 'none'
-            );
-            visibleCheckboxes.forEach(cb => cb.checked = this.checked);
-        });
-    });
     </script>
 </x-app-layout>
