@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class InvoiceController extends Controller
 {
@@ -305,5 +307,109 @@ class InvoiceController extends Controller
         // Clean filename - remove invalid characters
         $cleanFilename = preg_replace('/[^a-zA-Z0-9\-_\.]/', '_', $invoice->no_invoice);
         return $pdf->download('invoice-' . $cleanFilename . '.pdf');
+    }
+   public function old()
+{
+    // ambil data dari database lama (tabel invoice_all)
+    $invoices = DB::table('invoice')
+        ->select([
+            'kd_invoice',
+            'tgl_invoice',
+            'nama_client',
+            'alamat_client',
+            'up',
+            'jenis_no',
+            'no_fpb',
+            'due_date',
+            'uraian',
+            'qty',
+            'satuan',
+            'harga',
+            'nama_bank',
+            'an',
+            'ac',
+        ])
+        ->orderBy('tgl_invoice', 'desc')
+        ->paginate(10);
+
+    return view('invoice.old', compact('invoices'));
+}
+ public function old19()
+    {
+        // Mengambil data invoice dari tabel invoice_all_19 dengan pagination
+        $invoices = DB::table('invoice_all_19')
+            ->select([
+                'kd_invoice',
+                'tgl_invoice',
+                'nama_client',
+                'alamat_client',
+                'kd_admin',
+                'up',
+                'jenis_no',
+                'no_fpb',
+                'due_date',
+                'nama_bank',
+                'an',
+                'ac',
+                'total_invoice'
+            ])
+            ->orderBy('tgl_invoice', 'desc')
+            ->paginate(10);
+
+        return view('invoice.old19', compact('invoices'));
+    }
+    public function old_all(Request $request): View
+    {
+        $query = DB::table('invoice_all')
+            ->select([
+                'kd_invoice',
+                'tgl_invoice',
+                'hdeskripsi',
+                'nama_client',
+                'alamat_client',
+                'kd_admin',
+                'up',
+                'jenis_no',
+                'no_fpb',
+                'due_date',
+                'nama_bank',
+                'an',
+                'ac',
+                'no_fp',
+                'total_invoice',
+                'status',
+                'tgl_paid'
+            ]);
+
+        // Search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('kd_invoice', 'like', "%{$search}%")
+                  ->orWhere('nama_client', 'like', "%{$search}%")
+                  ->orWhere('hdeskripsi', 'like', "%{$search}%")
+                  ->orWhere('no_fpb', 'like', "%{$search}%")
+                  ->orWhere('up', 'like', "%{$search}%");
+            });
+        }
+        
+        // Filter by client
+        if ($request->has('client') && !empty($request->client)) {
+            $query->where('nama_client', $request->client);
+        }
+        
+        // Filter by type
+        if ($request->has('type') && !empty($request->type)) {
+            $query->where('jenis_no', $request->type);
+        }
+        
+        // Filter by date
+        if ($request->has('date') && !empty($request->date)) {
+            $query->whereDate('tgl_invoice', $request->date);
+        }
+        
+        $invoices = $query->orderBy('tgl_invoice', 'desc')->paginate(10);
+        
+        return view('invoice.old_all', compact('invoices'));
     }
 }

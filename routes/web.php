@@ -46,6 +46,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/invoice-old', [InvoiceController::class, 'old'])->name('invoice.old');
+    Route::get('/invoice-old19', [InvoiceController::class, 'old19'])->name('invoice.old19');
+    Route::get('/invoice-old-all', [InvoiceController::class, 'old_all'])->name('invoice.old_all');
+
 });
 
 // Admin Routes
