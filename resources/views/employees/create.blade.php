@@ -14,21 +14,23 @@
                     @csrf
 
                     {{-- Pilih User --}}
-                    <div>
-                        <label for="user_id" class="block text-sm font-medium text-gray-700">User</label>
-                        <select name="user_id" id="user_id"
-                            class="select2 w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">-- Pilih User --</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }} ({{ $user->email }})
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('user_id')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+            <div>
+                <label for="user_id" class="block text-sm font-medium text-gray-700">User</label>
+                <select name="user_id" id="user_id"
+                    class="select2 w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">-- Pilih User --</option>
+                    @foreach ($users as $user)
+                        @if (!in_array($user->role, ['admin', 'super_admin']))
+                            <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                {{ $user->name }} ({{ $user->email }})
+                            </option>
+                        @endif
+                    @endforeach
+                </select>
+                @error('user_id')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
                     {{-- Grid Input --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
