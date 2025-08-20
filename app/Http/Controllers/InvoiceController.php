@@ -70,50 +70,49 @@ class InvoiceController extends Controller
                 'ttdbakn' => 'nullable|string|max:225',
             ]);
 
-        $data = $request->all();
+            $data = $request->all();
 
-        // Remove client_id from data since it's not in fillable fields
-        unset($data['client_id']);
+            // Remove client_id from data since it's not in fillable fields
+            unset($data['client_id']);
 
-        // Process detail_invoice items
-        $detailItems = [];
-        foreach ($request->detail_invoice as $item) {
-            $detailItems[] = [
-                'deskripsi' => $item['deskripsi'],
-                'qty' => (float) $item['qty'],
-                'satuan' => $item['satuan'] ?? 'pcs',
-                'harga' => (float) $item['harga'],
-                'total' => round((float) $item['qty'] * (float) $item['harga'], 2)
-            ];
-        }
+            // Process detail_invoice items
+            $detailItems = [];
+            foreach ($request->detail_invoice as $item) {
+                $detailItems[] = [
+                    'deskripsi' => $item['deskripsi'],
+                    'qty' => (float) $item['qty'],
+                    'satuan' => $item['satuan'] ?? 'pcs',
+                    'harga' => (float) $item['harga'],
+                    'total' => round((float) $item['qty'] * (float) $item['harga'], 2)
+                ];
+            }
 
-        $data['detail_invoice'] = json_encode($detailItems);
-        
-        // Set nama_client from hidden field
-        $data['nama_client'] = $data['nama_client'] ?? $data['up'];
-        
-        // Set kd_admin from current user if not provided
-        if (!isset($data['kd_admin']) || empty($data['kd_admin'])) {
-            $data['kd_admin'] = (int) Auth::user()->id;
-        }
-        
-        // Calculate total from items
-        $data['total_invoice'] = round(collect($detailItems)->sum('total'), 2);
+            $data['detail_invoice'] = json_encode($detailItems);
 
-        // Handle signature checkboxes (set to empty string if not checked)
-        $signatureFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
-        foreach ($signatureFields as $field) {
-            $data[$field] = $request->has($field) ? '1' : '';
-        }
+            // Set nama_client from hidden field
+            $data['nama_client'] = $data['nama_client'] ?? $data['up'];
 
-        $invoice = Invoice::create($data);
+            // Set kd_admin from current user if not provided
+            if (!isset($data['kd_admin']) || empty($data['kd_admin'])) {
+                $data['kd_admin'] = (int) Auth::user()->id;
+            }
 
-        // Flash session data
-        session()->flash('success', '🎉 Invoice berhasil dibuat! Data telah tersimpan ke database.');
-        session()->flash('invoice_id', $invoice->id);
-        
-        return redirect()->route('invoice.mpa');
-            
+            // Calculate total from items
+            $data['total_invoice'] = round(collect($detailItems)->sum('total'), 2);
+
+            // Handle signature checkboxes (set to empty string if not checked)
+            $signatureFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
+            foreach ($signatureFields as $field) {
+                $data[$field] = $request->has($field) ? '1' : '';
+            }
+
+            $invoice = Invoice::create($data);
+
+            // Flash session data
+            session()->flash('success', '🎉 Invoice berhasil dibuat! Data telah tersimpan ke database.');
+            session()->flash('invoice_id', $invoice->id);
+
+            return redirect()->route('invoice.mpa');
         } catch (\Illuminate\Validation\ValidationException $e) {
             session()->flash('error', '❌ Validasi gagal! Silakan periksa data yang dimasukkan.');
             return redirect()->back()
@@ -141,7 +140,7 @@ class InvoiceController extends Controller
     public function edit(Request $request, $id)
     {
         $invoice = Invoice::findOrFail($id);
-        
+
         $clients = \App\Models\Client::all();
         $banks = \App\Models\Bank::all();
         return view('invoice.edit', compact('invoice', 'clients', 'banks'));
@@ -187,49 +186,48 @@ class InvoiceController extends Controller
                 'ttdbakn' => 'nullable|string|max:225',
             ]);
 
-        $data = $request->all();
-        
-        // Remove client_id from data since it's not in fillable fields
-        unset($data['client_id']);
-        
-        // Process detail_invoice items
-        $detailItems = [];
-        foreach ($request->detail_invoice as $item) {
-            $detailItems[] = [
-                'deskripsi' => $item['deskripsi'],
-                'qty' => (float) $item['qty'],
-                'satuan' => $item['satuan'] ?? 'pcs',
-                'harga' => (float) $item['harga'],
-                'total' => round((float) $item['qty'] * (float) $item['harga'], 2)
-            ];
-        }
-        
-        $data['detail_invoice'] = json_encode($detailItems);
-        
-        // Set nama_client from hidden field
-        $data['nama_client'] = $data['nama_client'] ?? $data['up'];
-        
-        // Set kd_admin from current user if not provided
-        if (!isset($data['kd_admin']) || empty($data['kd_admin'])) {
-            $data['kd_admin'] = (int) Auth::user()->id;
-        }
-        
-        // Calculate total from items
-        $data['total_invoice'] = round(collect($detailItems)->sum('total'), 2);
+            $data = $request->all();
 
-        // Handle signature checkboxes (set to empty string if not checked)
-        $signatureFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
-        foreach ($signatureFields as $field) {
-            $data[$field] = $request->has($field) ? '1' : '';
-        }
+            // Remove client_id from data since it's not in fillable fields
+            unset($data['client_id']);
 
-        $invoice->update($data);
+            // Process detail_invoice items
+            $detailItems = [];
+            foreach ($request->detail_invoice as $item) {
+                $detailItems[] = [
+                    'deskripsi' => $item['deskripsi'],
+                    'qty' => (float) $item['qty'],
+                    'satuan' => $item['satuan'] ?? 'pcs',
+                    'harga' => (float) $item['harga'],
+                    'total' => round((float) $item['qty'] * (float) $item['harga'], 2)
+                ];
+            }
 
-        // Flash session data
-        session()->flash('success', '✅ Invoice berhasil diperbarui! Data telah tersimpan ke database.');
-        
-        return redirect()->back();
-            
+            $data['detail_invoice'] = json_encode($detailItems);
+
+            // Set nama_client from hidden field
+            $data['nama_client'] = $data['nama_client'] ?? $data['up'];
+
+            // Set kd_admin from current user if not provided
+            if (!isset($data['kd_admin']) || empty($data['kd_admin'])) {
+                $data['kd_admin'] = (int) Auth::user()->id;
+            }
+
+            // Calculate total from items
+            $data['total_invoice'] = round(collect($detailItems)->sum('total'), 2);
+
+            // Handle signature checkboxes (set to empty string if not checked)
+            $signatureFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
+            foreach ($signatureFields as $field) {
+                $data[$field] = $request->has($field) ? '1' : '';
+            }
+
+            $invoice->update($data);
+
+            // Flash session data
+            session()->flash('success', '✅ Invoice berhasil diperbarui! Data telah tersimpan ke database.');
+
+            return redirect()->back();
         } catch (\Illuminate\Validation\ValidationException $e) {
             session()->flash('error', '❌ Validasi gagal! Silakan periksa data yang dimasukkan.');
             return redirect()->back()
@@ -249,7 +247,7 @@ class InvoiceController extends Controller
     {
         try {
             $invoice = Invoice::findOrFail($id);
-            
+
             // Delete signature files
             $uploadFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
             foreach ($uploadFields as $field) {
@@ -257,14 +255,13 @@ class InvoiceController extends Controller
                     Storage::delete('public/signatures/' . $invoice->$field);
                 }
             }
-            
+
             $invoice->delete();
 
             // Flash session data
             session()->flash('success', '🗑️ Invoice berhasil dihapus! Data telah dihapus dari database.');
-            
+
             return redirect()->route('invoice.mpa');
-                
         } catch (\Exception $e) {
             session()->flash('error', '💥 Gagal menghapus invoice! ' . $e->getMessage());
             return redirect()->back();
@@ -286,8 +283,10 @@ class InvoiceController extends Controller
     public function viewPdf($id)
     {
         $invoice = Invoice::findOrFail($id);
-        $pdf = Pdf::loadView('invoice.pdf', compact('invoice'));
-        
+
+        $pdf = Pdf::setOption(['isRemoteEnabled' => true]) // aktifkan remote assets
+            ->loadView('invoice.pdf', compact('invoice'));
+
         // Clean filename - remove invalid characters
         $cleanFilename = preg_replace('/[^a-zA-Z0-9\-_\.]/', '_', $invoice->no_invoice);
         return $pdf->stream('invoice-' . $cleanFilename . '.pdf');
@@ -299,10 +298,12 @@ class InvoiceController extends Controller
     public function downloadPdf($id)
     {
         $invoice = Invoice::findOrFail($id);
-        $pdf = Pdf::loadView('invoice.pdf', compact('invoice'));
-        
+
+        $pdf = Pdf::setOption(['isRemoteEnabled' => true]) // aktifkan remote assets
+            ->loadView('invoice.pdf', compact('invoice'));
+
         // Clean filename - remove invalid characters
         $cleanFilename = preg_replace('/[^a-zA-Z0-9\-_\.]/', '_', $invoice->no_invoice);
         return $pdf->download('invoice-' . $cleanFilename . '.pdf');
     }
-} 
+}
