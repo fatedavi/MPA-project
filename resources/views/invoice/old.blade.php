@@ -60,7 +60,7 @@
                         <div class="ml-4">
                             <p class="text-yellow-100 text-sm font-medium">Latest Invoice</p>
                             <p class="text-2xl font-bold">
-                                @if($invoices->count() > 0)
+                                @if ($invoices->count() > 0)
                                     {{ \Carbon\Carbon::parse($invoices->first()->tgl_invoice)->format('M Y') }}
                                 @else
                                     -
@@ -78,8 +78,9 @@
                         <div class="ml-4">
                             <p class="text-purple-100 text-sm font-medium">Total Value</p>
                             <p class="text-2xl font-bold">IDR
-                                {{ number_format($invoices->sum(function($invoice) { return $invoice->qty * $invoice->harga; }), 0, ',', '.') }}
+                                {{ number_format($totalValue, 0, ',', '.') }}
                             </p>
+
                         </div>
                     </div>
                 </div>
@@ -154,25 +155,33 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        <input type="checkbox" class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        <input type="checkbox"
+                                            class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-file-invoice mr-2"></i>Invoice Code
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-user mr-2"></i>Client Info
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-list mr-2"></i>Details
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-money-bill-wave mr-2"></i>Amount
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-university mr-2"></i>Bank Info
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-calendar mr-2"></i>Dates
                                     </th>
                                 </tr>
@@ -181,18 +190,20 @@
                                 @forelse($invoices as $invoice)
                                     <tr class="hover:bg-gray-50 transition-colors duration-200">
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <input type="checkbox" class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
+                                            <input type="checkbox"
+                                                class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-[#8D0907] to-[#B91C1C] flex items-center justify-center text-white font-semibold">
+                                                <div
+                                                    class="w-10 h-10 rounded-lg bg-gradient-to-r from-[#8D0907] to-[#B91C1C] flex items-center justify-center text-white font-semibold">
                                                     <i class="fas fa-file-invoice text-lg"></i>
                                                 </div>
                                                 <div class="ml-4">
                                                     <div class="text-sm font-medium text-gray-900">
                                                         {{ $invoice->kd_invoice }}
                                                     </div>
-                                                    @if($invoice->no_fpb)
+                                                    @if ($invoice->no_fpb)
                                                         <div class="text-xs text-gray-500">
                                                             FPB: {{ $invoice->no_fpb }}
                                                         </div>
@@ -205,13 +216,14 @@
                                                 <i class="fas fa-user mr-1 text-[#8D0907]"></i>
                                                 {{ $invoice->nama_client }}
                                             </div>
-                                            @if($invoice->alamat_client)
-                                                <div class="text-xs text-gray-500 max-w-xs truncate" title="{{ $invoice->alamat_client }}">
+                                            @if ($invoice->alamat_client)
+                                                <div class="text-xs text-gray-500 max-w-xs truncate"
+                                                    title="{{ $invoice->alamat_client }}">
                                                     <i class="fas fa-map-marker-alt mr-1"></i>
                                                     {{ Str::limit($invoice->alamat_client, 40) }}
                                                 </div>
                                             @endif
-                                            @if($invoice->up)
+                                            @if ($invoice->up)
                                                 <div class="text-xs text-gray-600">
                                                     <i class="fas fa-user-tie mr-1"></i>
                                                     UP: {{ $invoice->up }}
@@ -225,10 +237,12 @@
                                                 </div>
                                                 <div class="text-xs text-gray-500 mt-1">
                                                     <i class="fas fa-boxes mr-1"></i>
-                                                    {{ number_format($invoice->qty, 0, ',', '.') }} {{ $invoice->satuan }}
+                                                    {{ number_format($invoice->qty, 0, ',', '.') }}
+                                                    {{ $invoice->satuan }}
                                                 </div>
-                                                @if($invoice->jenis_no)
-                                                    <div class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">
+                                                @if ($invoice->jenis_no)
+                                                    <div
+                                                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">
                                                         {{ $invoice->jenis_no }}
                                                     </div>
                                                 @endif
@@ -240,7 +254,8 @@
                                             </div>
                                             <div class="text-xs text-gray-500">per {{ $invoice->satuan }}</div>
                                             <div class="text-sm font-semibold text-[#8D0907] mt-1">
-                                                Total: IDR {{ number_format($invoice->qty * $invoice->harga, 0, ',', '.') }}
+                                                Total: IDR
+                                                {{ number_format($invoice->qty * $invoice->harga, 0, ',', '.') }}
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
@@ -248,13 +263,13 @@
                                                 <i class="fas fa-university mr-1 text-[#8D0907]"></i>
                                                 {{ $invoice->nama_bank }}
                                             </div>
-                                            @if($invoice->an)
+                                            @if ($invoice->an)
                                                 <div class="text-xs text-gray-600">
                                                     <i class="fas fa-user mr-1"></i>
                                                     A/N: {{ $invoice->an }}
                                                 </div>
                                             @endif
-                                            @if($invoice->ac)
+                                            @if ($invoice->ac)
                                                 <div class="text-xs text-gray-600">
                                                     <i class="fas fa-credit-card mr-1"></i>
                                                     {{ $invoice->ac }}
@@ -269,7 +284,7 @@
                                                 </div>
                                                 <div class="text-xs text-gray-500">Invoice Date</div>
                                             </div>
-                                            @if($invoice->due_date)
+                                            @if ($invoice->due_date)
                                                 <div class="text-sm text-gray-900 mt-2">
                                                     <i class="fas fa-calendar-day mr-1 text-yellow-600"></i>
                                                     <div class="font-medium">

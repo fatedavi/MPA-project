@@ -308,33 +308,37 @@ class InvoiceController extends Controller
         $cleanFilename = preg_replace('/[^a-zA-Z0-9\-_\.]/', '_', $invoice->no_invoice);
         return $pdf->download('invoice-' . $cleanFilename . '.pdf');
     }
-   public function old()
-{
-    // ambil data dari database lama (tabel invoice_all)
-    $invoices = DB::table('invoice')
-        ->select([
-            'kd_invoice',
-            'tgl_invoice',
-            'nama_client',
-            'alamat_client',
-            'up',
-            'jenis_no',
-            'no_fpb',
-            'due_date',
-            'uraian',
-            'qty',
-            'satuan',
-            'harga',
-            'nama_bank',
-            'an',
-            'ac',
-        ])
-        ->orderBy('tgl_invoice', 'desc')
-        ->paginate(10);
+    public function old()
+    {
+        // ambil data dari database lama (tabel invoice_all)
+        $invoices = DB::table('invoice')
+            ->select([
+                'kd_invoice',
+                'tgl_invoice',
+                'nama_client',
+                'alamat_client',
+                'up',
+                'jenis_no',
+                'no_fpb',
+                'due_date',
+                'uraian',
+                'qty',
+                'satuan',
+                'harga',
+                'nama_bank',
+                'an',
+                'ac',
+            ])
+            ->orderBy('tgl_invoice', 'desc')
+            ->paginate(10);
 
-    return view('invoice.old', compact('invoices'));
-}
- public function old19()
+        // hitung total semua value (tanpa paginate)
+        $totalValue = DB::table('invoice')->selectRaw('SUM(qty * harga) as total')->value('total');
+
+        return view('invoice.old', compact('invoices', 'totalValue'));
+    }
+
+    public function old19()
     {
         // Mengambil data invoice dari tabel invoice_all_19 dengan pagination
         $invoices = DB::table('invoice_all_19')
@@ -356,8 +360,12 @@ class InvoiceController extends Controller
             ->orderBy('tgl_invoice', 'desc')
             ->paginate(10);
 
-        return view('invoice.old19', compact('invoices'));
+        // Hitung total dari semua data (tanpa pagination)
+        $totalValue = DB::table('invoice_all_19')->sum('total_invoice');
+
+        return view('invoice.old19', compact('invoices', 'totalValue'));
     }
+
     public function old_all(Request $request): View
     {
         $query = DB::table('invoice_all')
@@ -384,32 +392,36 @@ class InvoiceController extends Controller
         // Search functionality
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('kd_invoice', 'like', "%{$search}%")
-                  ->orWhere('nama_client', 'like', "%{$search}%")
-                  ->orWhere('hdeskripsi', 'like', "%{$search}%")
-                  ->orWhere('no_fpb', 'like', "%{$search}%")
-                  ->orWhere('up', 'like', "%{$search}%");
+                    ->orWhere('nama_client', 'like', "%{$search}%")
+                    ->orWhere('hdeskripsi', 'like', "%{$search}%")
+                    ->orWhere('no_fpb', 'like', "%{$search}%")
+                    ->orWhere('up', 'like', "%{$search}%");
             });
         }
-        
+
         // Filter by client
         if ($request->has('client') && !empty($request->client)) {
             $query->where('nama_client', $request->client);
         }
-        
+
         // Filter by type
         if ($request->has('type') && !empty($request->type)) {
             $query->where('jenis_no', $request->type);
         }
-        
+
         // Filter by date
         if ($request->has('date') && !empty($request->date)) {
             $query->whereDate('tgl_invoice', $request->date);
         }
-        
+
+        // clone query biar totalnya ikut filter & search
+        $totalValue = (clone $query)->sum('total_invoice');
+
+        // ambil data dengan paginate
         $invoices = $query->orderBy('tgl_invoice', 'desc')->paginate(10);
-        
-        return view('invoice.old_all', compact('invoices'));
+
+        return view('invoice.old_all', compact('invoices', 'totalValue'));
     }
 }

@@ -49,7 +49,10 @@
                             <p class="text-green-100 text-sm font-medium">Unique Clients</p>
                             <p class="text-2xl font-bold">
                                 @php
-                                    $uniqueClients = collect($invoices->items())->pluck('nama_client')->unique()->count();
+                                    $uniqueClients = collect($invoices->items())
+                                        ->pluck('nama_client')
+                                        ->unique()
+                                        ->count();
                                 @endphp
                                 {{ $uniqueClients }}
                             </p>
@@ -65,7 +68,7 @@
                         <div class="ml-4">
                             <p class="text-yellow-100 text-sm font-medium">Latest Invoice</p>
                             <p class="text-2xl font-bold">
-                                @if(count($invoices->items()) > 0)
+                                @if (count($invoices->items()) > 0)
                                     {{ \Carbon\Carbon::parse($invoices->items()[0]->tgl_invoice)->format('M Y') }}
                                 @else
                                     -
@@ -83,14 +86,12 @@
                         <div class="ml-4">
                             <p class="text-purple-100 text-sm font-medium">Total Value</p>
                             <p class="text-2xl font-bold">IDR
-                                @php
-                                    $totalValue = collect($invoices->items())->sum('total_invoice');
-                                @endphp
                                 {{ number_format($totalValue, 0, ',', '.') }}
                             </p>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- Main Content -->
@@ -141,7 +142,9 @@
                                     class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#8D0907] focus:border-[#8D0907] transition-colors">
                                     <option value="">All Clients</option>
                                     @foreach ($uniqueClients as $client)
-                                        <option value="{{ $client }}" {{ request('client') == $client ? 'selected' : '' }}>{{ $client }}</option>
+                                        <option value="{{ $client }}"
+                                            {{ request('client') == $client ? 'selected' : '' }}>{{ $client }}
+                                        </option>
                                     @endforeach
                                 </select>
 
@@ -149,12 +152,13 @@
                                     class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#8D0907] focus:border-[#8D0907] transition-colors">
                                     <option value="">All Types</option>
                                     @foreach ($uniqueTypes as $jenis)
-                                        <option value="{{ $jenis }}" {{ request('type') == $jenis ? 'selected' : '' }}>{{ $jenis }}</option>
+                                        <option value="{{ $jenis }}"
+                                            {{ request('type') == $jenis ? 'selected' : '' }}>{{ $jenis }}
+                                        </option>
                                     @endforeach
                                 </select>
 
-                                <input type="date" name="date"
-                                    value="{{ request('date') }}"
+                                <input type="date" name="date" value="{{ request('date') }}"
                                     class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#8D0907] focus:border-[#8D0907] transition-colors">
 
                                 <button type="submit"
@@ -162,7 +166,7 @@
                                     Apply
                                 </button>
 
-                                @if(request()->hasAny(['search', 'client', 'type', 'date']))
+                                @if (request()->hasAny(['search', 'client', 'type', 'date']))
                                     <a href="{{ route('invoice.old_all') }}"
                                         class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#8D0907] transition-colors">
                                         Reset
@@ -177,25 +181,33 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        <input type="checkbox" class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        <input type="checkbox"
+                                            class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-file-invoice mr-2"></i>Invoice Code
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-user mr-2"></i>Client Info
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-list mr-2"></i>Description
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-money-bill-wave mr-2"></i>Amount
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-university mr-2"></i>Bank Info
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-calendar mr-2"></i>Dates
                                     </th>
                                 </tr>
@@ -204,18 +216,20 @@
                                 @forelse($invoices as $invoice)
                                     <tr class="hover:bg-gray-50 transition-colors duration-200">
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <input type="checkbox" class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
+                                            <input type="checkbox"
+                                                class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-[#8D0907] to-[#B91C1C] flex items-center justify-center text-white font-semibold">
+                                                <div
+                                                    class="w-10 h-10 rounded-lg bg-gradient-to-r from-[#8D0907] to-[#B91C1C] flex items-center justify-center text-white font-semibold">
                                                     <i class="fas fa-file-invoice text-lg"></i>
                                                 </div>
                                                 <div class="ml-4">
                                                     <div class="text-sm font-medium text-gray-900">
                                                         {{ $invoice->kd_invoice }}
                                                     </div>
-                                                    @if($invoice->no_fpb)
+                                                    @if ($invoice->no_fpb)
                                                         <div class="text-xs text-gray-500">
                                                             FPB: {{ $invoice->no_fpb }}
                                                         </div>
@@ -228,13 +242,14 @@
                                                 <i class="fas fa-user mr-1 text-[#8D0907]"></i>
                                                 {{ $invoice->nama_client }}
                                             </div>
-                                            @if($invoice->alamat_client)
-                                                <div class="text-xs text-gray-500 max-w-xs truncate" title="{{ $invoice->alamat_client }}">
+                                            @if ($invoice->alamat_client)
+                                                <div class="text-xs text-gray-500 max-w-xs truncate"
+                                                    title="{{ $invoice->alamat_client }}">
                                                     <i class="fas fa-map-marker-alt mr-1"></i>
                                                     {{ Str::limit($invoice->alamat_client, 40) }}
                                                 </div>
                                             @endif
-                                            @if($invoice->up)
+                                            @if ($invoice->up)
                                                 <div class="text-xs text-gray-600">
                                                     <i class="fas fa-user-tie mr-1"></i>
                                                     UP: {{ $invoice->up }}
@@ -246,8 +261,9 @@
                                                 <div class="font-medium truncate" title="{{ $invoice->hdeskripsi }}">
                                                     {{ Str::limit($invoice->hdeskripsi, 30) }}
                                                 </div>
-                                                @if($invoice->jenis_no)
-                                                    <div class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">
+                                                @if ($invoice->jenis_no)
+                                                    <div
+                                                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">
                                                         {{ $invoice->jenis_no }}
                                                     </div>
                                                 @endif
@@ -259,11 +275,14 @@
                                             </div>
                                             <div class="text-xs text-gray-500">Total Amount</div>
                                             <div class="text-sm font-semibold text-[#8D0907] mt-1">
-                                                Status: 
-                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-                                                    {{ $invoice->status === 'paid' ? 'bg-green-100 text-green-800' : 
-                                                       ($invoice->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                                                       'bg-red-100 text-red-800') }}">
+                                                Status:
+                                                <span
+                                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                                                    {{ $invoice->status === 'paid'
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : ($invoice->status === 'pending'
+                                                            ? 'bg-yellow-100 text-yellow-800'
+                                                            : 'bg-red-100 text-red-800') }}">
                                                     {{ ucfirst($invoice->status) }}
                                                 </span>
                                             </div>
@@ -273,13 +292,13 @@
                                                 <i class="fas fa-university mr-1 text-[#8D0907]"></i>
                                                 {{ $invoice->nama_bank }}
                                             </div>
-                                            @if($invoice->an)
+                                            @if ($invoice->an)
                                                 <div class="text-xs text-gray-600">
                                                     <i class="fas fa-user mr-1"></i>
                                                     A/N: {{ $invoice->an }}
                                                 </div>
                                             @endif
-                                            @if($invoice->ac)
+                                            @if ($invoice->ac)
                                                 <div class="text-xs text-gray-600">
                                                     <i class="fas fa-credit-card mr-1"></i>
                                                     {{ $invoice->ac }}
@@ -294,7 +313,7 @@
                                                 </div>
                                                 <div class="text-xs text-gray-500">Invoice Date</div>
                                             </div>
-                                            @if($invoice->due_date)
+                                            @if ($invoice->due_date)
                                                 <div class="text-sm text-gray-900 mt-2">
                                                     <i class="fas fa-calendar-day mr-1 text-yellow-600"></i>
                                                     <div class="font-medium">
@@ -303,7 +322,7 @@
                                                     <div class="text-xs text-gray-500">Due Date</div>
                                                 </div>
                                             @endif
-                                            @if($invoice->tgl_paid)
+                                            @if ($invoice->tgl_paid)
                                                 <div class="text-sm text-green-900 mt-2">
                                                     <i class="fas fa-check-circle mr-1 text-green-600"></i>
                                                     <div class="font-medium">
