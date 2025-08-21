@@ -47,18 +47,18 @@
                 <div class="space-y-2">
                     <!-- Dashboard -->
                     <a href="{{ route('dashboard') }}"
-                        class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('dashboard') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                        <i
-                            class="fas fa-tachometer-alt w-5 h-5 mr-3 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400' }}"></i>
+                        class="flex items-center px-4 py-4 text-base font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('dashboard') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                        <i class="fas fa-tachometer-alt w-6 h-6 mr-3 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400' }}"></i>
                         Dashboard
                     </a>
 
+
                     <!-- Master Data Section -->
+                    @auth
                     <div class="pt-4">
+                        @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
                         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Master Data
                         </h3>
-                        @auth
-                            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
                                 <!-- Perusahaan Management -->
                                 <a href="{{ route('perusahaan.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('perusahaan.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
@@ -245,6 +245,18 @@
                                     <i
                                         class="fas fa-users-cog w-5 h-5 mr-3 {{ request()->routeIs('users.*') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Users
+                                </a>
+                            @endif
+                        @endauth
+                        @auth
+                            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <!-- Document Management -->
+                                <a href="{{ route('attendances.today') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
+                                        {{ request()->routeIs('attendances.today') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <i class="fas fa-folder-open w-5 h-5 mr-3
+                                        {{ request()->routeIs('attendances.today') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    Absen hari Ini
                                 </a>
                             @endif
                         @endauth

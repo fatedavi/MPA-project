@@ -86,6 +86,17 @@ public function proses(Request $request)
 
     return redirect()->route('attendances.index')->with('error', 'You have completed attendance for today.');
 }
+public function todayAttendance()
+{
+    $today = Carbon::today()->toDateString();
+
+    $attendances = Attendance::where('date', $today)
+        ->whereNotNull('check_in') // sudah absen
+        ->with('employee') // kalau ada relasi ke Employee
+        ->get();
+
+    return view('attendances.today', compact('attendances'));
+}
 
 
 
