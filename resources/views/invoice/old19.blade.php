@@ -149,11 +149,7 @@
                         <table class="min-w-full divide-y divide-gray-200" id="invoiceTable">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        <input type="checkbox" id="selectAll"
-                                            class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
-                                    </th>
+
                                     <th
                                         class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-file-invoice mr-2"></i>Invoice Code
@@ -186,10 +182,7 @@
                                         data-client="{{ $invoice->nama_client }}"
                                         data-type="{{ $invoice->jenis_no }}"
                                         data-date="{{ $invoice->tgl_invoice }}">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <input type="checkbox"
-                                                class="row-checkbox rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
-                                        </td>
+
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div
