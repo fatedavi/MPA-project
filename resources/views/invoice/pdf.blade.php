@@ -375,7 +375,7 @@
     </div>
 
     <!-- Footer -->
-    <table class="footer" style="width:100%; margin-top:40px;">
+    <table class="footer" style="width:100%; margin-top:40px; page-break-inside: avoid;">
         <tr>
             <!-- Kolom kiri kosong atau bisa isi keterangan tambahan -->
             <td style="width:60%;"></td>
@@ -391,7 +391,7 @@
                 <div class="signature-section">
                     <div class="signature-line">
                         @if ($invoice->ttd)
-                            <img src="{{ public_path('assets/images/mpa_logo.png') }}" alt="Logo">
+                            <img src="{{ public_path('assets/images/mpa_logo.png') }}" alt="ttd">
                         @endif
                     </div>
                     <div>( Mariyadi, ST, MM )</div>
@@ -401,11 +401,102 @@
         </tr>
     </table>
 
-
     <!-- Footer URL -->
     <div style="margin-top: 30px; font-size: 9px; color: #999; text-align: center;">
         https://erpower.multipowerabadi.co.id/invoice/cetak-invoice/ebook.php?invoice=MPA0638
     </div>
+
+    <!-- Biar kwitansi mulai di halaman baru -->
+    <div style="page-break-after: always;"></div>
+
+    <!-- ========== KWITANSI ========== -->
+    <div class="kwitansi">
+        <table style="width:100%; border:1px solid #000; border-collapse:collapse; font-size:12px;">
+            <!-- Header -->
+            <tr>
+                <td style="width:70%; padding:8px; vertical-align:top; border-bottom:1px solid #000;">
+                    <img src="{{ public_path('assets/images/mpa_logo.png') }}" style="height:60px;">
+                    <div style="font-size:11px; font-weight:bold;">PT. MULTI POWER ABADI</div>
+                    <div style="font-size:10px;">Jl. Gunung Anyar Tambak IV No.50 Surabaya</div>
+                </td>
+                <td
+                    style="width:30%; padding:8px; text-align:right; vertical-align:top; border-bottom:1px solid #000; font-size:14px; font-weight:bold; text-decoration:underline;">
+                    KWITANSI
+                </td>
+            </tr>
+
+            <!-- Isi -->
+            <tr>
+                <td colspan="2" style="padding:8px;">
+                    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+                        <tr>
+                            <td style="width:25%; padding:4px;">No. Kwitansi</td>
+                            <td style="width:75%; padding:4px;">: {{ $invoice->no_invoice }}/KWTN/{{ date('Y') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:4px;">Sudah terima dari</td>
+                            <td style="padding:4px;">: {{ $invoice->nama_client }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:4px; vertical-align:top;">Untuk Pembayaran</td>
+                            <td style="padding:4px;">
+                                :
+                                @foreach ($invoice->detail_invoice_array as $index => $item)
+                                    {{ $item['deskripsi'] }}@if ($index < count($invoice->detail_invoice_array) - 1)
+                                        ,
+                                    @endif
+                                @endforeach
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td style="padding:4px;">Terbilang</td>
+                            <td style="padding:4px;">:
+                                <em style="text-transform: capitalize;">
+                                    {{ \Riskihajar\Terbilang\Facades\Terbilang::make((int) round($invoice->total_invoice * 1.11)) }}
+                                </em> rupiah
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:4px;">Jumlah</td>
+                            <td style="padding:4px; font-weight:bold; text-decoration: underline;">: Rp.
+                                {{ number_format($invoice->total_invoice * 1.11, 0, ',', '.') }}
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+                <td colspan="2" style="padding:12px; text-align:right; vertical-align:bottom;">
+                    <div style="text-align:center; font-size:12px; display:inline-block; min-width:220px;">
+                        Surabaya, {{ date('d M Y') }}<br><br>
+
+                        <!-- Materai + Tanda tangan -->
+                        <div style="height:80px; margin-bottom:5px; position:relative;">
+                            <img style="text-align: center; height:40px;"
+                                src="{{ public_path('assets/images/mpa_logo.png') }}"
+                                style="height:50px; position:absolute; left:10px; top:10px;">
+                            @if ($invoice->ttd)
+                                <img src="{{ public_path('assets/images/ttd.png') }}"
+                                    style="height:50px; margin-top:15px;">
+                            @endif
+                        </div>
+
+                        ( Mariyadi, ST, MM )<br>
+                        Direktur
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
 </body>
 
 </html>
