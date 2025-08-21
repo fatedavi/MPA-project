@@ -572,19 +572,7 @@
                     <!-- Right side - Search and user menu -->
                     <div class="flex items-center space-x-4">
                         <!-- Search -->
-                        <div class="hidden md:block relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-search h-5 w-5 text-gray-400"></i>
-                            </div>
-                            <input type="text" placeholder="Search..."
-                                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
-                        </div>
 
-                        <!-- Notifications -->
-                        <button class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md relative">
-                            <i class="fas fa-bell text-xl"></i>
-                            <span class="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-400"></span>
-                        </button>
 
                         <!-- User dropdown -->
                         <div class="relative" x-data="{ open: false }">
@@ -606,10 +594,8 @@
                                 x-transition:leave-start="transform opacity-100 scale-100"
                                 x-transition:leave-end="transform opacity-0 scale-95"
                                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                                <a href="{{ route('profile.edit') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
-                                <a href="#"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <!-- <a href="{{ route('profile.edit') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a> -->
                                 <div class="border-t border-gray-100"></div>
                                 <form method="POST" action="{{ route('logout') }}" x-data>
                                     @csrf
