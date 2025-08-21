@@ -88,7 +88,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
         
-        Route::resource('bank', BankController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy', 'show']);   
+        Route::resource('bank', BankController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy', 'show']);  
+        Route::get('/attendances/today', [AttendanceController::class, 'todayAttendance'])
+        ->name('attendances.today'); 
     });
 
     // Task Management Routes
