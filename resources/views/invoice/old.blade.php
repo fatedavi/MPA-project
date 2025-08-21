@@ -155,11 +155,7 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        <input type="checkbox"
-                                            class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
-                                    </th>
+            
                                     <th
                                         class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-file-invoice mr-2"></i>Invoice Code
@@ -189,10 +185,7 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($invoices as $invoice)
                                     <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <input type="checkbox"
-                                                class="rounded border-gray-300 text-[#8D0907] focus:ring-[#8D0907]">
-                                        </td>
+                                
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div
