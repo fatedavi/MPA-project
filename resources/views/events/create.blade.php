@@ -140,26 +140,8 @@
                         @enderror
                     </div>
 
-                    <!-- Status (Optional) -->
-                    <div>
-                        <label for="status" class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fas fa-info-circle text-red-700 mr-2"></i>
-                            Status Event
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-info-circle text-gray-400"></i>
-                            </div>
-                            <select id="status" name="status"
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-700 focus:border-red-700 transition-all duration-200 text-gray-700">
-                                <option value="coming_soon"
-                                    {{ old('status', 'coming_soon') == 'coming_soon' ? 'selected' : '' }}>Coming Soon
-                                </option>
-                                <option value="approve" {{ old('status') == 'approve' ? 'selected' : '' }}>Disetujui
-                                </option>
-                                <option value="reject" {{ old('status') == 'reject' ? 'selected' : '' }}>Ditolak
-                                </option>
-                            </select>
+                
+                    <div> 
                         </div>
                         @error('status')
                             <p class="text-red-600 text-sm mt-2 flex items-center">
