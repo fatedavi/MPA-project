@@ -90,7 +90,7 @@
                             <select name="position" id="position"
                                 class="mt-1 w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">-- Pilih Jabatan --</option>
-                                @foreach (['Manager', 'Staff', 'Admin', 'Karyawan'] as $pos)
+                                @foreach (['Manager', 'Staff', 'Admin', 'Karyawan','Internship'] as $pos)
                                     <option value="{{ $pos }}"
                                         {{ old('position') == $pos ? 'selected' : '' }}>{{ $pos }}</option>
                                 @endforeach
