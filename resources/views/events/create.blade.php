@@ -170,15 +170,15 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                    <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
                         <button type="submit"
-                            class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-red-700 hover:bg-red-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
+                            class="w-full sm:flex-1 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700 transition-colors">
                             <i class="fas fa-save mr-2"></i>
                             Simpan Event
                         </button>
 
                         <a href="{{ route('events.index') }}"
-                            class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
+                            class="w-full sm:flex-1 inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
                             <i class="fas fa-arrow-left mr-2"></i>
                             Kembali
                         </a>
