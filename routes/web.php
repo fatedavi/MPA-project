@@ -47,16 +47,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/invoice-old', [InvoiceController::class, 'old'])->name('invoice.old');
-    Route::get('/invoice-old19', [InvoiceController::class, 'old19'])->name('invoice.old19');
-    Route::get('/invoice-old-all', [InvoiceController::class, 'old_all'])->name('invoice.old_all');
-
+    
 });
 
 // Admin Routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-
+    
     // Project Routes
     Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('project.create');
@@ -109,7 +106,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/calendar/{id}/edit', [CalendarController::class, 'edit'])->name('calendar.edit');
     Route::put('/calendar/{id}', [CalendarController::class, 'update'])->name('calendar.update');
     Route::delete('/calendar/{id}', [CalendarController::class, 'destroy'])->name('calendar.destroy');
-
+    
     // Reports Routes
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
@@ -139,10 +136,13 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group(function () {
-
+    
     // Event
     Route::resource('clients', ClientController::class);
-
+    
+    Route::get('/invoice-old', [InvoiceController::class, 'old'])->name('invoice.old');
+    Route::get('/invoice-old19', [InvoiceController::class, 'old19'])->name('invoice.old19');
+    Route::get('/invoice-old-all', [InvoiceController::class, 'old_all'])->name('invoice.old_all');
     
     Route::resource('vendors', VendorController::class);
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
