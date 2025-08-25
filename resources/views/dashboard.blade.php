@@ -258,7 +258,7 @@
                 </div>
             </div>
 
-            <!-- Quick Actions -->
+            <!-- Quick Actions
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
@@ -298,7 +298,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Recent Activities -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
