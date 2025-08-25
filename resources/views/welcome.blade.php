@@ -219,10 +219,10 @@
 
         <!-- Footer Section -->
         <footer class="footer-gradient relative z-20">
-            <div class="max-w-7xl mx-auto px-6 py-16">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+            <div class="max-w-7xl mx-auto px-6 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
                     <!-- Company Info -->
-                    <div class="space-y-6">
+                    <div class="space-y-4">
                         <div class="flex items-center space-x-3">
                             <div
                                 class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center shadow-lg border border-white/30">
@@ -255,9 +255,9 @@
                     </div>
 
                     <!-- Quick Links -->
-                    <div class="space-y-6">
+                    <div class="space-y-4">
                         <h3 class="text-xl font-bold text-white">Quick Links</h3>
-                        <ul class="space-y-3">
+                        <ul class="space-y-2">
                             <li><a href="#" class="text-white/70 hover:text-white flex items-center"><i
                                         class="fas fa-chevron-right text-xs mr-2"></i>Home</a></li>
                             <li><a href="#" class="text-white/70 hover:text-white flex items-center"><i
@@ -272,9 +272,9 @@
                     </div>
 
                     <!-- Services -->
-                    <div class="space-y-6">
+                    <div class="space-y-4">
                         <h3 class="text-xl font-bold text-white">Services</h3>
-                        <ul class="space-y-3">
+                        <ul class="space-y-2">
                             <li><a href="#" class="text-white/70 hover:text-white flex items-center"><i
                                         class="fas fa-users text-xs mr-2"></i>Employee Management</a></li>
                             <li><a href="#" class="text-white/70 hover:text-white flex items-center"><i
@@ -289,9 +289,9 @@
                     </div>
 
                     <!-- Contact Info -->
-                    <div class="space-y-6">
+                    <div class="space-y-4">
                         <h3 class="text-xl font-bold text-white">Get in Touch</h3>
-                        <div class="space-y-4">
+                        <div class="space-y-3">
                             <div class="flex items-start space-x-3">
                                 <i class="fas fa-map-marker-alt text-white/70 mt-1"></i>
                                 <div>
@@ -316,10 +316,10 @@
                 </div>
 
                 <!-- Newsletter -->
-                <div class="border-t border-white/10 pt-12 mb-12">
+                <div class="pt-8 mb-8">
                     <div class="text-center max-w-2xl mx-auto">
                         <h3 class="text-2xl font-bold text-white mb-4">Stay Updated</h3>
-                        <p class="text-white/70 mb-6">Subscribe to our newsletter for the latest updates and business
+                        <p class="text-white/70 mb-4">Subscribe to our newsletter for the latest updates and business
                             tips
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
@@ -334,7 +334,7 @@
                 </div>
 
                 <!-- Bottom Footer -->
-                <div class="border-t border-white/10 pt-8">
+                <div class="pt-6">
                     <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                         <div class="text-white/60 text-center md:text-left">
                             <p>&copy; 2024 EPower. All rights reserved.</p>
