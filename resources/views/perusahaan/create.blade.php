@@ -10,9 +10,11 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <div class="mb-6">
-                        <a href="{{ route('perusahaan.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <a href="{{ route('perusahaan.index') }}"
+                            class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
                             Kembali
                         </a>
@@ -20,11 +22,13 @@
 
                     <form action="{{ route('perusahaan.store') }}" method="POST">
                         @csrf
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label for="nama_perusahaan" class="block text-sm font-medium text-gray-700 mb-2">Nama Perusahaan</label>
-                                <input type="text" name="nama_perusahaan" id="nama_perusahaan" value="{{ old('nama_perusahaan') }}" required
+                                <label for="nama_perusahaan" class="block text-sm font-medium text-gray-700 mb-2">Nama
+                                    Perusahaan</label>
+                                <input type="text" name="nama_perusahaan" id="nama_perusahaan"
+                                    value="{{ old('nama_perusahaan') }}" required
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#8D0907] focus:border-[#8D0907]">
                                 @error('nama_perusahaan')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -32,8 +36,10 @@
                             </div>
 
                             <div>
-                                <label for="pemilik" class="block text-sm font-medium text-gray-700 mb-2">Pemilik</label>
-                                <input type="text" name="pemilik" id="pemilik" value="{{ old('pemilik') }}" required
+                                <label for="pemilik"
+                                    class="block text-sm font-medium text-gray-700 mb-2">Pemilik</label>
+                                <input type="text" name="pemilik" id="pemilik" value="{{ old('pemilik') }}"
+                                    required
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#8D0907] focus:border-[#8D0907]">
                                 @error('pemilik')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -59,7 +65,8 @@
                             </div>
 
                             <div class="md:col-span-2">
-                                <label for="alamat" class="block text-sm font-medium text-gray-700 mb-2">Alamat</label>
+                                <label for="alamat"
+                                    class="block text-sm font-medium text-gray-700 mb-2">Alamat</label>
                                 <textarea name="alamat" id="alamat" rows="3" required
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#8D0907] focus:border-[#8D0907]">{{ old('alamat') }}</textarea>
                                 @error('alamat')
@@ -67,20 +74,24 @@
                                 @enderror
                             </div>
 
-                            <div class="md:col-span-2">
-                                <label for="gambar" class="block text-sm font-medium text-gray-700 mb-2">Nama File Gambar</label>
-                                <input type="text" name="gambar" id="gambar" value="{{ old('gambar') }}" required placeholder="contoh: perusahaan.jpg"
+                            {{-- <div class="md:col-span-2">
+                                <label for="gambar" class="block text-sm font-medium text-gray-700 mb-2">Nama File
+                                    Gambar</label>
+                                <input type="text" name="gambar" id="gambar" value="{{ old('gambar') }}"
+                                    placeholder="contoh: perusahaan.jpg"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#8D0907] focus:border-[#8D0907]">
                                 @error('gambar')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="mt-6 flex justify-end">
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-[#8D0907] border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-[#B91C1C] focus:bg-[#B91C1C] active:bg-[#8D0907] focus:outline-none focus:ring-2 focus:ring-[#8D0907] focus:ring-offset-2 transition ease-in-out duration-150">
+                            <button type="submit"
+                                class="inline-flex items-center px-4 py-2 bg-[#8D0907] border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-[#B91C1C] focus:bg-[#B91C1C] active:bg-[#8D0907] focus:outline-none focus:ring-2 focus:ring-[#8D0907] focus:ring-offset-2 transition ease-in-out duration-150">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
                                 </svg>
                                 Simpan Perusahaan
                             </button>
