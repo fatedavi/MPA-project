@@ -476,7 +476,7 @@
                         </div>
 
                         <!-- Document Signatures Checklist -->
-                        <div class="bg-rose-50 border border-rose-200 rounded-lg p-6">
+                        {{-- <div class="bg-rose-50 border border-rose-200 rounded-lg p-6">
                             <h3 class="text-xl font-semibold text-rose-900 mb-4 flex items-center">
                                 <i class="fas fa-check-square text-rose-600 mr-3 text-xl"></i>
                                 Document Signatures Checklist
@@ -523,7 +523,7 @@
                                 <i class="fas fa-info-circle mr-2"></i>
                                 Check the boxes above to indicate which signatures have been approved for this invoice.
                             </p>
-                        </div>
+                        </div> --}}
 
                         <!-- Form Actions -->
                         <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
@@ -663,7 +663,7 @@
                 const totalInput = item.querySelector('input[name*="[total]"]');
                 let totalText = totalInput.value.replace(/[^\d.,]/g, ''); // Hanya angka, titik, koma
                 totalText = totalText.replace(/\./g, '').replace(',',
-                '.'); // Hapus titik ribuan, koma jadi titik desimal
+                    '.'); // Hapus titik ribuan, koma jadi titik desimal
                 const itemTotal = parseFloat(totalText) || 0;
                 total += itemTotal;
             });
