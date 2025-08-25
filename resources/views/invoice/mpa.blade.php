@@ -323,12 +323,12 @@
                                                     <i class="fas fa-eye mr-1"></i>
                                                     View
                                                 </a>
-                                                <a href="{{ route('invoice.edit', $invoice->id) }}"
+                                                {{-- <a href="{{ route('invoice.edit', $invoice->id) }}"
                                                     class="inline-flex items-center px-3 py-1.5 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-600 transition-colors"
                                                     title="Edit Invoice">
                                                     <i class="fas fa-edit mr-1"></i>
                                                     Edit
-                                                </a>
+                                                </a> --}}
                                                 <a href="{{ route('invoice.pdf', $invoice->id) }}" target="_blank"
                                                     class="inline-flex items-center px-3 py-1.5 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600 transition-colors"
                                                     title="View PDF">
