@@ -170,12 +170,12 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex space-x-2">
-                                            <a href="{{ route('clients.show', $client->id_client) }}" 
+                                            <!-- <a href="{{ route('clients.show', $client->id_client) }}" 
                                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
                                                title="View Details">
                                                 <i class="fas fa-eye mr-1"></i>
                                                 View
-                                            </a>
+                                            </a> -->
                                             <a href="{{ route('clients.edit', $client->id_client) }}" 
                                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-yellow-700 bg-yellow-100 hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200"
                                                title="Edit Client">

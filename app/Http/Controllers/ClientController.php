@@ -43,14 +43,16 @@ class ClientController extends Controller
     public function update(Request $request, Client $client)
     {
         $request->validate([
-            'nama_client' => 'required|max:50',
-            'alamat_client' => 'required|max:300',
-            'up' => 'required|max:25',
-            'upsph' => 'required|max:80',
+            'nama_client' => 'required|string|max:50',
+            'alamat_client' => 'required|string|max:300',
+            'up' => 'required|string|max:25',
+            'upsph' => 'required|string|max:80',
         ]);
 
         $client->update($request->all());
-        return redirect()->route('clients.index')->with('success', 'Client updated successfully.');
+
+        return redirect()->route('clients.index')
+                        ->with('success', 'Client updated successfully.');
     }
 
     public function destroy(Client $client)
