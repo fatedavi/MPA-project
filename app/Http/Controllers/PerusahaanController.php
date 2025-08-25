@@ -25,7 +25,7 @@ class PerusahaanController extends Controller
             'alamat' => 'required|string',
             'pemilik' => 'required|string|max:255',
             'kota' => 'required|string|max:255',
-            'gambar' => 'required|string|max:255',
+            // 'gambar' => 'required|string|max:255',
             'email' => 'required|email|max:255'
         ]);
 
@@ -52,7 +52,7 @@ class PerusahaanController extends Controller
             'alamat' => 'required|string',
             'pemilik' => 'required|string|max:255',
             'kota' => 'required|string|max:255',
-            'gambar' => 'required|string|max:255',
+            // 'gambar' => 'required|string|max:255',
             'email' => 'required|email|max:255'
         ]);
 

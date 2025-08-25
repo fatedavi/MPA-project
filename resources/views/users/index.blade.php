@@ -95,7 +95,8 @@
                 </div>
                 <div class="p-6">
                     <form method="GET" action="{{ route('users.index') }}">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                        <div
+                            class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
 
                             <!-- Search -->
                             <div class="flex-1 max-w-md">
@@ -115,9 +116,12 @@
                                 <select name="role"
                                     class="block w-full sm:w-auto border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#8D0907] focus:border-[#8D0907] transition-colors">
                                     <option value="">All Roles</option>
-                                    <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                                    <option value="super_admin" {{ request('role') == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
-                                    <option value="karyawan" {{ request('role') == 'karyawan' ? 'selected' : '' }}>Karyawan</option>
+                                    <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin
+                                    </option>
+                                    <option value="super_admin"
+                                        {{ request('role') == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
+                                    <option value="karyawan" {{ request('role') == 'karyawan' ? 'selected' : '' }}>
+                                        Karyawan</option>
                                 </select>
 
                                 <button type="submit"
@@ -167,8 +171,9 @@
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    <i class="fas fa-clock mr-2"></i>Last Login
+                                    <i class="fas fa-calendar-alt mr-2"></i>Tanggal Dibuat
                                 </th>
+
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <i class="fas fa-cogs mr-2"></i>Actions
@@ -180,7 +185,8 @@
                                 <tr class="hover:bg-gray-50 transition-colors duration-200">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <div class="w-10 h-10 bg-gradient-to-r from-[#8D0907] to-[#B91C1C] rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                                            <div
+                                                class="w-10 h-10 bg-gradient-to-r from-[#8D0907] to-[#B91C1C] rounded-full flex items-center justify-center text-white font-semibold text-lg">
                                                 {{ substr($user->name, 0, 1) }}
                                             </div>
                                             <div class="ml-4">
@@ -201,9 +207,12 @@
                                                 'super_admin' => 'bg-purple-100 text-purple-800 border-purple-200',
                                                 'karyawan' => 'bg-green-100 text-green-800 border-green-200',
                                             ];
-                                            $roleColor = $roleColors[$user->role ?? 'default'] ?? 'bg-gray-100 text-gray-800 border-gray-200';
+                                            $roleColor =
+                                                $roleColors[$user->role ?? 'default'] ??
+                                                'bg-gray-100 text-gray-800 border-gray-200';
                                         @endphp
-                                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium border {{ $roleColor }}">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium border {{ $roleColor }}">
                                             <i class="fas fa-user-tag mr-1.5"></i>
                                             {{ ucfirst($user->role ?? '-') }}
                                         </span>
@@ -222,11 +231,11 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex space-x-2">
                                             <!-- Detail -->
-                                            <a href="{{ route('users.show', $user->id) }}"
+                                            {{-- <a href="{{ route('users.show', $user->id) }}"
                                                 class="inline-flex items-center justify-center w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded-lg shadow-sm transition-colors"
                                                 title="Detail">
                                                 <i class="fas fa-eye text-sm"></i>
-                                            </a>
+                                            </a> --}}
 
                                             <!-- Edit -->
                                             <a href="{{ route('users.edit', $user->id) }}"
@@ -267,7 +276,7 @@
             </div>
 
             <!-- Pagination -->
-            @if($users->hasPages())
+            @if ($users->hasPages())
                 <div class="mt-6">
                     {{ $users->links() }}
                 </div>

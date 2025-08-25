@@ -390,9 +390,9 @@
                 <!-- Tanda tangan -->
                 <div class="signature-section">
                     <div class="signature-line">
-                        @if ($invoice->ttd)
-                            <img src="{{ public_path('assets/images/mpa_logo.png') }}" alt="ttd">
-                        @endif
+
+                        <img src="{{ public_path('assets/images/mpa_logo.png') }}" alt="ttd">
+
                     </div>
                     <div>( Mariyadi, ST, MM )</div>
                     <div>Direktur</div>
