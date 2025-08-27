@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\EventAttendance;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -31,26 +33,37 @@ class EventController extends Controller
         return view('events.create');
     }
 
-    // Simpan data event baru
+    // Simpan event baru (dibuat karyawan)
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
-            'reward' => 'required|numeric|min:0',
-            'date' => 'required|date',
+            'reward'      => 'required|numeric|min:0',
+            'date'        => 'required|date',
         ]);
 
-        Event::create([
-            'name' => $request->name,
+        // Simpan event dengan status "comingsoon" (pending approval)
+        $event = Event::create([
+            'name'        => $request->name,
             'description' => $request->description,
-            'reward' => $request->reward,
-            'date' => Carbon::parse($request->date),
-            'status' => 'comingsoon',
+            'reward'      => $request->reward,
+            'date'        => Carbon::parse($request->date),
+            'status'      => 'comingsoon',
         ]);
 
-        return redirect()->route('events.index')->with('success', 'Event berhasil dibuat.');
+        // Ambil employee_id dari user login
+        $employeeId = Auth::user()->employee->id; // pastikan ada relasi User->employee
+
+        // Daftarkan pembuat event sebagai peserta otomatis
+        EventAttendance::create([
+            'employee_id' => $employeeId,
+            'event_id'    => $event->id,
+        ]);
+
+        return redirect()->route('events.index')->with('success', 'Event berhasil diajukan, menunggu persetujuan admin.');
     }
+
 
     // Update status event (approve atau reject)
     public function updateStatus(Request $request, Event $event)

@@ -201,14 +201,14 @@
                         @endauth
 
                         @auth
-                            @if (in_array(auth()->user()->role, ['admin']))
+                            @if (in_array(auth()->user()->role, ['karyawan']))
                                 <!-- Event Management -->
                                 <a href="{{ route('events.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
                                             {{ request()->routeIs('events.*') && !request()->routeIs('events.admin') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
                                     <i
                                         class="fas fa-calendar w-5 h-5 mr-3 {{ request()->routeIs('events.*') && !request()->routeIs('events.admin') ? 'text-white' : 'text-gray-400' }}"></i>
-                                    Event
+                                    Pengajuan Event
                                 </a>
                             @endif
                         @endauth
@@ -226,7 +226,7 @@
                         @endauth
 
                         @auth
-                            @if (auth()->user()->role === 'super_admin')
+                           @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
                                 <!-- Event Approve Management -->
                                 <a href="{{ route('events.admin') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
