@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
@@ -196,7 +196,7 @@
 
 
         .terbilang {
-            font-style: italic;
+
             font-size: 10px;
             text-align: center;
             margin: 10px 0;
@@ -211,7 +211,7 @@
         <tr>
             <td style="width: 60%;">
                 <div class="company-info">
-                    <img src="{{ public_path('assets/images/mpa_logo.png') }}" alt="Logo">
+                    <img src="{{ public_path('assets/images/mpalogo.png') }}" alt="Logo">
                     <div>
                         Jl. Gunung Anyar Tambak IV No. 50<br>
                         Kelurahan Gunung Anyar Kec. Gunung Anyar Kota Surabaya Jawa Timur 50249<br>
@@ -242,69 +242,142 @@
                     </div>
                 </div>
             </td>
-            <td style="width: 40%;" class="invoice-details">
+            @php
+                \Carbon\Carbon::setLocale('id');
+            @endphp
+
+            <td style="width: 40%; padding-top: 6px;" class="invoice-details">
                 <div class="meta-row">
                     <span class="meta-label">No. Invoice :</span>
                     <span>{{ $invoice->no_invoice }}</span>
                 </div>
                 <div class="meta-row">
                     <span class="meta-label">Tgl. Invoice :</span>
-                    <span>{{ $invoice->tgl_invoice->format('d M Y') }}</span>
+                    <span>{{ $invoice->tgl_invoice->locale('id')->translatedFormat('d F Y') }}</span>
                 </div>
                 <div class="meta-row">
                     <span class="meta-label">Due Date Inv :</span>
-                    <span>{{ $invoice->due_date->format('d M Y') }}</span>
+                    <span>{{ $invoice->due_date->locale('id')->translatedFormat('d F Y') }}</span>
                 </div>
             </td>
+
         </tr>
     </table>
 
-    <!-- Reference Section -->
-    <div class="reference-section">
-        <div class="reference-row">
-            <span class="reference-label">Referensi</span>
-            <span>:</span>
-        </div>
-        <div class="reference-row">
-            <span class="reference-label">No.</span>
-            <span class="reference-label" style="width: 100px;">No. BAST</span>
-        </div>
+    {{-- Cek apakah ada data BAST atau FPB --}}
+    @if (
+        $invoice->nbast ||
+            $invoice->nbast2 ||
+            $invoice->nbast3 ||
+            $invoice->nbast4 ||
+            $invoice->nbast5 ||
+            $invoice->no_fpb ||
+            $invoice->no_fpb2 ||
+            $invoice->no_fpb3 ||
+            $invoice->no_fpb4 ||
+            $invoice->no_fpb5)
 
-        @if ($invoice->nbast)
-            <div class="reference-row">
-                <span class="reference-label">1.</span>
-                <span>{{ $invoice->nbast }}</span>
-            </div>
-        @endif
+        <!-- Referensi BAST & FPB -->
+        <table border="0" cellspacing="0" cellpadding="4" width="100%"
+            style="border-collapse: collapse; font-size: 12px;">
+            <tr>
+                <td colspan="2" style="font-weight: bold; text-align: left; padding-bottom: 6px;">
+                    Referensi
+                </td>
+            </tr>
+            <tr>
+                <!-- Tabel BAST -->
+                @if ($invoice->nbast || $invoice->nbast2 || $invoice->nbast3 || $invoice->nbast4 || $invoice->nbast5)
+                    <td width="50%" valign="top">
+                        <table border="0" cellspacing="0" cellpadding="4" width="50%"
+                            style="border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px;">No.</th>
+                                    <th style="text-align: left;">BAST</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @if ($invoice->nbast)
+                                        <td>1.</td>
+                                        <td>{{ $invoice->nbast }}</td>
+                                    @endif
+                                    @if ($invoice->nbast3)
+                                        <td>3.</td>
+                                        <td>{{ $invoice->nbast3 }}</td>
+                                    @endif
+                                    @if ($invoice->nbast5)
+                                        <td>5.</td>
+                                        <td>{{ $invoice->nbast5 }}</td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    @if ($invoice->nbast2)
+                                        <td>2.</td>
+                                        <td>{{ $invoice->nbast2 }}</td>
+                                    @endif
+                                    @if ($invoice->nbast4)
+                                        <td>4.</td>
+                                        <td>{{ $invoice->nbast4 }}</td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                @endif
 
-        @if ($invoice->nbast2)
-            <div class="reference-row">
-                <span class="reference-label">2.</span>
-                <span>{{ $invoice->nbast2 }}</span>
-            </div>
-        @endif
-
-        @if ($invoice->nbast3)
-            <div class="reference-row">
-                <span class="reference-label">3.</span>
-                <span>{{ $invoice->nbast3 }}</span>
-            </div>
-        @endif
-
-        @if ($invoice->nbast4)
-            <div class="reference-row">
-                <span class="reference-label">4.</span>
-                <span>{{ $invoice->nbast4 }}</span>
-            </div>
-        @endif
-
-        @if ($invoice->nbast5)
-            <div class="reference-row">
-                <span class="reference-label">5.</span>
-                <span>{{ $invoice->nbast5 }}</span>
-            </div>
-        @endif
-    </div>
+                <!-- Tabel FPB -->
+                @if ($invoice->no_fpb || $invoice->no_fpb2 || $invoice->no_fpb3 || $invoice->no_fpb4 || $invoice->no_fpb5)
+                    <td width="100%" valign="top">
+                        <table border="0" cellspacing="0" cellpadding="4" width="50%"
+                            style="border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px;">No.</th>
+                                    <th style="text-align: left;">FPB</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @if ($invoice->no_fpb)
+                                        <td>1.</td>
+                                        <td>{{ $invoice->no_fpb }}</td>
+                                    @endif
+                                    @if ($invoice->no_fpb3)
+                                        <td>3.</td>
+                                        <td>{{ $invoice->no_fpb3 }}</td>
+                                    @endif
+                                    @if ($invoice->no_fpb5)
+                                        <td>5.</td>
+                                        <td>{{ $invoice->no_fpb5 }}</td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    @if ($invoice->no_fpb2)
+                                        <td>2.</td>
+                                        <td>{{ $invoice->no_fpb2 }}</td>
+                                    @endif
+                                    @if ($invoice->no_fpb4)
+                                        <td>4.</td>
+                                        <td>{{ $invoice->no_fpb4 }}</td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                @endif
+            </tr>
+        </table>
+    @endif
 
     <!-- Items Table -->
     <table class="items-table">
@@ -354,9 +427,10 @@
 
     <div class="terbilang">
         Terbilang:
-        <b>{{ strtoupper(\Riskihajar\Terbilang\Facades\Terbilang::make((int) round($invoice->total_invoice * 1.11))) }}
-            RUPIAH</b>
+        <em>{{ ucwords(\Riskihajar\Terbilang\Facades\Terbilang::make((int) round($invoice->total_invoice * 1.11))) }}
+            Rupiah</em>
     </div>
+
 
 
     <!-- Payment Information -->
@@ -383,28 +457,32 @@
             <!-- Kolom kanan untuk tanggal & tanda tangan -->
             <td style="width:40%; text-align:center; vertical-align:top;">
                 <!-- Tanggal -->
-                <div class="contact-info" style="margin-bottom:50px;">
-                    Surabaya, {{ date('d M Y') }}
+                <div class="contact-info" style="margin-bottom:50px; font-weight: bold;">
+                    @php
+                        \Carbon\Carbon::setLocale('id');
+                        $tanggal = \Carbon\Carbon::now()->translatedFormat('d F Y');
+                    @endphp
+                    Surabaya, {{ $tanggal }}
                 </div>
 
                 <!-- Tanda tangan -->
                 <div class="signature-section">
-                    <div class="signature-line">
+                    {{-- <div class="signature-line">
 
                         <img src="{{ public_path('assets/images/mpa_logo.png') }}" alt="ttd">
 
-                    </div>
-                    <div>( Mariyadi, ST, MM )</div>
+                    </div> --}}
+                    <div> <u>( Mariyadi, ST, MM )</u> </div>
                     <div>Direktur</div>
                 </div>
             </td>
         </tr>
     </table>
 
-    <!-- Footer URL -->
-    <div style="margin-top: 30px; font-size: 9px; color: #999; text-align: center;">
-        https://erpower.multipowerabadi.co.id/invoice/cetak-invoice/ebook.php?invoice=MPA0638
-    </div>
+    <!-- Kop Surat di pojok kanan bawah -->
+    <img src="{{ public_path('assets/images/kopsuratmpa.png') }}" alt="kop-surat"
+        style="position: absolute; bottom: 10px; right: 10px; height: 40px;" />
+
 
     <!-- Biar kwitansi mulai di halaman baru -->
     <div style="page-break-after: always;"></div>
@@ -415,13 +493,13 @@
             <!-- Header -->
             <tr>
                 <td style="width:70%; padding:8px; vertical-align:top; border-bottom:1px solid #000;">
-                    <img src="{{ public_path('assets/images/mpa_logo.png') }}" style="height:60px;">
-                    <div style="font-size:11px; font-weight:bold;">PT. MULTI POWER ABADI</div>
+                    <img src="{{ public_path('assets/images/mpalogo.png') }}" style="height:60px;">
+                    {{-- <div style="font-size:11px; font-weight:bold;">PT. MULTI POWER ABADI</div> --}}
                     <div style="font-size:10px;">Jl. Gunung Anyar Tambak IV No.50 Surabaya</div>
                 </td>
                 <td
-                    style="width:30%; padding:8px; text-align:right; vertical-align:top; border-bottom:1px solid #000; font-size:14px; font-weight:bold; text-decoration:underline;">
-                    KWITANSI
+                    style="width:30%; padding:8px; text-align:right; vertical-align:top; border-bottom:1px solid #000; font-size:24px; font-weight:bold; text-decoration:underline;">
+                    KUITANSI
                 </td>
             </tr>
 
@@ -430,7 +508,7 @@
                 <td colspan="2" style="padding:8px;">
                     <table style="width:100%; border-collapse:collapse; font-size:12px;">
                         <tr>
-                            <td style="width:25%; padding:4px;">No. Kwitansi</td>
+                            <td style="width:25%; padding:4px;">No. Kuitansi</td>
                             <td style="width:75%; padding:4px;">: {{ $invoice->no_invoice }}/KWTN/{{ date('Y') }}
                             </td>
                         </tr>
@@ -457,7 +535,7 @@
                             <td style="padding:4px;">:
                                 <em style="text-transform: capitalize;">
                                     {{ \Riskihajar\Terbilang\Facades\Terbilang::make((int) round($invoice->total_invoice * 1.11)) }}
-                                </em> rupiah
+                                </em> <i>Rupiah</i>
                             </td>
                         </tr>
                         <tr>
@@ -475,20 +553,27 @@
             <tr>
                 <td colspan="2" style="padding:12px; text-align:right; vertical-align:bottom;">
                     <div style="text-align:center; font-size:12px; display:inline-block; min-width:220px;">
-                        Surabaya, {{ date('d M Y') }}<br><br>
-
-                        <!-- Materai + Tanda tangan -->
-                        <div style="height:80px; margin-bottom:5px; position:relative;">
-                            <img style="text-align: center; height:40px;"
-                                src="{{ public_path('assets/images/mpa_logo.png') }}"
-                                style="height:50px; position:absolute; left:10px; top:10px;">
-                            @if ($invoice->ttd)
-                                <img src="{{ public_path('assets/images/ttd.png') }}"
-                                    style="height:50px; margin-top:15px;">
-                            @endif
+                        <div class="contact-info" style="margin-bottom:20px; font-weight: bold;">
+                            @php
+                                \Carbon\Carbon::setLocale('id');
+                                $tanggal = \Carbon\Carbon::now()->translatedFormat('d F Y');
+                            @endphp
+                            Surabaya, {{ $tanggal }}
                         </div>
 
-                        ( Mariyadi, ST, MM )<br>
+
+                        <!-- Materai + Tanda tangan -->
+                        <div style="height:20px; margin-bottom:5px; position:relative;">
+                            {{-- <img style="text-align: center; height:40px;"
+                                src="{{ public_path('assets/images/mpa_logo.png') }}"
+                                style="height:50px; position:absolute; left:10px; top:10px;"> --}}
+                            {{-- @if ($invoice->ttd)
+                                <img src="{{ public_path('assets/images/ttd.png') }}"
+                                    style="height:50px; margin-top:15px;">
+                            @endif --}}
+                        </div>
+
+                        <u>( Mariyadi, ST, MM )</u><br>
                         Direktur
                     </div>
                 </td>
