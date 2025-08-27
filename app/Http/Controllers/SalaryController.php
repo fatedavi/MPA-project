@@ -17,29 +17,22 @@ class SalaryController extends Controller
     /**
      * Menampilkan daftar gaji karyawan bulan ini dengan detail perhitungan
      */
-    // use di atas file pastikan sudah ada:
-    // use Illuminate\Http\Request;
-    // use Carbon\Carbon;
-
     public function index(Request $request)
     {
         $now = Carbon::now();
         $month = $now->month;
         $year  = $now->year;
 
-        // Ambil keyword search (nama karyawan)
         $search = $request->input('search');
 
-        // Paginate data employee + filter pencarian
         $employees = Employee::query()
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
             })
             ->orderBy('name')
-            ->paginate(10)              // jumlah per halaman
-            ->withQueryString();        // agar ?search=... tetap ada saat pindah halaman
+            ->paginate(10)
+            ->withQueryString();
 
-        // Hitung komponen gaji hanya untuk item pada halaman saat ini
         $salaryData = collect($employees->items())->map(function ($employee) use ($month, $year) {
             $baseSalary = $employee->base_salary;
 
@@ -51,20 +44,31 @@ class SalaryController extends Controller
             $totalEventReward = EventAttendance::where('employee_id', $employee->id)
                 ->whereHas('event', function ($query) use ($year, $month) {
                     $query->whereYear('date', $year)
-                        ->whereMonth('date', $month)
-                        ->where('status', 'approve');
+                          ->whereMonth('date', $month)
+                          ->where('status', 'approve');
                 })
                 ->with('event')
                 ->get()
                 ->sum(fn($ea) => $ea->event->reward);
 
+            // Jumlah cuti bulan ini
             $totalCutiDays = Cuti::where('employee_id', $employee->id)
                 ->whereYear('tanggal', $year)
                 ->whereMonth('tanggal', $month)
                 ->where('status', 'approve')
                 ->sum('day');
 
-            $potonganCuti = ($baseSalary / 26) * $totalCutiDays;
+            // Total cuti setahun berjalan
+            $totalCutiYear = Cuti::where('employee_id', $employee->id)
+                ->whereYear('tanggal', $year)
+                ->where('status', 'approve')
+                ->sum('day');
+
+            // Hitung cuti yang melebihi kuota 12 hari
+            $lebihCuti = max(0, $totalCutiYear - 12);
+
+            // Potongan hanya untuk cuti yang melebihi 12 hari
+            $potonganCuti = ($baseSalary / 26) * $lebihCuti;
 
             $totalSalary = $baseSalary + $totalBonus + $totalEventReward - $potonganCuti;
 
@@ -74,16 +78,15 @@ class SalaryController extends Controller
                 'total_bonus'         => $totalBonus,
                 'total_event_reward'  => $totalEventReward,
                 'total_cuti_days'     => $totalCutiDays,
+                'total_cuti_year'     => $totalCutiYear,
+                'lebih_cuti'          => $lebihCuti,
                 'potongan_cuti'       => $potonganCuti,
                 'total_salary'        => $totalSalary,
             ];
         });
 
-        // Kirim salaryData (untuk tabel) & employees (untuk links pagination)
         return view('salary.index', compact('salaryData', 'employees'));
     }
-
-
 
     /**
      * Simpan data gaji karyawan bulan ini ke tabel salaries
@@ -107,8 +110,8 @@ class SalaryController extends Controller
             $totalEventReward = EventAttendance::where('employee_id', $employee->id)
                 ->whereHas('event', function ($query) use ($year, $month) {
                     $query->whereYear('date', $year)
-                        ->whereMonth('date', $month)
-                        ->where('status', 'approve');
+                          ->whereMonth('date', $month)
+                          ->where('status', 'approve');
                 })
                 ->with('event')
                 ->get()
@@ -120,7 +123,14 @@ class SalaryController extends Controller
                 ->where('status', 'approve')
                 ->sum('day');
 
-            $potonganCuti = ($baseSalary / 26) * $totalCutiDays;
+            $totalCutiYear = Cuti::where('employee_id', $employee->id)
+                ->whereYear('tanggal', $year)
+                ->where('status', 'approve')
+                ->sum('day');
+
+            $lebihCuti = max(0, $totalCutiYear - 12);
+
+            $potonganCuti = ($baseSalary / 26) * $lebihCuti;
 
             $totalSalary = $baseSalary + $totalBonus + $totalEventReward - $potonganCuti;
 
@@ -131,98 +141,72 @@ class SalaryController extends Controller
                     'year' => $year,
                 ],
                 [
-                    'base_salary' => $baseSalary,
-                    'total_bonus' => $totalBonus,
+                    'base_salary'        => $baseSalary,
+                    'total_bonus'        => $totalBonus,
                     'total_event_reward' => $totalEventReward,
-                    'total_cut' => $totalCutiDays,
-                    'potongan_cuti' => $potonganCuti,
-                    'total_salary' => $totalSalary,
-                    'status' => 'pending',
+                    'total_cut'          => $totalCutiDays,
+                    'potongan_cuti'      => $potonganCuti,
+                    'total_salary'       => $totalSalary,
+                    'status'             => 'pending',
                 ]
             );
         }
 
         return redirect()->route('salary.index')->with('success', 'Gaji berhasil disimpan untuk bulan ini.');
     }
+
     public function history(Request $request)
     {
-        // Ambil filter bulan dan tahun dari request, default ke bulan & tahun sekarang
         $month = $request->input('month', now()->month);
         $year = $request->input('year', now()->year);
 
-        // Query data salary dengan filter bulan & tahun dan eager load employee
         $salaries = Salary::with('employee')
             ->where('month', $month)
             ->where('year', $year)
             ->orderBy('employee_id')
             ->get();
 
-        // Buat array bulan untuk dropdown
         $months = [
-            1 => 'Januari',
-            2 => 'Februari',
-            3 => 'Maret',
-            4 => 'April',
-            5 => 'Mei',
-            6 => 'Juni',
-            7 => 'Juli',
-            8 => 'Agustus',
-            9 => 'September',
-            10 => 'Oktober',
-            11 => 'November',
-            12 => 'Desember'
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
         ];
 
-        // Tahun misal dari 5 tahun terakhir sampai sekarang
         $years = range(now()->year - 5, now()->year);
 
         return view('salary.history', compact('salaries', 'month', 'year', 'months', 'years'));
     }
+
     public function exportPdf(Request $request)
     {
-        // Ambil data filter dari request
         $month = $request->month ?? now()->format('m');
         $year = $request->year ?? now()->format('Y');
 
         $months = [
-            1 => 'Januari',
-            2 => 'Februari',
-            3 => 'Maret',
-            4 => 'April',
-            5 => 'Mei',
-            6 => 'Juni',
-            7 => 'Juli',
-            8 => 'Agustus',
-            9 => 'September',
-            10 => 'Oktober',
-            11 => 'November',
-            12 => 'Desember'
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
         ];
 
-        // Ambil data gaji
         $salaries = Salary::with('employee')
             ->whereMonth('created_at', $month)
             ->whereYear('created_at', $year)
             ->get();
 
-        // Load view PDF
         $pdf = Pdf::loadView('salary.history_pdf', [
             'salaries' => $salaries,
-            'month' => $month,
-            'year' => $year,
-            'months' => $months
+            'month'    => $month,
+            'year'     => $year,
+            'months'   => $months
         ]);
 
-        // Download PDF
         return $pdf->download("riwayat-gaji-{$month}-{$year}.pdf");
     }
-
-
 
     public function mySalary()
     {
         $user = Auth::user();
-        $employee = $user->employee; // pastikan relasi user->employee sudah ada di model User
+        $employee = $user->employee;
 
         if (!$employee) {
             return redirect()->back()->with('error', 'Data karyawan tidak ditemukan.');

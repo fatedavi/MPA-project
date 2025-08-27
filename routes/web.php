@@ -135,15 +135,14 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group
     
     // Event
     Route::resource('clients', ClientController::class);
+    Route::get('/events/admin', [EventController::class, 'admin'])->name('events.admin');
     
     Route::get('/invoice-old', [InvoiceController::class, 'old'])->name('invoice.old');
     Route::get('/invoice-old19', [InvoiceController::class, 'old19'])->name('invoice.old19');
     Route::get('/invoice-old-all', [InvoiceController::class, 'old_all'])->name('invoice.old_all');
     
     Route::resource('vendors', VendorController::class);
-    Route::get('/events', [EventController::class, 'index'])->name('events.index');
-    Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
-    Route::post('/events', [EventController::class, 'store'])->name('events.store');
+
     Route::patch('/events/{event}/status', [EventController::class, 'updateStatus'])->name('events.updateStatus');
 
     // Users (contoh kalau ada)
@@ -177,7 +176,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin,super_admin'])->group
 });
 
 Route::middleware(['auth', RoleMiddleware::class . ':super_admin'])->group(function () {
-    Route::get('/events/admin', [EventController::class, 'admin'])->name('events.admin');
+
 });
 
 /*
@@ -191,6 +190,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':karyawan'])->group(function
     Route::get('/pengajuan-cuti', [CutiController::class, 'index'])->name('cuti.index');
     Route::post('/pengajuan-cuti', [CutiController::class, 'store'])->name('cuti.store');
     Route::get('/pengajuan-cuti/create', [CutiController::class, 'create'])->name('cuti.create');
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
+    Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+    Route::post('/events', [EventController::class, 'store'])->name('events.store');
 
     // Absen
     Route::resource('attendances', AttendanceController::class)->only(['index', 'create', 'store', 'edit', 'update']);

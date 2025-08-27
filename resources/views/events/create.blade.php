@@ -21,14 +21,17 @@
                         <div class="flex items-center">
                             <i class="fas fa-chevron-right w-6 h-6 text-gray-400"></i>
                             <a href="{{ route('events.index') }}"
-                                class="ml-1 text-sm font-medium text-gray-700 hover:text-red-700 md:ml-2">Event
-                                Management</a>
+                                class="ml-1 text-sm font-medium text-gray-700 hover:text-red-700 md:ml-2">
+                                Event Management
+                            </a>
                         </div>
                     </li>
                     <li>
                         <div class="flex items-center">
                             <i class="fas fa-chevron-right w-6 h-6 text-gray-400"></i>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">Tambah Event</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">
+                                Tambah Event
+                            </span>
                         </div>
                     </li>
                 </ol>
@@ -63,7 +66,9 @@
                                 <i class="fas fa-calendar text-gray-400"></i>
                             </div>
                             <input type="text" id="name" name="name"
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-700 focus:border-red-700 transition-all duration-200 text-gray-700 placeholder-gray-500"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg 
+                                       focus:ring-2 focus:ring-red-700 focus:border-red-700 
+                                       transition-all duration-200 text-gray-700 placeholder-gray-500"
                                 placeholder="Masukkan nama event" required value="{{ old('name') }}">
                         </div>
                         @error('name')
@@ -85,7 +90,9 @@
                                 <i class="fas fa-align-left text-gray-400"></i>
                             </div>
                             <textarea id="description" name="description" rows="4"
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-700 focus:border-red-700 transition-all duration-200 text-gray-700 placeholder-gray-500 resize-none"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg 
+                                       focus:ring-2 focus:ring-red-700 focus:border-red-700 
+                                       transition-all duration-200 text-gray-700 placeholder-gray-500 resize-none"
                                 placeholder="Jelaskan detail event yang akan dibuat">{{ old('description') }}</textarea>
                         </div>
                         @error('description')
@@ -107,7 +114,9 @@
                                 <span class="text-gray-500 font-medium">Rp</span>
                             </div>
                             <input type="number" id="reward" name="reward"
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-700 focus:border-red-700 transition-all duration-200 text-gray-700 placeholder-gray-500"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg 
+                                       focus:ring-2 focus:ring-red-700 focus:border-red-700 
+                                       transition-all duration-200 text-gray-700 placeholder-gray-500"
                                 placeholder="0" min="0" required value="{{ old('reward') }}">
                         </div>
                         @error('reward')
@@ -129,21 +138,12 @@
                                 <i class="fas fa-clock text-gray-400"></i>
                             </div>
                             <input type="datetime-local" id="date" name="date"
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-700 focus:border-red-700 transition-all duration-200 text-gray-700"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg 
+                                       focus:ring-2 focus:ring-red-700 focus:border-red-700 
+                                       transition-all duration-200 text-gray-700"
                                 required value="{{ old('date') }}">
                         </div>
                         @error('date')
-                            <p class="text-red-600 text-sm mt-2 flex items-center">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-
-                
-                    <div> 
-                        </div>
-                        @error('status')
                             <p class="text-red-600 text-sm mt-2 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>
                                 {{ $message }}
@@ -155,14 +155,18 @@
                     <div class="pt-6 border-t border-gray-200">
                         <div class="flex space-x-3">
                             <button type="submit"
-    class="flex items-center px-4 py-2 bg-[#8D0907] text-white text-sm font-medium rounded-lg shadow-md hover:bg-[#A6110E] focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-[#8D0907] transition duration-200">
-    <i class="fas fa-save mr-2"></i>
-    Simpan Event
-</button>
-
+                                class="flex items-center px-4 py-2 bg-[#8D0907] text-white text-sm font-medium 
+                                       rounded-lg shadow-md hover:bg-[#A6110E] 
+                                       focus:outline-none focus:ring-2 focus:ring-offset-1 
+                                       focus:ring-[#8D0907] transition duration-200">
+                                <i class="fas fa-save mr-2"></i>
+                                Simpan Event
+                            </button>
 
                             <a href="{{ route('events.index') }}"
-                                class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                                class="inline-flex items-center px-4 py-2 border border-gray-300 
+                                       text-sm font-medium rounded-lg shadow-sm text-gray-700 bg-white 
+                                       hover:bg-gray-50 transition-colors">
                                 <i class="fas fa-arrow-left mr-2"></i>
                                 Kembali
                             </a>
@@ -178,20 +182,20 @@
                         <i class="fas fa-info-circle text-blue-400"></i>
                     </div>
                     <div class="ml-3">
-                        <h3 class="text-sm font-medium text-blue-800">
-                            Informasi Penting
-                        </h3>
+                        <h3 class="text-sm font-medium text-blue-800">Informasi Penting</h3>
                         <div class="mt-2 text-sm text-blue-700">
                             <ul class="list-disc pl-5 space-y-1">
-                                <li>Pastikan nama event sudah sesuai dan mudah dipahami</li>
-                                <li>Deskripsi event sebaiknya menjelaskan detail kegiatan yang akan dilakukan</li>
-                                <li>Reward dalam format Rupiah (tanpa titik atau koma)</li>
-                                <li>Tanggal dan waktu event harus akurat sesuai rencana pelaksanaan</li>
+                                <li>Nama event harus jelas dan mudah dipahami</li>
+                                <li>Deskripsi menjelaskan detail kegiatan</li>
+                                <li>Reward dalam format Rupiah (tanpa titik/koma)</li>
+                                <li>Tanggal & waktu sesuai rencana pelaksanaan</li>
+                                <li>Status event otomatis <span class="font-semibold">"comingsoon"</span> dan akan dicek admin</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </x-app-layout>
