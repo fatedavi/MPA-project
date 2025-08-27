@@ -49,7 +49,24 @@ class CutiController extends Controller
 
     public function create()
     {
-        return view('cuti.create');
+        $employee = Auth::user()->employee;
+
+        if (!$employee) {
+            return redirect()->back()->with('error', 'Data karyawan tidak ditemukan.');
+        }
+
+        $year = now()->year;
+
+        // Hitung total cuti yang sudah diambil tahun ini
+        $totalCutiYear = Cuti::where('employee_id', $employee->id)
+            ->whereYear('tanggal', $year)
+            ->where('status', 'approve')
+            ->sum('day');
+
+        $jatahCuti = 12;
+        $sisaCuti = max(0, $jatahCuti - $totalCutiYear);
+
+        return view('cuti.create', compact('sisaCuti', 'totalCutiYear', 'jatahCuti'));
     }
 
     public function store(Request $request)
