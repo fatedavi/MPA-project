@@ -10,7 +10,7 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <!-- Alternatif PNG -->
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/mpa_logo.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/mpalogo.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -52,17 +52,19 @@
                     <!-- Dashboard -->
                     <a href="{{ route('dashboard') }}"
                         class="flex items-center px-4 py-4 text-base font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('dashboard') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                        <i class="fas fa-tachometer-alt w-6 h-6 mr-3 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400' }}"></i>
+                        <i
+                            class="fas fa-tachometer-alt w-6 h-6 mr-3 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400' }}"></i>
                         Dashboard
                     </a>
 
 
                     <!-- Master Data Section -->
                     @auth
-                    <div class="pt-4">
-                        @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Master Data
-                        </h3>
+                        <div class="pt-4">
+                            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Master
+                                    Data
+                                </h3>
                                 <!-- Perusahaan Management -->
                                 <a href="{{ route('perusahaan.index') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('perusahaan.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
@@ -258,7 +260,8 @@
                                 <a href="{{ route('attendances.today') }}"
                                     class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
                                         {{ request()->routeIs('attendances.today') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                                    <i class="fas fa-folder-open w-5 h-5 mr-3
+                                    <i
+                                        class="fas fa-folder-open w-5 h-5 mr-3
                                         {{ request()->routeIs('attendances.today') ? 'text-white' : 'text-gray-400' }}"></i>
                                     Absen hari Ini
                                 </a>
@@ -273,22 +276,24 @@
                     <!-- Invoice Section -->
                     <div class="pt-4">
                         @auth
-                @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Invoice
-                            Management</h3>
+                            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Invoice
+                                    Management</h3>
 
-                        <!-- MPA Invoice -->
-                        <!-- MPA Invoice -->
-                        <a href="{{ route('invoice.mpa') }}"
-                            class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
-                                {{ request()->routeIs('invoice.mpa') ? 'bg-[#8D0907] text-white shadow-lg'
-                                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                            <i class="fas fa-file-invoice w-5 h-5 mr-3
+                                <!-- MPA Invoice -->
+                                <!-- MPA Invoice -->
+                                <a href="{{ route('invoice.mpa') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
+                                {{ request()->routeIs('invoice.mpa')
+                                    ? 'bg-[#8D0907] text-white shadow-lg'
+                                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <i
+                                        class="fas fa-file-invoice w-5 h-5 mr-3
                                 {{ request()->routeIs('invoice.mpa') ? 'text-white' : 'text-gray-400' }}"></i>
-                            MPA Invoice
-                        </a>
-                    @endif
-                @endauth
+                                    MPA Invoice
+                                </a>
+                            @endif
+                        @endauth
 
                         <!-- Rajata Invoice -->
                         {{-- <a href="#"
@@ -423,41 +428,48 @@
                     </div> --}}
 
                     <!-- Invoice Old Section -->
-        @auth
-            @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
-                <!-- Invoice Old Section -->
-                <div class="pt-4">
-                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Invoice Old Archive</h3>
+                    @auth
+                        @if (in_array(auth()->user()->role, ['admin', 'super_admin']))
+                            <!-- Invoice Old Section -->
+                            <div class="pt-4">
+                                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Invoice
+                                    Old Archive</h3>
 
-                    <a href="{{ route('invoice.old') }}"
-                        class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
-                            {{ request()->routeIs('invoice.old') ? 'bg-[#8D0907] text-white shadow-lg'
-                            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                        <i class="fas fa-file-signature w-5 h-5 mr-3
+                                <a href="{{ route('invoice.old') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
+                            {{ request()->routeIs('invoice.old')
+                                ? 'bg-[#8D0907] text-white shadow-lg'
+                                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <i
+                                        class="fas fa-file-signature w-5 h-5 mr-3
                             {{ request()->routeIs('invoice.old') ? 'text-white' : 'text-gray-400' }}"></i>
-                        Invoice Old
-                    </a>
+                                    Invoice Old
+                                </a>
 
-                    <a href="{{ route('invoice.old19') }}"
-                        class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
-                            {{ request()->routeIs('invoice.old19') ? 'bg-[#8D0907] text-white shadow-lg'
-                            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                        <i class="fas fa-file-alt w-5 h-5 mr-3
+                                <a href="{{ route('invoice.old19') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
+                            {{ request()->routeIs('invoice.old19')
+                                ? 'bg-[#8D0907] text-white shadow-lg'
+                                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <i
+                                        class="fas fa-file-alt w-5 h-5 mr-3
                             {{ request()->routeIs('invoice.old19') ? 'text-white' : 'text-gray-400' }}"></i>
-                        Invoice Old 2019
-                    </a>
+                                    Invoice Old 2019
+                                </a>
 
-                    <a href="{{ route('invoice.old_all') }}"
-                        class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
-                            {{ request()->routeIs('invoice.old_all') ? 'bg-[#8D0907] text-white shadow-lg'
-                            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                        <i class="fas fa-file-alt w-5 h-5 mr-3
+                                <a href="{{ route('invoice.old_all') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200
+                            {{ request()->routeIs('invoice.old_all')
+                                ? 'bg-[#8D0907] text-white shadow-lg'
+                                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <i
+                                        class="fas fa-file-alt w-5 h-5 mr-3
                             {{ request()->routeIs('invoice.old_all') ? 'text-white' : 'text-gray-400' }}"></i>
-                        Invoice Old All
-                    </a>
-                </div>
-            @endif
-        @endauth
+                                    Invoice Old All
+                                </a>
+                            </div>
+                        @endif
+                    @endauth
 
                     <!-- Reports Section -->
                     {{-- <div class="pt-4">

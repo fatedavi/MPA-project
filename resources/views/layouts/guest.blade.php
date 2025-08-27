@@ -10,7 +10,7 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <!-- Alternatif PNG -->
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/mpa_logo.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/mpalogo.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
