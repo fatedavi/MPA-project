@@ -179,6 +179,19 @@
                         @endauth
 
                         @auth
+                         
+                                <!-- Izin Sakit Management -->
+                                <a href="{{ route('izin-sakit.index') }}"
+                                    class="flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('izin-sakit.*') ? 'bg-[#8D0907] text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                                    <i
+                                        class="fas fa-notes-medical w-5 h-5 mr-3 {{ request()->routeIs('izin-sakit.*') ? 'text-white' : 'text-gray-400' }}"></i>
+                                    Izin Sakit
+                                </a>
+                        
+                        @endauth
+
+
+                        @auth
                             @if (auth()->user()->role === 'karyawan')
                                 <!-- Absen Karyawan Management -->
                                 <a href="{{ route('attendances.index') }}"
