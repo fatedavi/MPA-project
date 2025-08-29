@@ -22,6 +22,7 @@ use App\Http\Controllers\CutiController;
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\IzinSakitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,6 +126,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        // Pengajuan izin sakit
+    Route::get('/izin-sakit', [IzinSakitController::class, 'index'])->name('izin-sakit.index');
+    Route::get('/izin-sakit/create', [IzinSakitController::class, 'create'])->name('izin-sakit.create');
+    Route::post('/izin-sakit', [IzinSakitController::class, 'store'])->name('izin-sakit.store');
+
+    // Admin actions
+    Route::patch('/izin-sakit/{id}/approve', [IzinSakitController::class, 'approve'])->name('izin-sakit.approve');
+    Route::patch('/izin-sakit/{id}/reject', [IzinSakitController::class, 'reject'])->name('izin-sakit.reject');
+
 });
 /*
 |--------------------------------------------------------------------------
@@ -193,6 +203,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':karyawan'])->group(function
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
     Route::post('/events', [EventController::class, 'store'])->name('events.store');
+
 
     // Absen
     Route::resource('attendances', AttendanceController::class)->only(['index', 'create', 'store', 'edit', 'update']);
