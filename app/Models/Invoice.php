@@ -17,10 +17,10 @@ class Invoice extends Model
     ];
 
     protected $casts = [
-        'tgl_invoice' => 'date',
-        'due_date' => 'date',
-        'tgl_paid' => 'date',
-        'total_invoice' => 'decimal:2'
+    'tgl_invoice' => 'immutable_date:Y-m-d',
+    'due_date' => 'immutable_date:Y-m-d',
+    'tgl_paid' => 'immutable_date:Y-m-d',
+    'total_invoice' => 'float',
     ];
 
     // Auto-generate no_invoice saat create dengan format MPA000/INV/d-m-Y

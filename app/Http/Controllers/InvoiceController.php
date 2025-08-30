@@ -139,136 +139,71 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, $id)
-    {
-        $invoice = Invoice::findOrFail($id);
+public function edit($id)
+{
+    $invoice = Invoice::findOrFail($id);
 
-        $clients = \App\Models\Client::all();
-        $banks = \App\Models\Bank::all();
-        return view('invoice.edit', compact('invoice', 'clients', 'banks'));
+    // decode detail_invoice
+    $details = json_decode($invoice->detail_invoice, true) ?? [];
+
+    foreach ($details as &$item) {
+        $qty   = $item['qty'] ?? 0;
+        $harga = $item['harga'] ?? 0;
+        $item['total'] = $qty * $harga; // tambahkan total ke setiap item
     }
+
+    // ambil data relasi untuk dropdown
+    $clients = \App\Models\Client::all();
+    $banks   = \App\Models\Bank::all();
+
+    return view('invoice.edit', compact('invoice', 'details', 'clients', 'banks'));
+}
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Invoice $invoice)
-    {
-        try {
-            $request->validate([
-                'tgl_invoice' => 'required|date',
-                'client_id' => 'required|string|max:50',
-                'alamat_client' => 'required|string|max:400',
-                'up' => 'required|string|max:50',
-                'nbast' => 'nullable|string|max:50',
-                'nbast2' => 'nullable|string|max:50',
-                'nbast3' => 'nullable|string|max:50',
-                'nbast4' => 'nullable|string|max:50',
-                'nbast5' => 'nullable|string|max:50',
-                'jenis_no' => 'nullable|string|max:50',
-                'no_fpb' => 'nullable|string|max:50',
-                'no_fpb2' => 'nullable|string|max:50',
-                'no_fpb3' => 'nullable|string|max:50',
-                'no_fpb4' => 'nullable|string|max:50',
-                'no_fpb5' => 'nullable|string|max:50',
-                'due_date' => 'required|date',
-                'nama_bank' => 'required|string|max:100',
-                'an' => 'required|string|max:100',
-                'ac' => 'required|string|max:25',
-                'no_fp' => 'nullable|string|max:30',
-                'status' => 'required|string|max:15',
-                'tgl_paid' => 'nullable|date',
-                'detail_invoice' => 'required|array|min:1',
-                'detail_invoice.*.deskripsi' => 'required|string|max:255',
-                'detail_invoice.*.qty' => 'required|numeric|min:1',
-                'detail_invoice.*.satuan' => 'nullable|string|max:20',
-                'detail_invoice.*.harga' => 'required|numeric|min:0',
-                'ttd' => 'nullable|string|max:225',
-                'ttdkwitansi' => 'nullable|string|max:225',
-                'ttdbast' => 'nullable|string|max:225',
-                'ttdbakn' => 'nullable|string|max:225',
-            ]);
+   public function update(Request $request, $id)
+{
+    $invoice = Invoice::findOrFail($id);
 
-            $data = $request->all();
+    // ✅ validasi
+    $validated = $request->validate([
+        'no_invoice'      => 'required|string|max:255',
+        'tgl_invoice'     => 'required|date',
+        'due_date'        => 'required|date',
+        'tgl_paid'        => 'nullable|date',
+        'status'          => 'required|in:draft,pending,paid,cancelled',
+        'detail_invoice'  => 'required|array',
+        'detail_invoice.*.deskripsi' => 'required|string',
+        'detail_invoice.*.qty'       => 'required|numeric|min:1',
+        'detail_invoice.*.harga'     => 'required|numeric|min:0',
+        'detail_invoice.*.satuan'    => 'nullable|string',
+    ]);
 
-            // Remove client_id from data since it's not in fillable fields
-            unset($data['client_id']);
-
-            // Process detail_invoice items
-            $detailItems = [];
-            foreach ($request->detail_invoice as $item) {
-                $detailItems[] = [
-                    'deskripsi' => $item['deskripsi'],
-                    'qty' => (float) $item['qty'],
-                    'satuan' => $item['satuan'] ?? 'pcs',
-                    'harga' => (float) $item['harga'],
-                    'total' => round((float) $item['qty'] * (float) $item['harga'], 2)
-                ];
-            }
-
-            $data['detail_invoice'] = json_encode($detailItems);
-
-            // Set nama_client from hidden field
-            $data['nama_client'] = $data['nama_client'] ?? $data['up'];
-
-            // Set kd_admin from current user if not provided
-            if (!isset($data['kd_admin']) || empty($data['kd_admin'])) {
-                $data['kd_admin'] = (int) Auth::user()->id;
-            }
-
-            // Calculate total from items
-            $data['total_invoice'] = round(collect($detailItems)->sum('total'), 2);
-
-            // Handle signature checkboxes (set to empty string if not checked)
-            $signatureFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
-            foreach ($signatureFields as $field) {
-                $data[$field] = $request->has($field) ? '1' : '';
-            }
-
-            $invoice->update($data);
-
-            // Flash session data
-            session()->flash('success', '✅ Invoice berhasil diperbarui! Data telah tersimpan ke database.');
-
-            return redirect()->back();
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            session()->flash('error', '❌ Validasi gagal! Silakan periksa data yang dimasukkan.');
-            return redirect()->back()
-                ->withErrors($e->validator)
-                ->withInput();
-        } catch (\Exception $e) {
-            session()->flash('error', '💥 Terjadi kesalahan! ' . $e->getMessage());
-            return redirect()->back()
-                ->withInput();
-        }
+    // ✅ hitung total
+    $total = 0;
+    foreach ($validated['detail_invoice'] as &$item) {
+        $item['satuan'] = $item['satuan'] ?? 'pcs';
+        $total += $item['qty'] * $item['harga'];
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        try {
-            $invoice = Invoice::findOrFail($id);
+    // ✅ isi ke model
+    $invoice->fill([
+        'no_invoice'     => $validated['no_invoice'],
+        'tgl_invoice'    => $validated['tgl_invoice'],
+        'due_date'       => $validated['due_date'],
+        'tgl_paid'       => $validated['tgl_paid'],
+        'status'         => $validated['status'],
+        'detail_invoice' => json_encode($validated['detail_invoice']), // simpan sebagai JSON string
+        'total_invoice'  => $total,
+    ]);
 
-            // Delete signature files
-            $uploadFields = ['ttd', 'ttdkwitansi', 'ttdbast', 'ttdbakn'];
-            foreach ($uploadFields as $field) {
-                if ($invoice->$field) {
-                    Storage::delete('public/signatures/' . $invoice->$field);
-                }
-            }
+    $invoice->save();
 
-            $invoice->delete();
+    return redirect()->route('invoice.index')->with('success', 'Invoice berhasil diperbarui.');
+}
 
-            // Flash session data
-            session()->flash('success', '🗑️ Invoice berhasil dihapus! Data telah dihapus dari database.');
-
-            return redirect()->route('invoice.mpa');
-        } catch (\Exception $e) {
-            session()->flash('error', '💥 Gagal menghapus invoice! ' . $e->getMessage());
-            return redirect()->back();
-        }
-    }
 
     /**
      * Display MPA invoice page.

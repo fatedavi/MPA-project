@@ -124,8 +124,10 @@
                                     <label for="tgl_invoice" class="block text-sm font-medium text-gray-700">Invoice
                                         Date *</label>
                                     <input type="date" name="tgl_invoice" id="tgl_invoice"
-                                        value="{{ $invoice->tgl_invoice }}" required
+                                        value="{{ \Carbon\Carbon::parse($invoice->tgl_invoice)->format('Y-m-d') }}"
+                                        required
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+
                                 </div>
                             </div>
                         </div>
@@ -251,12 +253,13 @@
                                                     <div>
                                                         <label
                                                             class="block text-sm font-medium text-gray-700">Total</label>
-                                                        <input type="text"
+                                                       <input type="text"
                                                             name="detail_invoice[{{ $index }}][total]"
-                                                            value="{{ 'Rp ' . number_format($item['total'], 2, ',', '.') }}"
+                                                            value="{{ 'Rp ' . number_format(($item['total'] ?? (($item['qty'] ?? 0) * ($item['harga'] ?? 0))), 0, ',', '.') }}"
                                                             readonly
                                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm"
                                                             placeholder="Rp 0">
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -465,18 +468,19 @@
                                     <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date
                                         *</label>
                                     <input type="date" name="due_date" id="due_date"
-                                        value="{{ $invoice->due_date }}" required
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+                                            value="{{ \Carbon\Carbon::parse($invoice->due_date)->format('Y-m-d') }}"
+                                            required
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+
                                 </div>
 
                                 <div>
                                     <label for="total_invoice" class="block text-sm font-medium text-gray-700">Total
                                         Invoice</label>
-                                    <input type="text" name="total_invoice" id="total_invoice"
-                                        value="{{ 'Rp ' . number_format($invoice->total_invoice, 2, ',', '.') }}"
-                                        readonly
+                                    <input type="text" name="total_invoice" id="total_invoice" readonly
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm"
                                         placeholder="Rp 0">
+                                    <input type="hidden" name="total_invoice_hidden" id="total_invoice_hidden">
                                     <p class="mt-1 text-xs text-gray-500">Auto-calculated from items</p>
                                 </div>
 
@@ -517,9 +521,10 @@
                                 <div>
                                     <label for="tgl_paid" class="block text-sm font-medium text-gray-700">Payment
                                         Date</label>
-                                    <input type="date" name="tgl_paid" id="tgl_paid"
-                                        value="{{ $invoice->tgl_paid }}"
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+                                   <input type="date" name="tgl_paid" id="tgl_paid"
+                                    value="{{ $invoice->tgl_paid ? \Carbon\Carbon::parse($invoice->tgl_paid)->format('Y-m-d') : '' }}"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+
                                 </div>
                             </div>
                         </div>
