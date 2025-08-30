@@ -629,16 +629,23 @@
         </div>
     </div>
 
-    <script>
-        let itemCount = {{ $invoice->detail_invoice_array ? count($invoice->detail_invoice_array) : 1 }};
+       <script>
+        let itemCount = 1;
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Setup client selection
+            // Set default date to today
             const clientSelect = document.getElementById('client_id');
 
             clientSelect.addEventListener('change', function() {
                 fillClientData(); // Call the same function
             });
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tgl_invoice').value = today;
+
+            // Set due date to 30 days from today
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 30);
+            document.getElementById('due_date').value = dueDate.toISOString().split('T')[0];
 
             // Calculate initial total
             calculateTotal();
@@ -740,13 +747,18 @@
 
             items.forEach(item => {
                 const totalInput = item.querySelector('input[name*="[total]"]');
-                const totalText = totalInput.value.replace(/[^\d.,]/g, '').replace(',', '.');
+                let totalText = totalInput.value.replace(/[^\d.,]/g, ''); // Hanya angka, titik, koma
+                totalText = totalText.replace(/\./g, '').replace(',',
+                    '.'); // Hapus titik ribuan, koma jadi titik desimal
                 const itemTotal = parseFloat(totalText) || 0;
                 total += itemTotal;
             });
 
             const formattedTotal = formatIDR(total);
             document.getElementById('total_invoice').value = formattedTotal;
+
+            // Fill the hidden total_invoice_hidden field with numeric value
+            document.getElementById('total_invoice_hidden').value = total;
         }
 
         // Format number to IDR format
@@ -773,27 +785,23 @@
 
                 // Fill the address field
                 document.getElementById('alamat_client').value = alamatClient || '';
+
+                // Fill the hidden nama_client field
+                document.getElementById('nama_client').value = namaClient || '';
             } else {
                 // Clear fields if no client selected
                 document.getElementById('up').value = '';
                 document.getElementById('alamat_client').value = '';
+                document.getElementById('nama_client').value = '';
             }
         }
 
         // Function to fill bank data from select dropdown
         function fillBankData() {
-            const selectElement = document.getElementById('nama_bank');
-            const selectedOption = selectElement.options[selectElement.selectedIndex];
-            const anInput = document.getElementById('an');
-            const acInput = document.getElementById('ac');
-
-            if (selectedOption.value) {
-                anInput.value = selectedOption.dataset.an;
-                acInput.value = selectedOption.dataset.ac;
-            } else {
-                anInput.value = '';
-                acInput.value = '';
-            }
+            const selectedOption = document.getElementById('nama_bank').options[document.getElementById('nama_bank')
+                .selectedIndex];
+            document.getElementById('an').value = selectedOption.dataset.an;
+            document.getElementById('ac').value = selectedOption.dataset.ac;
         }
     </script>
 </x-app-layout>
