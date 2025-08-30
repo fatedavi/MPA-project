@@ -108,7 +108,7 @@
                         class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg border border-white/30">
                         <i class="fas fa-bolt text-2xl text-white"></i>
                     </div>
-                    <span class="text-3xl font-bold text-white">EPower</span>
+                    <span class="text-3xl font-bold text-white">ePower</span>
                 </div>
 
                 <!-- Auth Buttons -->
@@ -137,7 +137,7 @@
                 <h1 class="text-6xl md:text-8xl font-bold text-white mb-8 leading-tight">
                     Welcome to
                     <span
-                        class="bg-gradient-to-r from-white via-[#FEF3C7] to-[#FDE68A] bg-clip-text text-transparent">EPower</span>
+                        class="bg-gradient-to-r from-white via-[#FEF3C7] to-[#FDE68A] bg-clip-text text-transparent">ePower</span>
                 </h1>
 
                 <!-- Subtitle -->

@@ -124,8 +124,10 @@
                                     <label for="tgl_invoice" class="block text-sm font-medium text-gray-700">Invoice
                                         Date *</label>
                                     <input type="date" name="tgl_invoice" id="tgl_invoice"
-                                        value="{{ $invoice->tgl_invoice }}" required
+                                        value="{{ \Carbon\Carbon::parse($invoice->tgl_invoice)->format('Y-m-d') }}"
+                                        required
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+
                                 </div>
                             </div>
                         </div>
@@ -251,12 +253,13 @@
                                                     <div>
                                                         <label
                                                             class="block text-sm font-medium text-gray-700">Total</label>
-                                                        <input type="text"
+                                                       <input type="text"
                                                             name="detail_invoice[{{ $index }}][total]"
-                                                            value="{{ 'Rp ' . number_format($item['total'], 2, ',', '.') }}"
+                                                            value="{{ 'Rp ' . number_format(($item['total'] ?? (($item['qty'] ?? 0) * ($item['harga'] ?? 0))), 0, ',', '.') }}"
                                                             readonly
                                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm"
                                                             placeholder="Rp 0">
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -465,18 +468,19 @@
                                     <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date
                                         *</label>
                                     <input type="date" name="due_date" id="due_date"
-                                        value="{{ $invoice->due_date }}" required
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+                                            value="{{ \Carbon\Carbon::parse($invoice->due_date)->format('Y-m-d') }}"
+                                            required
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+
                                 </div>
 
                                 <div>
                                     <label for="total_invoice" class="block text-sm font-medium text-gray-700">Total
                                         Invoice</label>
-                                    <input type="text" name="total_invoice" id="total_invoice"
-                                        value="{{ 'Rp ' . number_format($invoice->total_invoice, 2, ',', '.') }}"
-                                        readonly
+                                    <input type="text" name="total_invoice" id="total_invoice" readonly
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm"
                                         placeholder="Rp 0">
+                                    <input type="hidden" name="total_invoice_hidden" id="total_invoice_hidden">
                                     <p class="mt-1 text-xs text-gray-500">Auto-calculated from items</p>
                                 </div>
 
@@ -517,9 +521,10 @@
                                 <div>
                                     <label for="tgl_paid" class="block text-sm font-medium text-gray-700">Payment
                                         Date</label>
-                                    <input type="date" name="tgl_paid" id="tgl_paid"
-                                        value="{{ $invoice->tgl_paid }}"
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+                                   <input type="date" name="tgl_paid" id="tgl_paid"
+                                    value="{{ $invoice->tgl_paid ? \Carbon\Carbon::parse($invoice->tgl_paid)->format('Y-m-d') : '' }}"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+
                                 </div>
                             </div>
                         </div>
@@ -624,16 +629,23 @@
         </div>
     </div>
 
-    <script>
-        let itemCount = {{ $invoice->detail_invoice_array ? count($invoice->detail_invoice_array) : 1 }};
+       <script>
+        let itemCount = 1;
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Setup client selection
+            // Set default date to today
             const clientSelect = document.getElementById('client_id');
 
             clientSelect.addEventListener('change', function() {
                 fillClientData(); // Call the same function
             });
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tgl_invoice').value = today;
+
+            // Set due date to 30 days from today
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 30);
+            document.getElementById('due_date').value = dueDate.toISOString().split('T')[0];
 
             // Calculate initial total
             calculateTotal();
@@ -735,13 +747,18 @@
 
             items.forEach(item => {
                 const totalInput = item.querySelector('input[name*="[total]"]');
-                const totalText = totalInput.value.replace(/[^\d.,]/g, '').replace(',', '.');
+                let totalText = totalInput.value.replace(/[^\d.,]/g, ''); // Hanya angka, titik, koma
+                totalText = totalText.replace(/\./g, '').replace(',',
+                    '.'); // Hapus titik ribuan, koma jadi titik desimal
                 const itemTotal = parseFloat(totalText) || 0;
                 total += itemTotal;
             });
 
             const formattedTotal = formatIDR(total);
             document.getElementById('total_invoice').value = formattedTotal;
+
+            // Fill the hidden total_invoice_hidden field with numeric value
+            document.getElementById('total_invoice_hidden').value = total;
         }
 
         // Format number to IDR format
@@ -768,27 +785,23 @@
 
                 // Fill the address field
                 document.getElementById('alamat_client').value = alamatClient || '';
+
+                // Fill the hidden nama_client field
+                document.getElementById('nama_client').value = namaClient || '';
             } else {
                 // Clear fields if no client selected
                 document.getElementById('up').value = '';
                 document.getElementById('alamat_client').value = '';
+                document.getElementById('nama_client').value = '';
             }
         }
 
         // Function to fill bank data from select dropdown
         function fillBankData() {
-            const selectElement = document.getElementById('nama_bank');
-            const selectedOption = selectElement.options[selectElement.selectedIndex];
-            const anInput = document.getElementById('an');
-            const acInput = document.getElementById('ac');
-
-            if (selectedOption.value) {
-                anInput.value = selectedOption.dataset.an;
-                acInput.value = selectedOption.dataset.ac;
-            } else {
-                anInput.value = '';
-                acInput.value = '';
-            }
+            const selectedOption = document.getElementById('nama_bank').options[document.getElementById('nama_bank')
+                .selectedIndex];
+            document.getElementById('an').value = selectedOption.dataset.an;
+            document.getElementById('ac').value = selectedOption.dataset.ac;
         }
     </script>
 </x-app-layout>
