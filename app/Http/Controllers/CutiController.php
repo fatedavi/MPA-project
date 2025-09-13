@@ -47,27 +47,47 @@ class CutiController extends Controller
     }
 
 
-    public function create()
-    {
-        $employee = Auth::user()->employee;
+public function create()
+{
+    $employee = Auth::user()->employee;
 
-        if (!$employee) {
-            return redirect()->back()->with('error', 'Data karyawan tidak ditemukan.');
-        }
-
-        $year = now()->year;
-
-        // Hitung total cuti yang sudah diambil tahun ini
-        $totalCutiYear = Cuti::where('employee_id', $employee->id)
-            ->whereYear('tanggal', $year)
-            ->where('status', 'approve')
-            ->sum('day');
-
-        $jatahCuti = 12;
-        $sisaCuti = max(0, $jatahCuti - $totalCutiYear);
-
-        return view('cuti.create', compact('sisaCuti', 'totalCutiYear', 'jatahCuti'));
+    if (!$employee) {
+        return redirect()->back()->with('error', 'Data karyawan tidak ditemukan.');
     }
+
+    // Hitung selisih tahun sejak masuk kerja
+    $masaKerjaTahun = \Carbon\Carbon::parse($employee->created_at)->diffInYears(now());
+
+    // Kalau masa kerja < 1 tahun, cuti belum tersedia
+    if ($masaKerjaTahun < 1) {
+        return view('cuti.create', [
+            'sisaCuti' => 0,
+            'totalCutiYear' => 0,
+            'jatahCuti' => 0,
+            'masaKerjaTahun' => $masaKerjaTahun,
+            'eligible' => false, // tambahan indikator
+        ]);
+    }
+
+    $year = now()->year;
+
+    // Hitung total cuti yang sudah diambil tahun ini
+    $totalCutiYear = Cuti::where('employee_id', $employee->id)
+        ->whereYear('tanggal', $year)
+        ->where('status', 'approve')
+        ->sum('day');
+
+    $jatahCuti = 12;
+    $sisaCuti = max(0, $jatahCuti - $totalCutiYear);
+
+    return view('cuti.create', [
+        'sisaCuti' => $sisaCuti,
+        'totalCutiYear' => $totalCutiYear,
+        'jatahCuti' => $jatahCuti,
+        'masaKerjaTahun' => $masaKerjaTahun,
+        'eligible' => true, // sudah berhak cuti
+    ]);
+}
 
     public function store(Request $request)
     {
