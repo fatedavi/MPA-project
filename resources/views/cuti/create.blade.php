@@ -34,21 +34,34 @@
                 </ol>
             </nav>
 
-            <!-- Info Sisa Cuti -->
-            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                <div class="flex items-start">
-                    <i class="fas fa-leaf text-green-600 mt-1 mr-3"></i>
-                    <div>
-                        <p class="text-sm text-green-800 font-medium mb-1">Sisa Jatah Cuti Anda</p>
-                        <p class="text-lg font-bold text-green-700">
-                            {{ $sisaCuti }} hari
-                        </p>
-                        <p class="text-xs text-gray-600 mt-1">
-                            (Total jatah {{ $jatahCuti }} hari, sudah terpakai {{ $totalCutiYear }} hari)
-                        </p>
-                    </div>
-                </div>
-            </div>
+<!-- Info Sisa Cuti -->
+<div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+    <div class="flex items-start">
+        <i class="fas fa-leaf text-green-600 mt-1 mr-3"></i>
+        <div>
+            <p class="text-sm text-green-800 font-medium mb-1">Sisa Jatah Cuti Anda</p>
+
+            @if(!$eligible)
+                <p class="text-lg font-bold text-red-600">
+                    Belum tersedia
+                </p>
+                <p class="text-xs text-gray-600 mt-1">
+                    Anda belum bekerja sampai 1 tahun. 
+                    Cuti hanya tersedia setelah 1 tahun masa kerja.  
+                    Jika izin, akan dipotong gaji.
+                </p>
+            @else
+                <p class="text-lg font-bold text-green-700">
+                    {{ $sisaCuti }} hari
+                </p>
+                <p class="text-xs text-gray-600 mt-1">
+                    (Total jatah {{ $jatahCuti }} hari, sudah terpakai {{ $totalCutiYear }} hari)
+                </p>
+            @endif
+        </div>
+    </div>
+</div>
+
 
             <!-- Main Form -->
             <div class="bg-white shadow-sm rounded-lg border border-gray-200">

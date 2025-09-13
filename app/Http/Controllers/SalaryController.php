@@ -33,57 +33,69 @@ class SalaryController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        $salaryData = collect($employees->items())->map(function ($employee) use ($month, $year) {
-            $baseSalary = $employee->base_salary;
+$salaryData = collect($employees->items())->map(function ($employee) use ($month, $year) {
+    $baseSalary = $employee->base_salary;
 
-            $totalBonus = Attendance::where('employee_id', $employee->id)
-                ->whereYear('date', $year)
-                ->whereMonth('date', $month)
-                ->sum('bonus');
+    $totalBonus = Attendance::where('employee_id', $employee->id)
+        ->whereYear('date', $year)
+        ->whereMonth('date', $month)
+        ->sum('bonus');
 
-            $totalEventReward = EventAttendance::where('employee_id', $employee->id)
-                ->whereHas('event', function ($query) use ($year, $month) {
-                    $query->whereYear('date', $year)
-                          ->whereMonth('date', $month)
-                          ->where('status', 'approve');
-                })
-                ->with('event')
-                ->get()
-                ->sum(fn($ea) => $ea->event->reward);
+    $totalEventReward = EventAttendance::where('employee_id', $employee->id)
+        ->whereHas('event', function ($query) use ($year, $month) {
+            $query->whereYear('date', $year)
+                  ->whereMonth('date', $month)
+                  ->where('status', 'approve');
+        })
+        ->with('event')
+        ->get()
+        ->sum(fn($ea) => $ea->event->reward);
 
-            // Jumlah cuti bulan ini
-            $totalCutiDays = Cuti::where('employee_id', $employee->id)
-                ->whereYear('tanggal', $year)
-                ->whereMonth('tanggal', $month)
-                ->where('status', 'approve')
-                ->sum('day');
+    // Total cuti bulan ini
+    $totalCutiDays = Cuti::where('employee_id', $employee->id)
+        ->whereYear('tanggal', $year)
+        ->whereMonth('tanggal', $month)
+        ->where('status', 'approve')
+        ->sum('day');
 
-            // Total cuti setahun berjalan
-            $totalCutiYear = Cuti::where('employee_id', $employee->id)
-                ->whereYear('tanggal', $year)
-                ->where('status', 'approve')
-                ->sum('day');
+    // Total cuti setahun berjalan
+    $totalCutiYear = Cuti::where('employee_id', $employee->id)
+        ->whereYear('tanggal', $year)
+        ->where('status', 'approve')
+        ->sum('day');
 
-            // Hitung cuti yang melebihi kuota 12 hari
-            $lebihCuti = max(0, $totalCutiYear - 12);
+    // Hitung masa kerja (tahun)
+    $masaKerjaTahun = \Carbon\Carbon::parse($employee->created_at)->diffInYears(now());
 
-            // Potongan hanya untuk cuti yang melebihi 12 hari
-            $potonganCuti = ($baseSalary / 26) * $lebihCuti;
+    $lebihCuti = 0;
+    $potonganCuti = 0;
 
-            $totalSalary = $baseSalary + $totalBonus + $totalEventReward - $potonganCuti;
+    if ($masaKerjaTahun < 1) {
+        // Belum 1 tahun -> semua cuti dipotong gaji
+        $lebihCuti = $totalCutiYear;
+        $potonganCuti = ($baseSalary / 26) * $lebihCuti;
+    } else {
+        // Sudah 1 tahun -> hanya lebih dari 12 hari yang dipotong
+        $lebihCuti = max(0, $totalCutiYear - 12);
+        $potonganCuti = ($baseSalary / 26) * $lebihCuti;
+    }
 
-            return [
-                'employee'            => $employee,
-                'base_salary'         => $baseSalary,
-                'total_bonus'         => $totalBonus,
-                'total_event_reward'  => $totalEventReward,
-                'total_cuti_days'     => $totalCutiDays,
-                'total_cuti_year'     => $totalCutiYear,
-                'lebih_cuti'          => $lebihCuti,
-                'potongan_cuti'       => $potonganCuti,
-                'total_salary'        => $totalSalary,
-            ];
-        });
+    $totalSalary = $baseSalary + $totalBonus + $totalEventReward - $potonganCuti;
+
+    return [
+        'employee'            => $employee,
+        'base_salary'         => $baseSalary,
+        'total_bonus'         => $totalBonus,
+        'total_event_reward'  => $totalEventReward,
+        'total_cuti_days'     => $totalCutiDays,
+        'total_cuti_year'     => $totalCutiYear,
+        'lebih_cuti'          => $lebihCuti,
+        'potongan_cuti'       => $potonganCuti,
+        'total_salary'        => $totalSalary,
+        'masa_kerja_tahun'    => $masaKerjaTahun,
+    ];
+});
+
 
         return view('salary.index', compact('salaryData', 'employees'));
     }
