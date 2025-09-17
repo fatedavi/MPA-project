@@ -173,7 +173,7 @@ public function edit($id)
         'tgl_invoice'     => 'required|date',
         'due_date'        => 'required|date',
         'tgl_paid'        => 'nullable|date',
-        'status'          => 'required|in:draft,pending,paid,cancelled',
+        'status'          => 'required|in:draft,pending,paid,cancelled,sent,overdue',
         'detail_invoice'  => 'required|array',
         'detail_invoice.*.deskripsi' => 'required|string',
         'detail_invoice.*.qty'       => 'required|numeric|min:1',
