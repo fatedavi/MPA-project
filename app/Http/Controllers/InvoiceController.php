@@ -359,4 +359,14 @@ public function edit($id)
 
         return view('invoice.old_all', compact('invoices', 'totalValue'));
     }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->delete();
+
+        return redirect()->route('invoice.index')->with('success', 'Invoice berhasil dihapus.');
+    }
 }
