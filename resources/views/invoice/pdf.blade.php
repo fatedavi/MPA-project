@@ -484,8 +484,36 @@
         style="position: absolute; bottom: 10px; right: 10px; height: 40px;" />
 
 
-    <!-- Biar kwitansi mulai di halaman baru -->
-    <div style="page-break-after: always;"></div>
+<!-- Biar kwitansi mulai di halaman baru -->
+<div style="page-break-after: always;"></div>
+@php
+    // Pisahkan nomor invoice by "/"
+    $parts = explode('/', $invoice->no_invoice);
+
+    // Ambil prefix (contoh: "MPA002")
+    $prefix = $parts[0] ?? $invoice->no_invoice;
+
+    // Ambil bulan dan tahun dari created_at
+    $monthNumber = date('n', strtotime($invoice->created_at ?? now()));
+    $tahun = date('Y', strtotime($invoice->created_at ?? now()));
+
+    // Mapping bulan ke romawi
+    $bulanRomawi = [
+        1 => 'I',
+        2 => 'II',
+        3 => 'III',
+        4 => 'IV',
+        5 => 'V',
+        6 => 'VI',
+        7 => 'VII',
+        8 => 'VIII',
+        9 => 'IX',
+        10 => 'X',
+        11 => 'XI',
+        12 => 'XII',
+    ];
+    $bulan = $bulanRomawi[$monthNumber];
+@endphp
 
     <!-- ========== KWITANSI ========== -->
     <div class="kwitansi">
@@ -509,7 +537,8 @@
                     <table style="width:100%; border-collapse:collapse; font-size:12px;">
                         <tr>
                             <td style="width:25%; padding:4px;">No. Kuitansi</td>
-                            <td style="width:75%; padding:4px;">: {{ $invoice->no_invoice }}/KWTN/{{ date('Y') }}
+                            <td style="width:75%; padding:4px;">
+                                : {{ $prefix }}/KUI/{{ $bulan }}/{{ $tahun }}
                             </td>
                         </tr>
                         <tr>
