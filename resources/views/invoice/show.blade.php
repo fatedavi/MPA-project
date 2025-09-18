@@ -143,9 +143,8 @@
                                                         {{ $item['satuan'] ?? 'pcs' }}</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp
                                                         {{ number_format($item['harga'], 0, ',', '.') }}</td>
-                                                    <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                        Rp {{ number_format($item['total'], 0, ',', '.') }}</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        Rp {{ number_format($item['total'] ?? 0, 0, ',', '.') }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
