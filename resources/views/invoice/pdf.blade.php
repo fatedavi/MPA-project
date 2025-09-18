@@ -399,7 +399,7 @@
                     <td class="center-col">{{ number_format($item['qty'], 2) }}</td>
                     <td class="center-col">{{ $item['satuan'] ?? 'LS' }}</td>
                     <td class="num-col">Rp. {{ number_format($item['harga'], 0, ',', '.') }}</td>
-                    <td class="num-col">Rp. {{ number_format($item['total'], 0, ',', '.') }}</td>
+                    <td class="num-col">Rp. {{ number_format($item['total'] ?? 0, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
         </tbody>
