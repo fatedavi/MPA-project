@@ -457,7 +457,7 @@
             <!-- Kolom kanan untuk tanggal & tanda tangan -->
             <td style="width:40%; text-align:center; vertical-align:top;">
                 <!-- Tanggal -->
-                <div class="contact-info" style="margin-bottom:50px; font-weight: bold;">
+                <div class="contact-info" style="margin-bottom:80px; font-weight: bold;">
                     @php
                         \Carbon\Carbon::setLocale('id');
                         $tanggal = \Carbon\Carbon::now()->translatedFormat('d F Y');
@@ -509,7 +509,7 @@
                     <table style="width:100%; border-collapse:collapse; font-size:12px;">
                         <tr>
                             <td style="width:25%; padding:4px;">No. Kuitansi</td>
-                            <td style="width:75%; padding:4px;">: {{ $invoice->no_invoice }}/KWTN/{{ date('Y') }}
+                            <td style="width:75%; padding:4px;">: {{ $invoice->no_invoice }}/KUI/{{ date('Y') }}
                             </td>
                         </tr>
                         <tr>
@@ -553,7 +553,7 @@
             <tr>
                 <td colspan="2" style="padding:12px; text-align:right; vertical-align:bottom;">
                     <div style="text-align:center; font-size:12px; display:inline-block; min-width:220px;">
-                        <div class="contact-info" style="margin-bottom:20px; font-weight: bold;">
+                        <div class="contact-info" style="margin-bottom:50px; font-weight: bold;">
                             @php
                                 \Carbon\Carbon::setLocale('id');
                                 $tanggal = \Carbon\Carbon::now()->translatedFormat('d F Y');
