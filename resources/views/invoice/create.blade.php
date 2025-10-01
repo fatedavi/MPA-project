@@ -274,7 +274,7 @@
                                 <h3 class="text-xl font-semibold text-orange-900 flex items-center justify-between">
                                     <span class="flex items-center">
                                         <i class="fas fa-file-contract text-orange-600 mr-3 text-xl"></i>
-                                        NBAST Information
+                                        Nomer BAST Information
                                     </span>
                                     <i id="nbast-icon"
                                         class="fas fa-chevron-down transform transition-transform duration-200"></i>
@@ -336,13 +336,13 @@
                             </button>
                             <div id="fpb-content" class="hidden px-6 pb-6">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div>
+                                    {{-- <div>
                                         <label for="jenis_no" class="block text-sm font-medium text-gray-700">Jenis
                                             No</label>
                                         <input type="text" name="jenis_no" id="jenis_no"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm"
                                             placeholder="Jenis No">
-                                    </div>
+                                    </div> --}}
                                     <div>
                                         <label for="no_fpb" class="block text-sm font-medium text-gray-700">No FPB
                                             1</label>

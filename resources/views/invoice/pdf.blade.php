@@ -198,7 +198,7 @@
         .terbilang {
 
             font-size: 10px;
-            text-align: center;
+            text-align: right;
             margin: 10px 0;
             color: #666;
         }
@@ -213,11 +213,13 @@
                 <div class="company-info">
                     <img src="{{ public_path('assets/images/mpalogo.png') }}" alt="Logo">
                     <div>
-                        Jl. Gunung Anyar Tambak IV No. 50<br>
-                        Kelurahan Gunung Anyar Kec. Gunung Anyar Kota Surabaya Jawa Timur 50249<br>
-                        Email : multipowerabadi@gmail.com<br>
-                        Telp: 031-5913774 & Hp : 0811272825<br>
-                        NPWP :71 425 962 5 606 000
+                        <b>
+                            Jl. Gunung Anyar Tambak IV No. 50<br>
+                            Kelurahan Gunung Anyar Kec. Gunung Anyar Kota Surabaya Jawa Timur 50249<br>
+                            Email : multipowerabadi@gmail.com<br>
+                            Telp: 031-5913774 & Hp : 0811272825<br>
+                            NPWP :71 425 962 5 606 000
+                        </b>
                     </div>
                 </div>
             </td>
@@ -247,18 +249,23 @@
             @endphp
 
             <td style="width: 40%; padding-top: 6px;" class="invoice-details">
-                <div class="meta-row">
-                    <span class="meta-label">No. Invoice :</span>
-                    <span>{{ $invoice->no_invoice }}</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">Tgl. Invoice :</span>
-                    <span>{{ $invoice->tgl_invoice->locale('id')->translatedFormat('d F Y') }}</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">Due Date Inv :</span>
-                    <span>{{ $invoice->due_date->locale('id')->translatedFormat('d F Y') }}</span>
-                </div>
+                <table style="width:100%; font-size:11px;">
+                    <tr>
+                        <td class="meta-label" style="width:110px;">No. Invoice</td>
+                        <td style="width:10px; text-align:center;">:</td>
+                        <td>{{ $invoice->no_invoice }}</td>
+                    </tr>
+                    <tr>
+                        <td class="meta-label">Tgl. Invoice</td>
+                        <td style="text-align:center;">:</td>
+                        <td>{{ $invoice->tgl_invoice->locale('id')->translatedFormat('d F Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="meta-label">Due Date Inv</td>
+                        <td style="text-align:center;">:</td>
+                        <td>{{ $invoice->due_date->locale('id')->translatedFormat('d F Y') }}</td>
+                    </tr>
+                </table>
             </td>
 
         </tr>
@@ -472,8 +479,8 @@
                         <img src="{{ public_path('assets/images/mpa_logo.png') }}" alt="ttd">
 
                     </div> --}}
-                    <div> <u>( Mariyadi, ST, MM )</u> </div>
-                    <div>Direktur</div>
+                    <div> <u><b>( Mariyadi, ST, MM )</b></u> </div>
+                    <b>Direktur</b>
                 </div>
             </td>
         </tr>
@@ -484,36 +491,36 @@
         style="position: absolute; bottom: 10px; right: 10px; height: 40px;" />
 
 
-<!-- Biar kwitansi mulai di halaman baru -->
-<div style="page-break-after: always;"></div>
-@php
-    // Pisahkan nomor invoice by "/"
-    $parts = explode('/', $invoice->no_invoice);
+    <!-- Biar kwitansi mulai di halaman baru -->
+    <div style="page-break-after: always;"></div>
+    @php
+        // Pisahkan nomor invoice by "/"
+        $parts = explode('/', $invoice->no_invoice);
 
-    // Ambil prefix (contoh: "MPA002")
-    $prefix = $parts[0] ?? $invoice->no_invoice;
+        // Ambil prefix (contoh: "MPA002")
+        $prefix = $parts[0] ?? $invoice->no_invoice;
 
-    // Ambil bulan dan tahun dari created_at
-    $monthNumber = date('n', strtotime($invoice->created_at ?? now()));
-    $tahun = date('Y', strtotime($invoice->created_at ?? now()));
+        // Ambil bulan dan tahun dari created_at
+        $monthNumber = date('n', strtotime($invoice->created_at ?? now()));
+        $tahun = date('Y', strtotime($invoice->created_at ?? now()));
 
-    // Mapping bulan ke romawi
-    $bulanRomawi = [
-        1 => 'I',
-        2 => 'II',
-        3 => 'III',
-        4 => 'IV',
-        5 => 'V',
-        6 => 'VI',
-        7 => 'VII',
-        8 => 'VIII',
-        9 => 'IX',
-        10 => 'X',
-        11 => 'XI',
-        12 => 'XII',
-    ];
-    $bulan = $bulanRomawi[$monthNumber];
-@endphp
+        // Mapping bulan ke romawi
+        $bulanRomawi = [
+            1 => 'I',
+            2 => 'II',
+            3 => 'III',
+            4 => 'IV',
+            5 => 'V',
+            6 => 'VI',
+            7 => 'VII',
+            8 => 'VIII',
+            9 => 'IX',
+            10 => 'X',
+            11 => 'XI',
+            12 => 'XII',
+        ];
+        $bulan = $bulanRomawi[$monthNumber];
+    @endphp
 
     <!-- ========== KWITANSI ========== -->
     <div class="kwitansi">
@@ -602,8 +609,8 @@
                             @endif --}}
                         </div>
 
-                        <u>( Mariyadi, ST, MM )</u><br>
-                        Direktur
+                        <u><b>( Mariyadi, ST, MM )</b></u><br>
+                        <b>Direktur</b>
                     </div>
                 </td>
             </tr>
