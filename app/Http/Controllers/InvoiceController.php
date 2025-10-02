@@ -48,7 +48,7 @@ class InvoiceController extends Controller
                 'nbast3' => 'nullable|string|max:50',
                 'nbast4' => 'nullable|string|max:50',
                 'nbast5' => 'nullable|string|max:50',
-                'jenis_no' => 'nullable|string|max:50',
+                // 'jenis_no' => 'nullable|string|max:50',
                 'no_fpb' => 'nullable|string|max:50',
                 'no_fpb2' => 'nullable|string|max:50',
                 'no_fpb3' => 'nullable|string|max:50',
@@ -139,70 +139,92 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-public function edit($id)
-{
-    $invoice = Invoice::findOrFail($id);
+    public function edit($id)
+    {
+        $invoice = Invoice::findOrFail($id);
 
-    // decode detail_invoice
-    $details = json_decode($invoice->detail_invoice, true) ?? [];
+        // decode detail_invoice
+        $details = json_decode($invoice->detail_invoice, true) ?? [];
 
-    foreach ($details as &$item) {
-        $qty   = $item['qty'] ?? 0;
-        $harga = $item['harga'] ?? 0;
-        $item['total'] = $qty * $harga; // tambahkan total ke setiap item
+        foreach ($details as &$item) {
+            $qty   = $item['qty'] ?? 0;
+            $harga = $item['harga'] ?? 0;
+            $item['total'] = $qty * $harga; // tambahkan total ke setiap item
+        }
+
+        // ambil data relasi untuk dropdown
+        $clients = \App\Models\Client::all();
+        $banks   = \App\Models\Bank::all();
+
+        return view('invoice.edit', compact('invoice', 'details', 'clients', 'banks'));
     }
-
-    // ambil data relasi untuk dropdown
-    $clients = \App\Models\Client::all();
-    $banks   = \App\Models\Bank::all();
-
-    return view('invoice.edit', compact('invoice', 'details', 'clients', 'banks'));
-}
 
 
     /**
      * Update the specified resource in storage.
      */
-   public function update(Request $request, $id)
-{
-    $invoice = Invoice::findOrFail($id);
+    public function update(Request $request, $id)
+    {
+        $invoice = Invoice::findOrFail($id);
 
-    // ✅ validasi
-    $validated = $request->validate([
-        'no_invoice'      => 'required|string|max:255',
-        'tgl_invoice'     => 'required|date',
-        'due_date'        => 'required|date',
-        'tgl_paid'        => 'nullable|date',
-        'status'          => 'required|in:draft,pending,paid,cancelled,sent,overdue',
-        'detail_invoice'  => 'required|array',
-        'detail_invoice.*.deskripsi' => 'required|string',
-        'detail_invoice.*.qty'       => 'required|numeric|min:1',
-        'detail_invoice.*.harga'     => 'required|numeric|min:0',
-        'detail_invoice.*.satuan'    => 'nullable|string',
-    ]);
+        // ✅ validasi
+        $validated = $request->validate([
+            'no_invoice'      => 'required|string|max:255',
+            'tgl_invoice'     => 'required|date',
+            'due_date'        => 'required|date',
+            'tgl_paid'        => 'nullable|date',
+            'status'          => 'required|in:draft,pending,paid,cancelled,sent,overdue',
+            'detail_invoice'  => 'required|array',
+            'detail_invoice.*.deskripsi' => 'required|string',
+            'detail_invoice.*.qty'       => 'required|numeric|min:1',
+            'detail_invoice.*.harga'     => 'required|numeric|min:0',
+            'detail_invoice.*.satuan'    => 'nullable|string',
+            // Tambahkan validasi untuk no_fpb dan nbast
+            'no_fpb'          => 'nullable|string|max:50',
+            'no_fpb2'         => 'nullable|string|max:50',
+            'no_fpb3'         => 'nullable|string|max:50',
+            'no_fpb4'         => 'nullable|string|max:50',
+            'no_fpb5'         => 'nullable|string|max:50',
+            'nbast'           => 'nullable|string|max:50',
+            'nbast2'          => 'nullable|string|max:50',
+            'nbast3'          => 'nullable|string|max:50',
+            'nbast4'          => 'nullable|string|max:50',
+            'nbast5'          => 'nullable|string|max:50',
+        ]);
 
-    // ✅ hitung total
-    $total = 0;
-    foreach ($validated['detail_invoice'] as &$item) {
-        $item['satuan'] = $item['satuan'] ?? 'pcs';
-        $total += $item['qty'] * $item['harga'];
+        // ✅ hitung total
+        $total = 0;
+        foreach ($validated['detail_invoice'] as &$item) {
+            $item['satuan'] = $item['satuan'] ?? 'pcs';
+            $total += $item['qty'] * $item['harga'];
+        }
+
+        // ✅ isi ke model
+        $invoice->fill([
+            'no_invoice'     => $validated['no_invoice'],
+            'tgl_invoice'    => $validated['tgl_invoice'],
+            'due_date'       => $validated['due_date'],
+            'tgl_paid'       => $validated['tgl_paid'],
+            'status'         => $validated['status'],
+            'detail_invoice' => json_encode($validated['detail_invoice']),
+            'total_invoice'  => $total,
+            // Tambahkan assignment untuk no_fpb dan nbast
+            'no_fpb'         => $validated['no_fpb'] ?? null,
+            'no_fpb2'        => $validated['no_fpb2'] ?? null,
+            'no_fpb3'        => $validated['no_fpb3'] ?? null,
+            'no_fpb4'        => $validated['no_fpb4'] ?? null,
+            'no_fpb5'        => $validated['no_fpb5'] ?? null,
+            'nbast'          => $validated['nbast'] ?? null,
+            'nbast2'         => $validated['nbast2'] ?? null,
+            'nbast3'         => $validated['nbast3'] ?? null,
+            'nbast4'         => $validated['nbast4'] ?? null,
+            'nbast5'         => $validated['nbast5'] ?? null,
+        ]);
+
+        $invoice->save();
+
+        return redirect()->route('invoice.index')->with('success', 'Invoice berhasil diperbarui.');
     }
-
-    // ✅ isi ke model
-    $invoice->fill([
-        'no_invoice'     => $validated['no_invoice'],
-        'tgl_invoice'    => $validated['tgl_invoice'],
-        'due_date'       => $validated['due_date'],
-        'tgl_paid'       => $validated['tgl_paid'],
-        'status'         => $validated['status'],
-        'detail_invoice' => json_encode($validated['detail_invoice']), // simpan sebagai JSON string
-        'total_invoice'  => $total,
-    ]);
-
-    $invoice->save();
-
-    return redirect()->route('invoice.index')->with('success', 'Invoice berhasil diperbarui.');
-}
 
 
     /**
@@ -253,7 +275,7 @@ public function edit($id)
                 'nama_client',
                 'alamat_client',
                 'up',
-                'jenis_no',
+                // 'jenis_no',
                 'no_fpb',
                 'due_date',
                 'uraian',
@@ -284,7 +306,7 @@ public function edit($id)
                 'alamat_client',
                 'kd_admin',
                 'up',
-                'jenis_no',
+                // 'jenis_no',
                 'no_fpb',
                 'due_date',
                 'nama_bank',
@@ -312,7 +334,7 @@ public function edit($id)
                 'alamat_client',
                 'kd_admin',
                 'up',
-                'jenis_no',
+                // 'jenis_no',
                 'no_fpb',
                 'due_date',
                 'nama_bank',
