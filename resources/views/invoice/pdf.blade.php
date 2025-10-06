@@ -451,7 +451,7 @@
         <br>
         <div style="font-size: 10px;">
             Jika sudah di lakukan pembayaran mohon konfirmasi ke <strong>multipowerabadi@gmail.com</strong><br>
-            atau ke 08112728253 / 081024272825
+            atau ke 0811272825
         </div>
     </div>
 
@@ -464,13 +464,9 @@
             <!-- Kolom kanan untuk tanggal & tanda tangan -->
             <td style="width:40%; text-align:center; vertical-align:top;">
                 <!-- Tanggal -->
-                <div class="contact-info" style="margin-bottom:80px; font-weight: bold;">
-                    @php
-                        \Carbon\Carbon::setLocale('id');
-                        $tanggal = \Carbon\Carbon::now()->translatedFormat('d F Y');
-                    @endphp
-                    Surabaya, {{ $tanggal }}
-                </div>
+            <div class="contact-info" style="margin-bottom:80px; font-weight: bold;">
+                Surabaya, {{ $invoice->tgl_invoice->locale('id')->translatedFormat('d F Y') }}
+            </div>
 
                 <!-- Tanda tangan -->
                 <div class="signature-section">
@@ -488,6 +484,9 @@
 
     <!-- Kop Surat di pojok kanan bawah -->
     <img src="{{ public_path('assets/images/kopsuratmpa.png') }}" alt="kop-surat"
+    Untuk menampilkan No. Kuitansi dengan format yang kamu inginkan di file pdf.blade.php, ganti bagian kwitansi berikut:
+    
+    
         style="position: absolute; bottom: 10px; right: 10px; height: 40px;" />
 
 
@@ -589,13 +588,9 @@
             <tr>
                 <td colspan="2" style="padding:12px; text-align:right; vertical-align:bottom;">
                     <div style="text-align:center; font-size:12px; display:inline-block; min-width:220px;">
-                        <div class="contact-info" style="margin-bottom:50px; font-weight: bold;">
-                            @php
-                                \Carbon\Carbon::setLocale('id');
-                                $tanggal = \Carbon\Carbon::now()->translatedFormat('d F Y');
-                            @endphp
-                            Surabaya, {{ $tanggal }}
-                        </div>
+                    `<div class="contact-info" style="margin-bottom:80px; font-weight: bold;">
+                        Surabaya, {{ $invoice->tgl_invoice->locale('id')->translatedFormat('d F Y') }}
+                    </div>`
 
 
                         <!-- Materai + Tanda tangan -->

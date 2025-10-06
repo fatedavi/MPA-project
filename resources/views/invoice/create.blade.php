@@ -328,7 +328,7 @@
                                 <h3 class="text-xl font-semibold text-indigo-900 flex items-center justify-between">
                                     <span class="flex items-center">
                                         <i class="fas fa-file-alt text-indigo-600 mr-3 text-xl"></i>
-                                        FPB Information
+                                        Nomer Reference
                                     </span>
                                     <i id="fpb-icon"
                                         class="fas fa-chevron-down transform transition-transform duration-200"></i>
