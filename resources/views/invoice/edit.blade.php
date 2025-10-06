@@ -253,9 +253,9 @@
                                                     <div>
                                                         <label
                                                             class="block text-sm font-medium text-gray-700">Total</label>
-                                                       <input type="text"
+                                                        <input type="text"
                                                             name="detail_invoice[{{ $index }}][total]"
-                                                            value="{{ 'Rp ' . number_format(($item['total'] ?? (($item['qty'] ?? 0) * ($item['harga'] ?? 0))), 0, ',', '.') }}"
+                                                            value="{{ 'Rp ' . number_format($item['total'] ?? ($item['qty'] ?? 0) * ($item['harga'] ?? 0), 0, ',', '.') }}"
                                                             readonly
                                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm"
                                                             placeholder="Rp 0">
@@ -338,7 +338,7 @@
                                 <h3 class="text-xl font-semibold text-orange-900 flex items-center justify-between">
                                     <span class="flex items-center">
                                         <i class="fas fa-file-contract text-orange-600 mr-3 text-xl"></i>
-                                        NBAST Information
+                                        Nomer BAST Information
                                     </span>
                                     <i id="nbast-icon"
                                         class="fas fa-chevron-down transform transition-transform duration-200"></i>
@@ -405,14 +405,14 @@
                             </button>
                             <div id="fpb-content" class="px-6 pb-6 hidden">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div>
+                                    {{-- <div>
                                         <label for="jenis_no" class="block text-sm font-medium text-gray-700">Jenis
                                             No</label>
                                         <input type="text" name="jenis_no" id="jenis_no"
                                             value="{{ $invoice->jenis_no }}"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm"
                                             placeholder="Jenis No">
-                                    </div>
+                                    </div> --}}
                                     <div>
                                         <label for="no_fpb" class="block text-sm font-medium text-gray-700">No FPB
                                             1</label>
@@ -468,9 +468,9 @@
                                     <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date
                                         *</label>
                                     <input type="date" name="due_date" id="due_date"
-                                            value="{{ \Carbon\Carbon::parse($invoice->due_date)->format('Y-m-d') }}"
-                                            required
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+                                        value="{{ \Carbon\Carbon::parse($invoice->due_date)->format('Y-m-d') }}"
+                                        required
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
 
                                 </div>
 
@@ -521,9 +521,9 @@
                                 <div>
                                     <label for="tgl_paid" class="block text-sm font-medium text-gray-700">Payment
                                         Date</label>
-                                   <input type="date" name="tgl_paid" id="tgl_paid"
-                                    value="{{ $invoice->tgl_paid ? \Carbon\Carbon::parse($invoice->tgl_paid)->format('Y-m-d') : '' }}"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
+                                    <input type="date" name="tgl_paid" id="tgl_paid"
+                                        value="{{ $invoice->tgl_paid ? \Carbon\Carbon::parse($invoice->tgl_paid)->format('Y-m-d') : '' }}"
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#8D0907] focus:border-[#8D0907] sm:text-sm">
 
                                 </div>
                             </div>
@@ -629,7 +629,7 @@
         </div>
     </div>
 
-       <script>
+    <script>
         let itemCount = 1;
 
         document.addEventListener('DOMContentLoaded', function() {
